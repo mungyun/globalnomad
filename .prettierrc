@@ -1,9 +1,12 @@
 {
-    "semi": true,
-    "singleQuote":true,
-    "tabWidth": 2,
-    "trailingComma": "es5",
-    "printWidth": 80,
-    "arrowParens": "always",
-    "endOfLine": "auto"
-  }
+  "semi": true,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "printWidth": 120,
+  "arrowParens": "always",
+  "endOfLine": "auto",
+  "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+  "importOrderSortSpecifiers": true,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
+}
