@@ -7,19 +7,22 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   additionalClass?: string; // 추가 class 속성
 }
 
+const baseClass =
+  "flex items-center justify-center rounded-md disabled:border-none disabled:bg-gray06 disabled:text-white";
+
+const sizeClass = {
+  full: "h-[48px] w-full text-base font-bold leading-[26px]",
+  lg: "h-[48px] w-[350px] text-base font-bold leading-[26px]",
+  md: "h-[48px] w-[144px] text-base font-bold leading-[26px]",
+  sm: "h-[38px] w-[108px] text-sm font-bold leading-[24px]",
+};
+
+const colorClass = {
+  green: "bg-green02 text-white",
+  white: "border-[1px] border-green02 bg-white text-green02 ",
+};
+
 const Button = ({ children, size = "full", color = "green", additionalClass, ...props }: ButtonProps) => {
-  const baseClass =
-    "flex items-center justify-center rounded-md disabled:border-none disabled:bg-gray06 disabled:text-white";
-  const sizeClass = {
-    full: "h-[48px] w-full text-base font-bold leading-[26px]",
-    lg: "h-[48px] w-[350px] text-base font-bold leading-[26px]",
-    md: "h-[48px] w-[144px] text-base font-bold leading-[26px]",
-    sm: "h-[38px] w-[108px] text-sm font-bold leading-[24px]",
-  };
-  const colorClass = {
-    green: "bg-green02 text-white",
-    white: "border-[1px] border-green02 bg-white text-green02 ",
-  };
   return (
     <button
       className={`${baseClass} ${sizeClass[size]} ${colorClass[color]} ${additionalClass} disabled:cursor-not-allowed`}
