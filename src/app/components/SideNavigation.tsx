@@ -3,15 +3,17 @@ import Link from "next/link";
 import { IoPersonCircleOutline } from "react-icons/io5";
 
 interface ListProps {
-  img: string;
+  iconName: string;
   text: string;
 }
 
-const List: React.FC<ListProps> = ({ img, text }) => (
-  <div className="group flex cursor-pointer gap-5 rounded-xl px-5 py-2 font-bold hover:bg-gray10 hover:text-black">
-    <Image src={`/icons/${img}.svg`} width="24" height="24" alt="icon" className="group-hover:brightness-0" />
-    {text}
-  </div>
+const List: React.FC<ListProps> = ({ iconName, text }) => (
+  <Link href={`/${iconName}`}>
+    <div className="group flex cursor-pointer gap-5 rounded-xl px-5 py-2 font-bold hover:bg-gray10 hover:text-black">
+      <Image src={`/icons/${iconName}.svg`} width="24" height="24" alt="icon" className="group-hover:brightness-0" />
+      {text}
+    </div>
+  </Link>
 );
 
 interface SideNavigationProps {
@@ -33,18 +35,10 @@ export default function SideNavigation({ onClick }: SideNavigationProps) {
         />
       </div>
       <div className="flex flex-col gap-3 bg-white text-base text-gray07">
-        <Link href="mypage">
-          <List img={"mypage"} text={"내 정보"} />
-        </Link>
-        <Link href="reservation">
-          <List img={"reservation"} text={"예약 정보"} />
-        </Link>
-        <Link href="myactivity">
-          <List img={"myactivity"} text={"내 체험 관리"} />
-        </Link>
-        <Link href="calender">
-          <List img={"calender"} text={"예약 현황"} />
-        </Link>
+        <List iconName={"mypage"} text={"내 정보"} />
+        <List iconName={"reservation"} text={"예약 정보"} />
+        <List iconName={"myactivity"} text={"내 체험 관리"} />
+        <List iconName={"calender"} text={"예약 현황"} />
       </div>
     </div>
   );
