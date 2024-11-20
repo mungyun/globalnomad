@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>인덱스 페이지</div>;
+  return <div>메인 페이지</div>;
 }
