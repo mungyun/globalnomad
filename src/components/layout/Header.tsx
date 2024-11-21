@@ -3,7 +3,8 @@ import Link from "next/link";
 
 /* eslint-disable @next/next/no-img-element */
 const Header = () => {
-  const isLoggedIn = false;
+  const user = null;
+  const isLoggedIn = !!user;
   // const options = ["마이 페이지", "로그아웃"];
 
   return (
