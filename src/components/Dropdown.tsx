@@ -4,11 +4,11 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 // 타입 정의
-type DropdownSize = "big" | "large" | "medium" | "small";
+type DropdownSize = "xl" | "large" | "medium" | "small";
 
 // size에 따른 스타일 설정
 const sizeStyles: Record<DropdownSize, { width: string; height: string; fontSize: string }> = {
-  big: { width: "160px", height: "53px", fontSize: "18px" },
+  xl: { width: "160px", height: "53px", fontSize: "18px" },
   large: { width: "127px", height: "53px", fontSize: "18px" },
   medium: { width: "120px", height: "53px", fontSize: "18px" },
   small: { width: "90px", height: "41px", fontSize: "14px" },
