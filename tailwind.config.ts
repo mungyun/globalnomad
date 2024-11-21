@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        arial: ["Arial"],
+      },
       colors: {
         background: "#ffffff",
         black01: "#000",
