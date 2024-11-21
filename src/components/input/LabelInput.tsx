@@ -11,6 +11,7 @@ const LabelInput = ({ label, ...props }: InputProps) => {
       <div className="relative">
         <input
           className="h-[56px] w-full rounded-s border-[1px] border-gray08 px-5 py-4 text-base leading-[26px] outline-green02 placeholder:text-gray06"
+          autoComplete={props.type}
           {...props}
         />
       </div>

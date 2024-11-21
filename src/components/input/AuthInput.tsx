@@ -20,9 +20,9 @@ const AuthInput = ({ label, errors, ...props }: InputProps) => {
       <div className="relative">
         <input
           className={`h-[58px] w-full rounded-md border-[1px] border-gray08 px-5 py-4 text-base leading-[26px] outline-green02 placeholder:text-gray06 ${errors && errorClass}`}
+          autoComplete={props.type}
           {...props}
           type={inputType}
-          autoComplete={props.type === "password" ? "current-password" : "email"}
         />
         {props.type === "password" && (
           <Image
