@@ -1,20 +1,19 @@
 "use client";
 
-import { Reservation } from "@/types/types";
 import { useState } from "react";
 
 interface PaginationProps {
-  data: Reservation[]; // 데이터 배열
+  totalCount: number;
   itemsPerPage?: number; // 페이지당 아이템 개수
 }
 
 const buttonStyle =
   "flex md:h-[55px] md:w-[55px] h-[40px] w-[40px] items-center justify-center rounded-[15px] text-[18px] font-medium border border border-green02";
 
-const Pagination = ({ data, itemsPerPage = 5 }: PaginationProps) => {
+const Pagination = ({ totalCount, itemsPerPage = 5 }: PaginationProps) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(data.length / itemsPerPage); // 전체 페이지 수
+  const totalPages = Math.ceil(totalCount / itemsPerPage); // 전체 페이지 수
 
   // 현재 페이지 그룹 계산
   const currentGroup = Math.ceil(currentPage / itemsPerPage);
