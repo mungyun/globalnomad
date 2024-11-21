@@ -9,7 +9,7 @@ const LabelInput = ({ label, ...props }: InputProps) => {
     <label className="flex flex-col gap-4 text-xl font-bold leading-8 text-black03 md:text-2xl">
       {label}
       <input
-        className="h-[56px] w-full rounded-s border-[1px] border-gray08 px-5 py-4 text-base leading-[26px] outline-green02 placeholder:text-gray06"
+        className="h-[56px] w-full rounded border-[1px] border-gray08 px-5 py-4 text-base leading-[26px] outline-green02 placeholder:text-gray06"
         autoComplete={props.type}
         {...props}
       />
