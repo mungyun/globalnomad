@@ -3,7 +3,7 @@
 import formatPrice from "@/utils/formatPrice";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { mockData } from "./mockdata";
 
 const CalendarComponent = dynamic(() => import("./Calendar"), { ssr: false });
@@ -33,11 +33,24 @@ const PartyNumberSelector: React.FC<PartyNumberSelectorProps> = ({ partyNum, set
   </div>
 );
 
+// 오늘 날짜 계산
+const getTodayDate = () => {
+  const today = new Date();
+  return today.toISOString().split("T")[0]; // "YYYY-MM-DD" 형식 반환
+};
+
 const SideBar = () => {
   const { price, schedules } = mockData;
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string | null>(getTodayDate());
   const [timeList, setTimeList] = useState<string[]>([]);
   const [partyNum, setPartyNum] = useState<number>(0);
+
+  useEffect(() => {
+    // 선택된 날짜의 예약 가능한 시간을 설정
+    const todaySchedules = schedules.filter((schedule) => schedule.date === getTodayDate());
+    const todayTimes = todaySchedules.map((schedule) => `${schedule.startTime} ~ ${schedule.endTime}`);
+    setTimeList(todayTimes);
+  }, [schedules]);
 
   const handleDateSelect = (date: string, times: string[]) => {
     setSelectedDate(date);
@@ -45,7 +58,7 @@ const SideBar = () => {
   };
 
   return (
-    <div className="rounded-xl border border-gray02 p-6 shadow-md xl:h-full xl:w-[384px]">
+    <div className="sticky top-20 rounded-xl border border-gray02 p-6 shadow-md transition-all xl:h-full xl:w-[384px]">
       {/* 가격 정보 */}
       <h3 className="mb-4 text-[20px] text-gray09">
         <span className="text-[32px] font-bold text-black03">￦ {formatPrice(price)}</span> / 인
@@ -85,7 +98,7 @@ const SideBar = () => {
                 </div>
               </div>
             ) : (
-              <p className="mt-2 text-sm text-gray-500">선택한 날짜에 예약 가능한 시간이 없습니다.</p>
+              <p className="mt-2 text-[16px] text-gray08">선택한 날짜에 예약 가능한 시간이 없습니다.</p>
             )}
           </div>
         </div>
