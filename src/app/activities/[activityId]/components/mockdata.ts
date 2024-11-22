@@ -27,8 +27,10 @@ export const mockData = {
     },
   ],
   schedules: [
-    { id: 1, date: "2023-12-01", startTime: "12:00", endTime: "13:00" },
-    { id: 2, date: "2023-12-05", startTime: "12:00", endTime: "13:00" },
+    { id: 1, date: "2024-12-01", startTime: "12:00", endTime: "13:00" },
+    { id: 2, date: "2024-12-01", startTime: "13:30", endTime: "14:00" },
+    { id: 3, date: "2024-12-05", startTime: "11:00", endTime: "12:00" },
+    { id: 4, date: "2024-12-05", startTime: "12:00", endTime: "13:00" },
   ],
   reviewCount: 5,
   rating: 4.74,

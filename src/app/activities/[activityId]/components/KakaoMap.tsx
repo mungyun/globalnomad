@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 
@@ -18,15 +19,21 @@ const KakaoMap = ({ address }: KakaoMapProps) => {
         const { x, y } = result[0];
         setCoordinates({ lat: parseFloat(y), lng: parseFloat(x) });
       } else {
-        console.error("Failed to fetch coordinates for address:", address);
+        console.error(address);
       }
     });
   }, [address]);
 
   return (
-    <Map center={coordinates} style={{ width: "100%", height: "476px" }} level={3}>
-      <MapMarker position={coordinates}></MapMarker>
-    </Map>
+    <>
+      <Map center={coordinates} style={{ width: "100%", height: "476px" }} level={3}>
+        <MapMarker position={coordinates}></MapMarker>
+      </Map>
+      <div className="mt-2 flex h-[18px] items-center">
+        <Image src="/icons/location.svg" alt="주소" width={18} height={18} />
+        <p className="text-[14px] text-black02">{address}</p>
+      </div>
+    </>
   );
 };
 
