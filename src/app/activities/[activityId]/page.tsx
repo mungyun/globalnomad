@@ -7,7 +7,7 @@ const ActivityDetailPage = () => {
   return (
     <div>
       <Banner />
-      <div className="flex gap-6 pb-48">
+      <div className="relative flex pb-48 xl:gap-6">
         <MainContent />
         <SideBar />
       </div>

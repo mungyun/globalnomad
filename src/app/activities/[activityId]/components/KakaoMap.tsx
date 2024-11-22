@@ -26,9 +26,11 @@ const KakaoMap = ({ address }: KakaoMapProps) => {
 
   return (
     <>
-      <Map center={coordinates} style={{ width: "100%", height: "476px" }} level={3}>
-        <MapMarker position={coordinates}></MapMarker>
-      </Map>
+      <div className="w-full md:h-[276px] xl:h-[450px]">
+        <Map center={coordinates} style={{ width: "100%", height: "100%" }} level={3}>
+          <MapMarker position={coordinates}></MapMarker>
+        </Map>
+      </div>
       <div className="mt-2 flex h-[18px] items-center">
         <Image src="/icons/location.svg" alt="주소" width={18} height={18} />
         <p className="text-[14px] text-black02">{address}</p>
