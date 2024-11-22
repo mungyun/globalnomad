@@ -1,3 +1,4 @@
+import CommentList from "./CommentList";
 import KakaoMap from "./KakaoMap";
 import SideBar from "./SideBar";
 import { mockData } from "./mockdata";
@@ -15,6 +16,7 @@ const MainContent = () => {
           <div className="xl:py-10">
             <KakaoMap address={address} />
           </div>
+          <CommentList />
         </div>
       </div>
       <SideBar />

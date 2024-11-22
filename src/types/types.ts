@@ -29,3 +29,28 @@ export interface MyReservations {
   reservations: Reservation[]; // 예약 배열
   totalCount: number; // 총 예약 수
 }
+
+// User 정보를 정의하는 타입
+export interface User {
+  profileImageUrl: string;
+  nickname: string;
+  id: number;
+}
+
+// 리뷰 데이터를 정의하는 타입
+export interface Review {
+  id: number;
+  user: User;
+  activityId: number;
+  rating: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 전체 리뷰 응답 데이터를 정의하는 타입
+export interface ReviewResponse {
+  averageRating: number;
+  totalCount: number;
+  reviews: Review[];
+}

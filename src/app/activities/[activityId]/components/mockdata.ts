@@ -37,3 +37,49 @@ export const mockData = {
   createdAt: "2023-12-31T21:28:50.589Z",
   updatedAt: "2023-12-31T21:28:50.589Z",
 };
+
+export const reviewMockData = {
+  averageRating: 4.5,
+  totalCount: 3,
+  reviews: [
+    {
+      id: 1,
+      user: {
+        profileImageUrl: "",
+        nickname: "JohnDoe",
+        id: 101,
+      },
+      activityId: 201,
+      rating: 5,
+      content: "This activity was amazing! Highly recommend it.",
+      createdAt: "2024-11-20T12:00:00.000Z",
+      updatedAt: "2024-11-21T12:00:00.000Z",
+    },
+    {
+      id: 2,
+      user: {
+        profileImageUrl: "",
+        nickname: "JaneSmith",
+        id: 102,
+      },
+      activityId: 202,
+      rating: 4,
+      content: "Great experience, but there’s room for improvement.",
+      createdAt: "2024-11-19T15:30:00.000Z",
+      updatedAt: "2024-11-20T10:00:00.000Z",
+    },
+    {
+      id: 3,
+      user: {
+        profileImageUrl: "",
+        nickname: "TravelBug",
+        id: 103,
+      },
+      activityId: 203,
+      rating: 4.5,
+      content: "Wonderful activity! Enjoyed every bit of it.",
+      createdAt: "2024-11-18T09:45:00.000Z",
+      updatedAt: "2024-11-19T08:30:00.000Z",
+    },
+  ],
+};
