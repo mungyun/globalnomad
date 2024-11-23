@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
+import Modal from "./Modal";
 
 interface Reservation {
   id: number;
@@ -33,6 +37,8 @@ const ReservationItem: React.FC<{ reservation: Reservation }> = ({ reservation }
   };
   const buttonColor = buttonStatusColor[reservation.status];
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
   return (
     <div
       key={reservation.id}
@@ -75,6 +81,7 @@ const ReservationItem: React.FC<{ reservation: Reservation }> = ({ reservation }
           ₩ {reservation.totalPrice.toLocaleString()}
           <button
             className={`absolute right-0 hidden rounded-md border border-black01 px-3 py-1 text-sm font-bold group-hover:block md:-bottom-1 md:px-5 md:py-2 xl:px-9 xl:py-[10px] xl:text-base ${buttonColor}`}
+            onClick={openModal}
           >
             {reservation.status === "pending" || reservation.status === "confirmed"
               ? "예약취소"
@@ -84,6 +91,7 @@ const ReservationItem: React.FC<{ reservation: Reservation }> = ({ reservation }
           </button>
         </div>
       </div>
+      {isModalOpen ? <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} /> : null}
     </div>
   );
 };

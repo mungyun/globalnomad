@@ -12,8 +12,8 @@ export default function ReservationList() {
         <span className="hidden xl:block">
           <Dropdown
             label="필터"
-            size="large"
-            options={["예약 신청", "예약 취소", "예약 승인", "예약 거절", "체험 완료"]}
+            size="xl"
+            options={["전체 보기", "예약 신청", "예약 취소", "예약 승인", "예약 거절", "체험 완료"]}
           />
         </span>
       </div>
