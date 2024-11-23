@@ -14,7 +14,9 @@ const CommentItem = ({ item }: { item: Review }) => {
       {isImageValid(user.profileImageUrl) ? (
         <Image src={user.profileImageUrl} alt="프로필 사진" width={45} height={45} className="rounded-full" />
       ) : (
-        <FaUserCircle className="text-gray-400" size={45} />
+        <div className="h-[45px] w-[45px]">
+          <FaUserCircle className="text-gray-400" size={45} />
+        </div>
       )}
       <div>
         <div className="mb-2 flex items-center gap-2">

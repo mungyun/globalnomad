@@ -34,7 +34,7 @@ const SideBar = () => {
   const deviceType = useDeviceType();
 
   return (
-    <div className="top-10 rounded-xl border border-gray02 p-6 shadow-md transition-all md:sticky md:h-[423px] md:w-[251px] xl:h-full xl:w-[384px]">
+    <div className="top-20 rounded-xl border border-gray02 p-6 shadow-md transition-all md:sticky md:h-[423px] md:w-[251px] xl:h-full xl:w-[384px]">
       <h3 className="mb-4 text-gray09 md:text-[16px] xl:text-[20px]">
         <span className="font-bold text-black03 md:text-[24px] xl:text-[32px]">￦ {formatPrice(price)}</span> / 인
       </h3>
@@ -50,11 +50,13 @@ const SideBar = () => {
         )}
       </div>
 
-      <div className="mt-4">
-        <div className="mb-6 mt-4 border-b border-b-gray03 pb-6">
+      <div className="md:mb-4 xl:mt-4">
+        <div className="border-b border-b-gray03 pb-6 md:mb-4 xl:mb-6 xl:mt-4">
           <h4 className={`mb-2 text-[18px] ${titleStyle}`}>참여 인원 수</h4>
           <PartyNumberSelector partyNum={partyNum} setPartyNum={setPartyNum} />
-          <button className="mt-6 h-[56px] w-full rounded bg-black02 text-[16px] font-bold text-white">예약하기</button>
+          <button className="h-[56px] w-full rounded bg-black02 text-[16px] font-bold text-white md:mt-8 xl:mt-6">
+            예약하기
+          </button>
         </div>
         <div className="flex items-center justify-between">
           <span className={`text-[20px] ${titleStyle}`}>총 합계</span>

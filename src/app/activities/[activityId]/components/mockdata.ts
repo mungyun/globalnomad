@@ -51,7 +51,8 @@ export const reviewMockData = {
       },
       activityId: 201,
       rating: 5,
-      content: "This activity was amazing! Highly recommend it.",
+      content:
+        "This activity was amazing! Highly recommend it.This activity was amazing! Highly recommend it.This activity was amazing! Highly recommend it.",
       createdAt: "2024-11-20T12:00:00.000Z",
       updatedAt: "2024-11-21T12:00:00.000Z",
     },
