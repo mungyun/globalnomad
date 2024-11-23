@@ -1,7 +1,7 @@
 "use client";
 
 import "@/styles/Calender.css";
-import React from "react";
+import React, { useState } from "react";
 import Calendar from "react-calendar";
 
 interface Schedule {
@@ -12,10 +12,23 @@ interface Schedule {
 
 interface CalendarComponentProps {
   schedules: Schedule[];
-  onDateSelect: (date: string, times: string[]) => void;
 }
 
-const CalendarComponent: React.FC<CalendarComponentProps> = ({ schedules, onDateSelect }) => {
+const TimeSlot = ({ time, isSelected, onClick }: { time: string; isSelected: boolean; onClick: () => void }) => (
+  <li
+    className={`flex h-[46px] w-[117px] cursor-pointer items-center justify-center rounded-lg border border-black02 text-[16px] font-medium ${
+      isSelected ? "bg-black02 text-white" : ""
+    }`}
+    onClick={onClick}
+  >
+    {time}
+  </li>
+);
+
+const CalendarComponent: React.FC<CalendarComponentProps> = ({ schedules }) => {
+  const [timeList, setTimeList] = useState<string[]>([]);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null); // 선택된 시간 상태
+
   const getAvailableDates = () => schedules.map((schedule) => schedule.date);
 
   const isDateAvailable = (date: Date) => {
@@ -28,18 +41,44 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ schedules, onDate
     const times = schedules
       .filter((schedule) => schedule.date === formattedDate)
       .map((schedule) => `${schedule.startTime} ~ ${schedule.endTime}`);
-    onDateSelect(formattedDate, times);
+    setTimeList(times);
+    setSelectedTime(null);
+  };
+
+  const handleTimeClick = (time: string) => {
+    setSelectedTime(time);
   };
 
   return (
-    <div className="mb-4 flex justify-center">
-      <Calendar
-        onClickDay={handleDateClick}
-        tileClassName={({ date }) => (isDateAvailable(date) ? "bg-green01 text-green02" : "text-gray09")}
-        className="w-full rounded-md border border-gray03"
-        minDate={new Date()}
-        locale="en-US"
-      />
+    <div>
+      <div className="mb-4 flex h-full justify-center">
+        <Calendar
+          onClickDay={handleDateClick}
+          tileClassName={({ date }) => (isDateAvailable(date) ? "text-black02" : "text-gray06")}
+          className="w-full rounded-md border border-gray03"
+          minDate={new Date()}
+          locale="en-US"
+        />
+      </div>
+      <div className="mb-6">
+        <div>
+          <h4 className="text-[18px] font-bold text-black02">예약 가능한 시간</h4>
+          {timeList.length > 0 ? (
+            <ul className="mt-[14px] flex gap-3 border-b border-b-gray03 pb-4">
+              {timeList.map((time, index) => (
+                <TimeSlot
+                  key={index}
+                  time={time}
+                  isSelected={selectedTime === time}
+                  onClick={() => handleTimeClick(time)}
+                />
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-2 text-[16px] text-gray08">선택한 날짜에 예약 가능한 시간이 없습니다.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
