@@ -54,3 +54,10 @@ export interface ReviewResponse {
   totalCount: number;
   reviews: Review[];
 }
+
+export interface Schedule {
+  id: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+}

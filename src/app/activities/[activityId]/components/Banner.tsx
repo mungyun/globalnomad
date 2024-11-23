@@ -26,23 +26,23 @@ const Banner = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center gap-1 md:rounded-xl xl:gap-2">
+      <div className="flex w-full justify-center gap-1 md:rounded-xl xl:gap-2">
         <Image
           src={bannerImageUrl}
           alt="배너 이미지"
-          width={345}
+          width={375}
           height={310}
-          className="h-[310px] w-[375px] md:w-[345px] md:rounded-l-xl xl:h-[534px] xl:w-[595px]"
+          className="h-full w-full object-cover md:max-h-[534px] md:max-w-[50%] md:rounded-l-xl"
         />
-        <div className="hidden rounded-r-xl md:flex md:flex-wrap md:gap-1 xl:gap-2">
+        <div className="hidden rounded-r-xl md:grid md:grid-cols-2 md:grid-rows-2 md:gap-1 xl:gap-2">
           {subImages.map((item) => (
             <Image
               src={item.imageUrl}
-              alt="배너 이미지"
-              width={294}
-              height={263}
+              alt="보조 이미지"
+              width={375}
+              height={310}
               key={item.id}
-              className="h-[153px] w-[170px] xl:h-[263px] xl:w-[294px]"
+              className="h-full w-full object-cover md:max-h-[263px] md:max-w-[293px]"
             />
           ))}
         </div>
