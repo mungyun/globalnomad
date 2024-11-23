@@ -3,7 +3,7 @@ import Link from "next/link";
 
 /* eslint-disable @next/next/no-img-element */
 const Header = () => {
-  const user = null;
+  const user = true;
   const isLoggedIn = !!user;
   // const options = ["마이 페이지", "로그아웃"];
 
@@ -16,13 +16,15 @@ const Header = () => {
 
         {isLoggedIn ? (
           <div className="flex items-center gap-3 md:gap-[25px]">
-            <img src="/icons/Icon_notification.svg" alt="알림 아이콘" />
+            <div className="relative size-5">
+              <Image src="/icons/Icon_notification.svg" alt="알림 아이콘" fill />
+            </div>
 
             <div className="h-[22px] w-[1px] bg-gray03"></div>
 
             <div className="flex items-center gap-[10px]">
-              <div className="h-8 w-8 rounded-full">
-                <Image src="/images/userProfileImg.png" alt="유저 프로필 이미지" width={32} height={32} />
+              <div className="relative size-8 rounded-full">
+                <Image src="/images/userProfileImg.png" alt="유저 프로필 이미지" fill />
               </div>
               <span>정만철</span>
             </div>
