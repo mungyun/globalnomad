@@ -1,9 +1,7 @@
 import Image from "next/image";
 
-/* eslint-disable @next/next/no-img-element */
 const Footer = () => {
   return (
-    // eslint-disable-next-line prettier/prettier
     <div className="relative h-40 w-full bg-black02 px-[38px] pt-8 font-arial text-[#676767] md:px-[111px]">
       <div className="mx-auto flex max-w-[1200px] flex-wrap justify-center gap-3 overflow-hidden sm:justify-around lg:justify-between">
         <span className="whitespace-nowrap pb-3">©codeit - 2023</span>
