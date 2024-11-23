@@ -4,7 +4,8 @@ import ReservationItem from "./ReservationItem";
 import { mockReservations } from "./mockData";
 
 export default function ReservationList() {
-  console.log(mockReservations);
+  const hasReservations = mockReservations && mockReservations.reservations.length > 0;
+
   return (
     <div className="flex flex-col gap-3 text-black02 md:gap-4 xl:gap-5">
       <div className="flex justify-between">
@@ -17,7 +18,7 @@ export default function ReservationList() {
           />
         </span>
       </div>
-      {mockReservations !== "" ? (
+      {hasReservations ? (
         mockReservations.reservations.map((reservation) => (
           <ReservationItem key={reservation.id} reservation={reservation} />
         ))

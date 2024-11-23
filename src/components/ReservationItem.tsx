@@ -26,8 +26,6 @@ const ReservationItem: React.FC<{ reservation: Reservation }> = ({ reservation }
     refused: "text-red03",
     completed: "text-gray08",
   };
-  const textColor = statusColor[reservation.status];
-
   const buttonStatusColor: Record<string, string> = {
     pending: "border-black02;",
     cancelled: "border-none cursor-default",
@@ -35,10 +33,26 @@ const ReservationItem: React.FC<{ reservation: Reservation }> = ({ reservation }
     refused: "border-none cursor-default",
     completed: "bg-black02 text-white",
   };
-  const buttonColor = buttonStatusColor[reservation.status];
 
+  const statusText: Record<string, string> = {
+    pending: "예약 신청",
+    cancelled: "예약 취소",
+    confirmed: "예약 승인",
+    refused: "예약 거절",
+    completed: "체험 완료",
+  };
+
+  const buttonText: Record<string, string> = {
+    pending: "예약취소",
+    confirmed: "예약취소",
+    completed: "후기 작성",
+  };
+
+  const textColor = statusColor[reservation.status];
+  const buttonColor = buttonStatusColor[reservation.status];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
+
   return (
     <div
       key={reservation.id}
@@ -52,19 +66,7 @@ const ReservationItem: React.FC<{ reservation: Reservation }> = ({ reservation }
         className="w-1/3 min-w-[128px] flex-shrink-0 rounded-l-xl object-cover md:min-w-[156px] xl:max-w-[204px]"
       />
       <div className="group flex w-full max-w-[216px] flex-col justify-between gap-2 p-3 md:max-w-[270px] xl:max-w-[900px] xl:p-6">
-        <p className={`text-sm font-bold ${textColor} xl:text-base`}>
-          {reservation.status === "pending"
-            ? "예약 신청"
-            : reservation.status === "cancelled"
-              ? "예약 취소"
-              : reservation.status === "confirmed"
-                ? "예약 승인"
-                : reservation.status === "refused"
-                  ? "예약 거절"
-                  : reservation.status === "completed"
-                    ? "체험 완료"
-                    : "오류"}
-        </p>
+        <p className={`text-sm font-bold ${textColor} xl:text-base`}>{statusText[reservation.status] || "오류"}</p>
         <h3 className="overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold md:text-lg xl:text-xl">
           {reservation.activity.title}
         </h3>
@@ -79,20 +81,19 @@ const ReservationItem: React.FC<{ reservation: Reservation }> = ({ reservation }
         </div>
         <div className="relative flex justify-between font-medium md:text-xl xl:text-2xl">
           ₩ {reservation.totalPrice.toLocaleString()}
-          <button
-            className={`absolute right-0 hidden rounded-md border border-black01 px-3 py-1 text-sm font-bold group-hover:block md:-bottom-1 md:px-5 md:py-2 xl:px-9 xl:py-[10px] xl:text-base ${buttonColor}`}
-            onClick={openModal}
-          >
-            {reservation.status === "pending" || reservation.status === "confirmed"
-              ? "예약취소"
-              : reservation.status === "completed"
-                ? "후기 작성"
-                : ""}
-          </button>
+          {buttonText[reservation.status] && (
+            <button
+              className={`absolute right-0 hidden rounded-md border border-black01 px-3 py-1 text-sm font-bold group-hover:block md:-bottom-1 md:px-5 md:py-2 xl:px-9 xl:py-[10px] xl:text-base ${buttonColor}`}
+              onClick={openModal}
+            >
+              {buttonText[reservation.status]}
+            </button>
+          )}
         </div>
       </div>
-      {isModalOpen ? <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} /> : null}
+      {isModalOpen && <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />}
     </div>
   );
 };
+
 export default ReservationItem;
