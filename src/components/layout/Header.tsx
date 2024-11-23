@@ -8,7 +8,7 @@ const Header = () => {
   // const options = ["마이 페이지", "로그아웃"];
 
   return (
-    <div className="h-[70px] w-full p-5">
+    <div className="h-[70px] w-full border-b border-gray03 p-5">
       <div className="mx-auto flex max-w-[1200px] items-center justify-between text-sm font-medium leading-6 text-black03">
         <Link href="/">
           <img src="/icons/logo_md.svg" alt="로고 아이콘" />
