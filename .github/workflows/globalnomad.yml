@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - main # main 브랜치에 푸시될 때 실행
-      - develop
+      - dev
   pull_request:
     branches:
-      - develop # main 브랜치로의 PR이 생성될 때 실행
+      - dev # main 브랜치로의 PR이 생성될 때 실행
 
 jobs:
   lint-and-build:
