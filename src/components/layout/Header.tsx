@@ -1,17 +1,26 @@
+import { Users } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
+import { IoPersonCircleOutline } from "react-icons/io5";
+import HeaderDropdown from "../dropdown/HeaderDropdown";
 
-/* eslint-disable @next/next/no-img-element */
 const Header = () => {
-  const user = true;
+  const user: Users = {
+    id: 1279,
+    email: "sprint91@codeit.kr",
+    nickname: "나나문",
+    profileImageUrl:
+      "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/profile_image/9-1_1279_1732338379593.jpeg",
+    createdAt: "2024-11-18T19:46:59.369Z",
+    updatedAt: "2024-11-23T14:19:30.749Z",
+  };
   const isLoggedIn = !!user;
-  // const options = ["마이 페이지", "로그아웃"];
 
   return (
     <div className="h-[70px] w-full border-b border-gray03 p-5">
       <div className="mx-auto flex max-w-[1200px] items-center justify-between text-sm font-medium leading-6 text-black03">
-        <Link href="/">
-          <img src="/icons/logo_md.svg" alt="로고 아이콘" />
+        <Link href="/" className="relative h-[30px] w-[172px]" as="image">
+          <Image src="/icons/logo_md.svg" fill priority alt="로고 아이콘" />
         </Link>
 
         {isLoggedIn ? (
@@ -22,12 +31,24 @@ const Header = () => {
 
             <div className="h-[22px] w-[1px] bg-gray03"></div>
 
-            <div className="flex items-center gap-[10px]">
-              <div className="relative size-8 rounded-full">
-                <Image src="/images/userProfileImg.png" alt="유저 프로필 이미지" fill />
+            <HeaderDropdown>
+              <div className="flex items-center gap-[10px]">
+                <div className="relative size-8 overflow-hidden rounded-full">
+                  {user.profileImageUrl ? (
+                    <Image
+                      src={user.profileImageUrl}
+                      alt="유저 프로필 이미지"
+                      fill
+                      sizes="320px"
+                      style={{ objectFit: "cover" }}
+                    />
+                  ) : (
+                    <IoPersonCircleOutline className="size-full text-gray07" />
+                  )}
+                </div>
+                <span>{user.nickname}</span>
               </div>
-              <span>정만철</span>
-            </div>
+            </HeaderDropdown>
           </div>
         ) : (
           <div className="flex gap-6">

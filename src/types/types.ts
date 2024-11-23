@@ -29,3 +29,13 @@ export interface MyReservations {
   reservations: Reservation[]; // 예약 배열
   totalCount: number; // 총 예약 수
 }
+
+// Users 타입 정의
+export interface Users {
+  id: number; // 사용자 ID
+  email: string; // 사용자 이메일 주소
+  nickname: string; // 사용자 닉네임
+  profileImageUrl: string | null; // 사용자 프로필 이미지 Url
+  createdAt: string; // 사용자 회원가입 날짜
+  updatedAt: string; // 사용자 정보 수정 날짜
+}
