@@ -5,6 +5,7 @@ import formatPrice from "@/utils/formatPrice";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import React, { useState } from "react";
+import DateModal from "./DateModal";
 import { mockData } from "./mockdata";
 
 const CalendarComponent = dynamic(() => import("./Calendar"), { ssr: false });
@@ -32,6 +33,7 @@ const SideBar = () => {
   const { price, schedules } = mockData;
   const [partyNum, setPartyNum] = useState<number>(0);
   const deviceType = useDeviceType();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   return (
     <div className="top-20 rounded-xl border border-gray02 p-6 shadow-md transition-all md:sticky md:h-[423px] md:w-[251px] xl:h-full xl:w-[384px]">
@@ -46,9 +48,26 @@ const SideBar = () => {
         {deviceType === "desktop" ? (
           <CalendarComponent schedules={schedules} />
         ) : (
-          <button className="mb-[27px] text-[16px] font-semibold">날짜 선택하기</button>
+          <button
+            className="mb-[27px] text-[16px] font-semibold"
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
+            날짜 선택하기
+          </button>
         )}
       </div>
+
+      <DateModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+        }}
+      >
+        <h3 className="mb-4 text-[20px] font-bold text-black02">날짜 선택</h3>
+        <CalendarComponent schedules={schedules} />
+      </DateModal>
 
       <div className="md:mb-4 xl:mt-4">
         <div className="border-b border-b-gray03 pb-6 md:mb-4 xl:mb-6 xl:mt-4">
