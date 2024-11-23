@@ -39,7 +39,7 @@ const Header = () => {
                       src={user.profileImageUrl}
                       alt="유저 프로필 이미지"
                       fill
-                      sizes="320px"
+                      sizes="99vw"
                       style={{ objectFit: "cover" }}
                     />
                   ) : (
