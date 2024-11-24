@@ -11,7 +11,7 @@ const MainContent = () => {
           <h3 className="mb-4 text-[20px] font-bold text-black02">체험 설명</h3>
           <p className="text-[16px] text-gray08">{description}</p>
         </div>
-        <div className="z-0 md:border-b md:border-b-gray08 md:py-10">
+        <div className="z-0 pt-4 md:border-b md:border-b-gray08 md:py-10">
           <KakaoMap address={address} />
         </div>
         <CommentList />

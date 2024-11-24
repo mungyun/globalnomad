@@ -24,7 +24,13 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
   return (
     <div className="relative mx-auto w-full">
       <div>
-        <img src={images[currentIndex].src} alt={images[currentIndex].alt} className="object-cover" />
+        <Image
+          src={images[currentIndex].src}
+          alt={images[currentIndex].alt}
+          className="h-full w-full object-cover"
+          width={375}
+          height={310}
+        />
       </div>
       <button className="absolute left-4 top-1/2 -translate-y-1/2 transform" onClick={handlePrev}>
         <Image src="/icons/prevbutton.svg" alt="이전 버튼" width={24} height={47} />

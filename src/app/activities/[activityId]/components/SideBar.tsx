@@ -19,7 +19,7 @@ interface PartyNumberSelectorProps {
   setPartyNum: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const PartyNumberSelector: React.FC<PartyNumberSelectorProps> = ({ partyNum, setPartyNum }) => (
+export const PartyNumberSelector: React.FC<PartyNumberSelectorProps> = ({ partyNum, setPartyNum }) => (
   <div className="flex h-[40px] w-[120px] items-center justify-between rounded-md border border-gray03 px-[13px]">
     <button onClick={() => setPartyNum((prev) => Math.max(prev - 1, 0))} aria-label="참여 인원 수 줄이기">
       <Image src="/icons/subtract.svg" alt="빼기" width={20} height={20} />
@@ -42,7 +42,7 @@ const DateSelector = ({
 }) => {
   if (deviceType === "desktop") {
     return <CalendarComponent schedules={schedules} />;
-  } else if (deviceType === "tablet") {
+  } else if (deviceType === "tablet" || deviceType === "mobile") {
     return (
       <button className="mb-[27px] text-[16px] font-semibold" onClick={onOpenModal} aria-label="날짜 선택하기 버튼">
         날짜 선택하기
@@ -71,10 +71,13 @@ const SideBar = () => {
         <DateSelector deviceType={deviceType} schedules={schedules} onOpenModal={() => setIsModalOpen(true)} />
       </div>
       {/* 날짜 선택 모달 */}
-      <DateModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <h3 className="mb-4 text-[20px] font-bold text-black02">날짜 선택</h3>
-        <CalendarComponent schedules={schedules} />
-      </DateModal>
+      <DateModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        schedules={schedules}
+        partyNum={partyNum}
+        setPartyNum={setPartyNum}
+      />
       {/* 참여 인원 선택 및 합계 계산 */}
       <div className="md:mb-4 xl:mt-4">
         <div className="border-b border-b-gray03 pb-6 md:mb-4 xl:mb-6 xl:mt-4">
@@ -96,11 +99,23 @@ const SideBar = () => {
         <h4 className="text-[18px] font-medium">
           <span className="text-[20px] font-bold text-black02">￦ {formatPrice(price)} / </span> 1명
         </h4>
-        <button className="w-[77px] text-[14px] font-semibold text-green02 underline">날짜 선택하기</button>
+        <button
+          className="w-[77px] text-[14px] font-semibold text-green02 underline"
+          onClick={() => setIsModalOpen(true)}
+        >
+          날짜 선택하기
+        </button>
       </div>
       <button className="flex h-[48px] w-[106px] items-center justify-center rounded-md bg-gray06 text-white">
         예약하기
       </button>
+      <DateModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        schedules={schedules}
+        partyNum={partyNum}
+        setPartyNum={setPartyNum}
+      />
     </div>
   );
 };
