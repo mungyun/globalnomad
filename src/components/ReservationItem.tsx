@@ -50,8 +50,7 @@ const ReservationItem: React.FC<{ reservation: Reservation }> = ({ reservation }
 
   const textColor = statusColor[reservation.status];
   const buttonColor = buttonStatusColor[reservation.status];
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   return (
     <div
@@ -84,14 +83,14 @@ const ReservationItem: React.FC<{ reservation: Reservation }> = ({ reservation }
           {buttonText[reservation.status] && (
             <button
               className={`absolute right-0 hidden rounded-md border border-black01 px-3 py-1 text-sm font-bold group-hover:block md:-bottom-1 md:px-5 md:py-2 xl:px-9 xl:py-[10px] xl:text-base ${buttonColor}`}
-              onClick={openModal}
+              onClick={() => setIsModalOpen(true)}
             >
               {buttonText[reservation.status]}
             </button>
           )}
         </div>
       </div>
-      {isModalOpen && <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />}
+      {isModalOpen && <Modal setIsModalOpen={setIsModalOpen} />}
     </div>
   );
 };
