@@ -1,5 +1,6 @@
 import useDeviceType from "@/hooks/useDeviceType";
 import { Schedule } from "@/types/types";
+import { useEffect } from "react";
 import CalendarComponent from "./Calendar";
 import { PartyNumberSelector } from "./SideBar";
 
@@ -18,12 +19,26 @@ const DateModal = ({
 }) => {
   const deviceType = useDeviceType();
 
+  // 모바일에서 Date 모달이 띄워지면, 뒷배경 스크롤 기능 차단
+  useEffect(() => {
+    if (deviceType === "mobile" && isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [deviceType, isOpen]);
+
   if (!isOpen) return null;
 
   return (
     <div
-      className={`fixed top-0 z-10 overflow-x-auto ${
-        deviceType === "mobile" ? "left-0 h-full w-full rounded-none" : "right-0 h-[599px] w-[480px] rounded-3xl"
+      className={`top-0 z-10 overflow-x-auto ${
+        deviceType === "mobile"
+          ? "fixed left-0 h-full w-full rounded-none"
+          : "absolute right-0 h-[599px] w-[480px] rounded-3xl"
       } bg-white px-6 py-8 shadow-md`}
     >
       <button

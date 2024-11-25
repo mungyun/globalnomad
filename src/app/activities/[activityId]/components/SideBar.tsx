@@ -58,7 +58,7 @@ const SideBar = () => {
   const deviceType = useDeviceType();
 
   return deviceType !== "mobile" ? (
-    <div className="top-20 rounded-xl border border-gray02 p-6 shadow-md transition-all md:sticky md:h-[423px] md:w-[251px] md:min-w-[251px] xl:h-full xl:w-[384px]">
+    <div className="relative top-20 rounded-xl border border-gray02 p-6 shadow-md transition-all md:sticky md:h-[423px] md:w-[251px] md:min-w-[251px] xl:h-full xl:w-[384px]">
       {/* 가격 정보 */}
       <h3 className="mb-4 text-gray09 md:text-[16px] xl:text-[20px]">
         <span className="font-bold text-black03 md:text-[24px] xl:text-[32px]">￦ {formatPrice(price)}</span> / 인
