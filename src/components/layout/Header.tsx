@@ -19,7 +19,7 @@ const Header = () => {
   return (
     <div className="h-[70px] w-full border-b border-gray03 p-5">
       <div className="mx-auto flex max-w-[1200px] items-center justify-between text-sm font-medium leading-6 text-black03">
-        <Link href="/" className="relative h-[30px] w-[172px]" as="image">
+        <Link href="/" className="relative h-[30px] w-[172px]">
           <Image src="/icons/logo_md.svg" fill priority alt="로고 아이콘" />
         </Link>
 

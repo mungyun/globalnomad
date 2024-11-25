@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EmailSchema, NicknameSchema, PasswordSchema } from "./commonSchema";
+import { EmailSchema, NicknameSchema, PasswordSchema, QuerySchema } from "./commonSchema";
 
 export const LoginSchema = z.object({
   email: EmailSchema,
@@ -21,3 +21,9 @@ export const SignupSchema = z
   });
 
 export type Signup = z.infer<typeof SignupSchema>;
+
+export const SearchSchema = z.object({
+  query: QuerySchema,
+});
+
+export type Query = z.infer<typeof SearchSchema>;
