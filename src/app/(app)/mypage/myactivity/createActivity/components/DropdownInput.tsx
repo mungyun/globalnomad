@@ -53,7 +53,7 @@ const DropdownInput = ({ register, setValue }: DropdownInputProps) => {
       <LabelInput placeholder="카테고리" {...register("category")} readOnly onClick={toggleDropdown} />
       <IoIosArrowDown className="absolute right-4 top-4 size-6" />
       {isOpen && (
-        <ul className="absolute top-16 flex w-full flex-col gap-[2px] bg-white p-2">
+        <ul className="shadow-custom absolute top-16 flex w-full flex-col gap-[2px] rounded bg-white p-2">
           {CATEGORY.map((item) => (
             <li
               className="flex h-10 items-center rounded-md px-2 text-base leading-[26px] hover:bg-green02 hover:text-white"
