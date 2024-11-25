@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Dropdown from "./Dropdown";
 import ReservationItem from "./ReservationItem";
+import Dropdown from "./dropdown/Dropdown";
 import { mockReservations } from "./mockData";
 
 export default function ReservationList() {
