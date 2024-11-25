@@ -30,13 +30,6 @@ export interface MyReservations {
   totalCount: number; // 총 예약 수
 }
 
-// User 정보를 정의하는 타입
-export interface User {
-  profileImageUrl: string;
-  nickname: string;
-  id: number;
-}
-
 // 리뷰 데이터를 정의하는 타입
 export interface Review {
   id: number;
@@ -60,4 +53,13 @@ export interface Schedule {
   date: string;
   startTime: string;
   endTime: string;
+}
+
+export interface User {
+  id: number; // 사용자 ID
+  email?: string; // 사용자 이메일 주소
+  nickname: string; // 사용자 닉네임
+  profileImageUrl: string | null; // 사용자 프로필 이미지 Url
+  createdAt?: string; // 사용자 회원가입 날짜
+  updatedAt?: string; // 사용자 정보 수정 날짜
 }
