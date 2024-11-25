@@ -1,8 +1,13 @@
 import Image from "next/image";
 import React from "react";
 
-export default function Modal({ isModalOpen, setIsModalOpen }) {
+interface ModalProps {
+  setIsModalOpen: (isOpen: boolean) => void;
+}
+
+export default function Modal({ setIsModalOpen }: ModalProps): JSX.Element {
   const closeModal = () => setIsModalOpen(false);
+
   return (
     <div className="fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50">
       <div className="z-10 flex h-[184px] w-[298px] flex-col items-center justify-between rounded-xl bg-white p-6">
