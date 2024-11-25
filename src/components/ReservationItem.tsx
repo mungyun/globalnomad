@@ -1,24 +1,11 @@
 "use client";
 
+import { ReservationList } from "@/types/types";
 import Image from "next/image";
 import { useState } from "react";
 import Modal from "./Modal";
 
-interface Reservation {
-  id: number;
-  activity: {
-    bannerImageUrl: string;
-    title: string;
-  };
-  date: string;
-  startTime: string;
-  endTime: string;
-  headCount: number;
-  totalPrice: number;
-  status: string;
-}
-
-const ReservationItem: React.FC<{ reservation: Reservation }> = ({ reservation }) => {
+const ReservationItem: React.FC<{ reservation: ReservationList }> = ({ reservation }) => {
   const statusColor: Record<string, string> = {
     pending: "text-blue02",
     cancelled: "text-gray08",

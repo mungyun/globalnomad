@@ -40,11 +40,10 @@ export default function SideNavigation({ img, onClick }: SideNavigationProps) {
           </div>
           <Image
             src="/icons/edit.svg"
-            className="md absolute left-[195px] top-[145px] cursor-pointer md:left-[150px] xl:left-[215px]"
-            width="44"
-            height="44"
+            className="md absolute left-[195px] top-[145px] h-[44px] w-[44px] cursor-pointer md:left-[150px] xl:left-[215px]"
+            width={44}
+            height={44}
             alt="editBtn"
-            // 프로필이미지 수정
             onClick={onClick}
           />
         </div>
