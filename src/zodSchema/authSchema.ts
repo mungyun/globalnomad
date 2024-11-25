@@ -1,6 +1,13 @@
 import { z } from "zod";
 import { EmailSchema, NicknameSchema, PasswordSchema } from "./commonSchema";
 
+export const LoginSchema = z.object({
+  email: EmailSchema,
+  password: PasswordSchema,
+});
+
+export type Login = z.infer<typeof LoginSchema>;
+
 export const SignupSchema = z
   .object({
     email: EmailSchema,
