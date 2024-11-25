@@ -1,3 +1,22 @@
-export default function SignupPage() {
-  return <div>회원가입 페이지</div>;
-}
+import SignupForm from "@/components/auth/SignupForm";
+import SocialSignup from "@/components/auth/SocialSignup";
+import Link from "next/link";
+
+const SignupPage = () => {
+  return (
+    <>
+      <SignupForm />
+
+      <p className="text-base leading-[19.09px] text-gray09">
+        회원이신가요?{" "}
+        <Link href="/login" className="text-green02 underline">
+          로그인하기
+        </Link>
+      </p>
+
+      <SocialSignup />
+    </>
+  );
+};
+
+export default SignupPage;
