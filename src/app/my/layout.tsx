@@ -1,13 +1,15 @@
-import ReservationList from "@/components/ReservationList";
 import SideNavigation from "@/components/SideNavigation";
+import { ReactNode } from "react";
 
-export default function Reservation() {
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="my-10 flex justify-center gap-6">
       <div className="hidden md:block">
         <SideNavigation />
       </div>
-      <ReservationList />
+      {children}
     </div>
   );
-}
+};
+
+export default Layout;
