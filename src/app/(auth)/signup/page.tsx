@@ -1,5 +1,5 @@
-import SignupForm from "@/app/components/auth/SignupForm";
-import SocialSignup from "@/app/components/auth/SocialSignup";
+import SignupForm from "@/components/auth/SignupForm";
+import SocialSignup from "@/components/auth/SocialSignup";
 import Link from "next/link";
 
 const SignupPage = () => {

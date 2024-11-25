@@ -1,11 +1,11 @@
-import { Users } from "@/types/types";
+import { User } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import HeaderDropdown from "../dropdown/HeaderDropdown";
 
 const Header = () => {
-  const user: Users = {
+  const user: User = {
     id: 1279,
     email: "sprint91@codeit.kr",
     nickname: "나나문",
