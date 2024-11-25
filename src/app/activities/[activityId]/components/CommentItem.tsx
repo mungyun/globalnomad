@@ -2,7 +2,7 @@ import { Review } from "@/types/types";
 import Image from "next/image";
 import { FaUserCircle } from "react-icons/fa";
 
-const isImageValid = (url: string) => {
+const isImageValid = (url: string | null) => {
   return url && url.startsWith("http");
 };
 
@@ -12,7 +12,7 @@ const CommentItem = ({ item }: { item: Review }) => {
   return (
     <div className="border-b-gary06 mb-6 flex items-center gap-4 border-b pb-6">
       {isImageValid(user.profileImageUrl) ? (
-        <Image src={user.profileImageUrl} alt="프로필 사진" width={45} height={45} className="rounded-full" />
+        <Image src={user.profileImageUrl || ""} alt="프로필 사진" width={45} height={45} className="rounded-full" />
       ) : (
         <div className="h-[45px] w-[45px]">
           <FaUserCircle className="text-gray-400" size={45} />
