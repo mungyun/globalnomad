@@ -63,3 +63,17 @@ export interface User {
   createdAt?: string; // 사용자 회원가입 날짜
   updatedAt?: string; // 사용자 정보 수정 날짜
 }
+
+export interface ReservationList {
+  id: number;
+  activity: {
+    bannerImageUrl: string;
+    title: string;
+  };
+  date: string;
+  startTime: string;
+  endTime: string;
+  headCount: number;
+  totalPrice: number;
+  status: string;
+}
