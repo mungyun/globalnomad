@@ -1,7 +1,7 @@
 import useDeviceType from "@/hooks/useDeviceType";
 import { Schedule } from "@/types/types";
 import { useEffect } from "react";
-import CalendarComponent from "./Calendar";
+import CalendarComponent from "./ActivityCalendar";
 import { PartyNumberSelector } from "./SideBar";
 
 const DateModal = ({

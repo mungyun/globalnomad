@@ -39,12 +39,9 @@ const StatusCalendar = () => {
       return (
         <div className="w-full">
           {/* 예약 상태에 따라 구분하여 텍스트 표시 */}
-          {completed > 0 && <div className={`${caseStyle} bg-gray03 text-gray09`}>완료 {completed}</div>}{" "}
-          {/* 템플릿 리터럴 수정 */}
-          {confirmed > 0 && <div className={`${caseStyle} bg-orange01 text-orange02`}>승인 {confirmed}</div>}{" "}
-          {/* 템플릿 리터럴 수정 */}
-          {pending > 0 && <div className={`${caseStyle} bg-blue03 text-white`}>예약 {pending}</div>}{" "}
-          {/* 템플릿 리터럴 수정 */}
+          {completed > 0 && <div className={`${caseStyle} bg-gray03 text-gray09`}>완료 {completed}</div>}
+          {confirmed > 0 && <div className={`${caseStyle} bg-orange01 text-orange02`}>승인 {confirmed}</div>}
+          {pending > 0 && <div className={`${caseStyle} bg-blue03 text-white`}>예약 {pending}</div>}
         </div>
       );
     }
@@ -59,7 +56,7 @@ const StatusCalendar = () => {
         onChange={(newValue) => setValue(newValue as Date)} // 타입이 Date | Date[]일 수 있어 'as Date'를 추가
         activeStartDate={activeStartDate}
         onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate!)}
-        showNeighboringMonth={false} // 이 옵션은 이전, 다음 달 날짜를 숨깁니다.
+        showNeighboringMonth={false} // 이전, 다음 달 날짜를 숨김
         locale="en-US" // 기본 locale은 영어로 설정
         prevLabel="<<" // 이전 버튼
         nextLabel=">>" // 다음 버튼

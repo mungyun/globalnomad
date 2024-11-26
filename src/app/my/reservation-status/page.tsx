@@ -1,6 +1,6 @@
 import React from "react";
-import StatusCalendar from "./components/Calendar";
 import Dropdown from "./components/Dropdown";
+import StatusCalendar from "./components/StatusCalendar";
 
 const ReservationStatusPage = () => {
   return (
