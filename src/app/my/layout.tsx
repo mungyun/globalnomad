@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="my-10 flex justify-center gap-6">
+    <div className="flex justify-center gap-6 py-10">
       <div className="hidden md:block">
         <SideNavigation />
       </div>
