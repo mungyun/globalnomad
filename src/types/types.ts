@@ -64,6 +64,7 @@ export interface User {
   updatedAt?: string; // 사용자 정보 수정 날짜
 }
 
+// 예약내역 데이터를 정의하는 타입
 export interface ReservationList {
   id: number;
   activity: {
@@ -76,4 +77,20 @@ export interface ReservationList {
   headCount: number;
   totalPrice: number;
   status: string;
+}
+
+// 체험관리 데이터를 정의하는 타입
+export interface ActivityList {
+  id: number;
+  userId: number;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  address: string;
+  bannerImageUrl: string;
+  rating: number;
+  reviewCount: number;
+  createdAt: string;
+  updatedAt: string;
 }
