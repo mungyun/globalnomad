@@ -1,5 +1,6 @@
 import { ActivityList } from "@/types/types";
 import Image from "next/image";
+import IconDropdown from "../dropdown/IconDropdown";
 
 interface ActivityItemProps {
   activity: ActivityList;
@@ -7,7 +8,7 @@ interface ActivityItemProps {
 
 export default function ActivityItem({ activity }: ActivityItemProps) {
   return (
-    <div className="flex">
+    <div className="flex rounded-3xl shadow-md">
       <div className="relative aspect-square w-1/3">
         <Image
           src={activity.bannerImageUrl}
@@ -32,7 +33,7 @@ export default function ActivityItem({ activity }: ActivityItemProps) {
           <span className="flex md:text-xl xl:text-2xl">
             ₩ {activity.price.toLocaleString()} <span className="ml-2 hidden md:block"> /인</span>
           </span>
-          <button className="mr-1 text-4xl text-gray07 md:mr-2 md:text-[40px] xl:mr-3 xl:text-[44px]">⋮</button>
+          <IconDropdown />
         </div>
       </div>
     </div>
