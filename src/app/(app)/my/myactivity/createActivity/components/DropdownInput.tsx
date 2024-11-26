@@ -1,6 +1,6 @@
 "use client";
 
-import { PostActivities } from "@/types/types";
+import { PostActivities } from "@/types/ActiviteyType";
 import { useEffect, useRef, useState } from "react";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { GoCheck } from "react-icons/go";

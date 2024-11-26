@@ -1,7 +1,7 @@
 "use client";
 
 import TimeInput from "@/components/input/TimeInput";
-import { PostActivities, Schedule } from "@/types/types";
+import { PostActivities, Schedule } from "@/types/ActiviteyType";
 import { useState } from "react";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { FiPlus } from "react-icons/fi";

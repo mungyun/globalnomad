@@ -1,4 +1,4 @@
-import { PostActivities, Schedule } from "@/types/types";
+import { PostActivities, Schedule } from "@/types/ActiviteyType";
 import { UseFormSetValue } from "react-hook-form";
 import { FiMinus } from "react-icons/fi";
 

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
@@ -11,7 +13,7 @@ const hours = Array.from({ length: 24 }, (_, index) => String(index).padStart(2,
 const minutes = Array.from({ length: 12 }, (_, index) => String(index * 5).padStart(2, "0"));
 
 const TimeInput = ({ label, value, onChange }: TimeInputProps) => {
-  // const [time, setTiem] = useState({ hour: "00", minute: "00" });
+  const [time, setTime] = useState({ hour: "00", minute: "00" });
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
@@ -20,15 +22,18 @@ const TimeInput = ({ label, value, onChange }: TimeInputProps) => {
   };
 
   const handleClickOutside = (e: MouseEvent) => {
-    e.preventDefault();
     if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
       setIsOpen(false);
     }
   };
 
-  const handleSelect = (hour: string, minute: string) => {
-    const time = `${hour}:${minute}`;
-    onChange?.(time);
+  const handleSelect = (field: keyof typeof time, value: string) => {
+    setTime((prevState) => ({
+      ...prevState,
+      [field]: value,
+    }));
+    const newTime = `${time.hour}:${time.minute}`;
+    onChange?.(newTime);
   };
 
   useEffect(() => {
@@ -40,15 +45,16 @@ const TimeInput = ({ label, value, onChange }: TimeInputProps) => {
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <label className="flex flex-col gap-2" onClick={toggleDropdown}>
+      <label className="flex flex-col gap-2 text-base font-medium leading-[26px] md:text-xl md:leading-8">
         {label}
         <input
-          className="drag-none h-14 max-w-[140px] rounded border border-gray08 px-4 outline-green02"
+          className="h-11 w-full min-w-20 rounded border border-gray08 px-3 text-sm leading-6 outline-green02 md:h-14 md:px-4 md:text-base md:leading-[26px] xl:max-w-[140px]"
           placeholder="00:00"
           value={value || ""}
           readOnly
+          onClick={toggleDropdown}
         />
-        <IoIosArrowDown className="absolute bottom-4 right-4 size-6" />
+        <IoIosArrowDown className="absolute bottom-3 right-3 size-5 md:bottom-4 md:right-4 md:size-6" />
       </label>
       {isOpen && (
         <ul className="gap1 absolute top-24 flex h-[250px] w-[140px] gap-2 rounded border border-gray07 bg-white p-1 shadow-custom">
@@ -57,7 +63,7 @@ const TimeInput = ({ label, value, onChange }: TimeInputProps) => {
               <li
                 className="flex h-7 select-none items-center justify-center rounded hover:bg-green02 hover:text-white"
                 key={hour}
-                onClick={() => handleSelect(hour, value?.split(":")[1] || "0")}
+                onClick={() => handleSelect("hour", hour)}
               >
                 {hour}
               </li>
@@ -68,7 +74,7 @@ const TimeInput = ({ label, value, onChange }: TimeInputProps) => {
               <li
                 className="flex h-7 select-none items-center justify-center rounded hover:bg-green02 hover:text-white"
                 key={minute}
-                onClick={() => handleSelect(value?.split(":")[0] || "0", minute)}
+                onClick={() => handleSelect("minute", minute)}
               >
                 {minute}
               </li>

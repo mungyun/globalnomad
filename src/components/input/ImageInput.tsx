@@ -1,4 +1,4 @@
-import { PostActivities } from "@/types/types";
+import { PostActivities } from "@/types/ActiviteyType";
 import { InputHTMLAttributes } from "react";
 import { UseFormRegister } from "react-hook-form";
 import { FiPlus } from "react-icons/fi";
