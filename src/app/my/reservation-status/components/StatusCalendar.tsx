@@ -4,6 +4,7 @@ import "@/styles/ReservationCalender.css";
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 import { ReservationMockData } from "./MockData";
+import StatusModal from "./StatusModal";
 
 const caseStyle = "text-start text-[14px] font-medium h-[23px] rounded pl-1";
 const roundStyle = "absolute left-1 top-3 h-[8px] w-[8px] rounded-full";
@@ -11,6 +12,8 @@ const roundStyle = "absolute left-1 top-3 h-[8px] w-[8px] rounded-full";
 const StatusCalendar = () => {
   const [value, setValue] = useState<Date | null>(new Date());
   const [activeStartDate, setActiveStartDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   // 예약 데이터를 날짜별로 매핑
   const reservationMap = ReservationMockData.reduce(
@@ -39,7 +42,6 @@ const StatusCalendar = () => {
 
       return (
         <div className="w-full">
-          {/* 예약 상태에 따라 구분하여 텍스트 표시 */}
           {completed > 0 ? (
             <div className={`${roundStyle} bg-gray09`}></div>
           ) : (
@@ -51,17 +53,20 @@ const StatusCalendar = () => {
         </div>
       );
     }
-
     return null;
   };
 
   return (
-    <div className="custom-calendar">
+    <div className="custom-calendar relative">
       <Calendar
         value={value}
         onChange={(newValue) => setValue(newValue as Date)} // 타입이 Date | Date[]일 수 있어 'as Date'를 추가
         activeStartDate={activeStartDate}
         onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate!)}
+        onClickDay={(date) => {
+          setSelectedDate(date); // 클릭한 날짜 저장
+          setIsModalOpen(true); // 모달 열기
+        }}
         showNeighboringMonth={false} // 이전, 다음 달 날짜를 숨김
         locale="en-US" // 기본 locale은 영어로 설정
         prevLabel="<<" // 이전 버튼
@@ -69,6 +74,7 @@ const StatusCalendar = () => {
         navigationLabel={({ date }) => formatHeader(date)} // 네비게이션 커스터마이징
         tileContent={tileContent} // 날짜별 예약 상태를 표시하는 함수 적용
       />
+      <StatusModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} date={selectedDate} />
     </div>
   );
 };
