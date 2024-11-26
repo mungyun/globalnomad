@@ -63,3 +63,24 @@ export interface User {
   createdAt?: string; // 사용자 회원가입 날짜
   updatedAt?: string; // 사용자 정보 수정 날짜
 }
+
+export interface ActivityItem {
+  id: number;
+  userId: number;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  address: string;
+  bannerImageUrl: string;
+  rating: number;
+  reviewCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type Activities = {
+  cursorId: number;
+  totalCount: number;
+  activities: ActivityItem[];
+};
