@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { ActivityListMockData } from "./MockData";
 
-const Dropdown = () => {
+const StatusDropdown = () => {
   const { activities } = ActivityListMockData;
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string | null>(activities[0].title);
@@ -68,4 +68,4 @@ const Dropdown = () => {
   );
 };
 
-export default Dropdown;
+export default StatusDropdown;

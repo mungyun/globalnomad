@@ -25,7 +25,7 @@ const StatusCalendar = () => {
   const formatHeader = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
-    return `${year}년 ${month}월`; // 템플릿 리터럴 수정
+    return `${year}년 ${month}월`;
   };
 
   // 날짜에 예약 상태를 표시할 내용
