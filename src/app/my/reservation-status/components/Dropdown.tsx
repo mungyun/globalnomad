@@ -43,7 +43,10 @@ const Dropdown = () => {
         <Image src="/icons/dropdown2.svg" width={24} height={24} alt="드롭 다운" />
       </button>
       {isOpen && (
-        <div className="absolute left-0 mt-2 w-full rounded-md border border-gray03 shadow-lg">
+        <div
+          className="z-1 absolute left-0 mt-2 w-full rounded-md border border-gray03 shadow-lg"
+          style={{ zIndex: 50 }}
+        >
           {activities.map((activity, index) => {
             const isFirst = index === 0;
             const isLast = index === activities.length - 1;
@@ -51,7 +54,7 @@ const Dropdown = () => {
               <span
                 key={activity.id}
                 onClick={() => handleSelect(activity.title)}
-                className={`flex h-[56px] cursor-pointer items-center bg-white px-4 text-gray08 hover:bg-gray01 ${
+                className={`relative flex h-[56px] cursor-pointer items-center bg-white px-4 text-gray08 hover:bg-gray01 ${
                   isFirst ? "rounded-t-md" : ""
                 } ${isLast ? "rounded-b-md" : ""}`}
               >

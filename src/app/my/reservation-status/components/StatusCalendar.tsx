@@ -5,7 +5,8 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import { ReservationMockData } from "./MockData";
 
-const caseStyle = "text-start text-[14px] font-medium h-[23px] rounded px-1";
+const caseStyle = "text-start text-[14px] font-medium h-[23px] rounded pl-1";
+const roundStyle = "absolute left-1 top-3 h-[8px] w-[8px] rounded-full";
 
 const StatusCalendar = () => {
   const [value, setValue] = useState<Date | null>(new Date());
@@ -39,6 +40,11 @@ const StatusCalendar = () => {
       return (
         <div className="w-full">
           {/* 예약 상태에 따라 구분하여 텍스트 표시 */}
+          {completed > 0 ? (
+            <div className={`${roundStyle} bg-gray09`}></div>
+          ) : (
+            <div className={`${roundStyle} bg-blue03`}></div>
+          )}
           {completed > 0 && <div className={`${caseStyle} bg-gray03 text-gray09`}>완료 {completed}</div>}
           {confirmed > 0 && <div className={`${caseStyle} bg-orange01 text-orange02`}>승인 {confirmed}</div>}
           {pending > 0 && <div className={`${caseStyle} bg-blue03 text-white`}>예약 {pending}</div>}

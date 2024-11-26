@@ -1,7 +1,7 @@
 import useDeviceType from "@/hooks/useDeviceType";
 import { Schedule } from "@/types/types";
 import { useEffect } from "react";
-import CalendarComponent from "./ActivityCalendar";
+import ActivityCalendar from "./ActivityCalendar";
 import { PartyNumberSelector } from "./SideBar";
 
 const DateModal = ({
@@ -49,7 +49,7 @@ const DateModal = ({
         &times;
       </button>
       <h3 className="mb-4 text-[20px] font-bold text-black02">날짜 선택</h3>
-      <CalendarComponent schedules={schedules} />
+      <ActivityCalendar schedules={schedules} />
       {deviceType === "mobile" && (
         <div>
           <h3 className="mb-4 text-[20px] font-bold text-black02">인원 선택</h3>
