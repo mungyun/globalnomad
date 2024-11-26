@@ -19,7 +19,7 @@ type ActivityListResponse = {
   activities: Activity[];
 };
 
-const mockData: ActivityListResponse = {
+export const ActivityListMockData: ActivityListResponse = {
   cursorId: 1,
   totalCount: 3,
   activities: [
@@ -68,4 +68,56 @@ const mockData: ActivityListResponse = {
   ],
 };
 
-export default mockData;
+interface Reservation {
+  completed: number;
+  confirmed: number;
+  pending: number;
+}
+
+interface ReservationData {
+  date: string;
+  reservations: Reservation;
+}
+
+export const ReservationMockData: ReservationData[] = [
+  {
+    date: "2024-11-01",
+    reservations: {
+      completed: 2,
+      confirmed: 3,
+      pending: 1,
+    },
+  },
+  {
+    date: "2024-11-12",
+    reservations: {
+      completed: 1,
+      confirmed: 2,
+      pending: 0,
+    },
+  },
+  {
+    date: "2024-11-23",
+    reservations: {
+      completed: 0,
+      confirmed: 1,
+      pending: 2,
+    },
+  },
+  {
+    date: "2024-12-04",
+    reservations: {
+      completed: 5,
+      confirmed: 0,
+      pending: 1,
+    },
+  },
+  {
+    date: "2024-12-10",
+    reservations: {
+      completed: 3,
+      confirmed: 4,
+      pending: 2,
+    },
+  },
+];

@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import mockData from "./MockData";
+import { ActivityListMockData } from "./MockData";
 
 const Dropdown = () => {
-  const { activities } = mockData;
+  const { activities } = ActivityListMockData;
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string | null>(activities[0].title);
   const dropdownRef = useRef<HTMLDivElement>(null);

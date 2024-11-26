@@ -78,6 +78,11 @@
   text-decoration: none; /* 밑줄 및 '...' 없애기 */
 }
 
+.react-calendar__tile abbr {
+  margin-top: 12px;
+  margin-left: 12px;
+}
+
 .react-calendar__month-view__weekNumbers .react-calendar__tile {
   display: flex;
   align-items: center;
@@ -97,13 +102,13 @@
 .react-calendar__tile {
   display: flex;
   align-items: start;
-  justify-content: start;
+  justify-content: space-between;
+  flex-direction: column;
   max-width: 100%;
   width: 114px;
   height: 154px;
   font-size: 21px;
   font-weight: 500;
-  padding: 12px;
   color: #969696;
   background-color: #fff;
 }
