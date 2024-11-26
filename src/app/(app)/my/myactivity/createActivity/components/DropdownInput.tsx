@@ -26,6 +26,7 @@ const DropdownInput = ({ register, setValue }: DropdownInputProps) => {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const toggleDropdown = () => {
+    console.log("test");
     setIsOpen((prev) => !prev);
   };
 
@@ -50,10 +51,12 @@ const DropdownInput = ({ register, setValue }: DropdownInputProps) => {
 
   return (
     <div ref={dropdownRef} className="relative">
-      <LabelInput placeholder="카테고리" {...register("category")} readOnly onClick={toggleDropdown} />
-      <IoIosArrowDown className="absolute right-4 top-4 size-6" />
+      <label>
+        <LabelInput placeholder="카테고리" {...register("category")} readOnly onClick={toggleDropdown} />
+        <IoIosArrowDown className="absolute right-4 top-4 size-6" />
+      </label>
       {isOpen && (
-        <ul className="shadow-custom absolute top-16 flex w-full flex-col gap-[2px] rounded bg-white p-2">
+        <ul className="absolute top-16 flex w-full flex-col gap-[2px] rounded bg-white p-2 shadow-custom">
           {CATEGORY.map((item) => (
             <li
               className="flex h-10 items-center rounded-md px-2 text-base leading-[26px] hover:bg-green02 hover:text-white"

@@ -9,7 +9,7 @@ interface ImageProps {
 const PrevImage = ({ imageFile, clearImage }: ImageProps) => {
   return (
     <div className="relative aspect-square w-auto">
-      <Image fill src={URL.createObjectURL(imageFile)} alt="Preview" className="rounded-3xl object-cover" />
+      <Image fill src={URL.createObjectURL(imageFile)} alt="Preview" className="rounded-xl object-cover" />
       <button
         type="button"
         onClick={clearImage}

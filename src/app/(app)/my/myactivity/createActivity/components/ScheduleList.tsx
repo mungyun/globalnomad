@@ -1,3 +1,5 @@
+"use client";
+
 import TimeInput from "@/components/input/TimeInput";
 import { PostActivities, Schedule } from "@/types/types";
 import { useState } from "react";
@@ -38,16 +40,16 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
     <>
       <label className="text-xl font-bold leading-8 text-black03 md:text-2xl">예약 가능한 시간대</label>
       <div className="flex items-end gap-1 border-b border-gray03 pb-5 md:gap-[5px] xl:gap-5">
-        <label className="flex flex-1 flex-col gap-2">
+        <label className="flex w-[40%] flex-col gap-2 xl:w-full xl:flex-1">
           날짜
           <input
-            className="h-[56px] w-full rounded border border-gray08 px-5 py-4 text-base font-normal leading-[26px] outline-green02 placeholder:text-gray06"
+            className="h-11 w-full rounded border border-gray08 px-5 py-4 text-sm font-normal leading-[26px] outline-green02 placeholder:text-gray06 md:h-14 md:text-base"
             type="date"
             value={schedule.date}
             onChange={(e) => handleChange("date", e.target.value)}
           />
         </label>
-        <div className="flex items-end gap-1 md:gap-[5px] xl:gap-3">
+        <div className="flex w-1/2 items-end gap-1 md:gap-[5px] xl:w-auto xl:gap-3">
           <TimeInput
             label="시작 시간"
             value={schedule.startTime}
@@ -59,7 +61,7 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
         <button
           onClick={addSchedule}
           disabled={!schedule.date || !schedule.endTime || !schedule.startTime}
-          className="flex size-14 items-center justify-center rounded-lg bg-green02"
+          className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-green02 md:size-14"
         >
           <FiPlus className="size-10 text-white" />
         </button>

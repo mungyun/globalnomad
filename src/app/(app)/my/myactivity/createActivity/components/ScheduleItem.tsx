@@ -35,7 +35,7 @@ const ScheduleItem = ({ schedule, schedules, setValue }: ScheduleItemProps) => {
       </div>
       <button
         onClick={deleteSchedule}
-        className="flex size-14 shrink-0 items-center justify-center rounded-lg border border-gray03"
+        className="flex size-11 shrink-0 items-center justify-center rounded-lg border border-gray03 md:size-14"
       >
         <FiMinus className="size-10 text-gray08" />
       </button>
