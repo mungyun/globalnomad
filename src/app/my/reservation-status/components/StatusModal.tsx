@@ -1,5 +1,7 @@
 import useDeviceType from "@/hooks/useDeviceType";
+import Image from "next/image";
 import React, { useEffect } from "react";
+import StatusModalNav from "./StatusModalNav";
 
 interface StatusModalProps {
   isOpen: boolean;
@@ -29,14 +31,14 @@ const StatusModal = ({ isOpen, onClose, date }: StatusModalProps) => {
           : "absolute right-0 h-[697px] w-[429px] rounded-3xl"
       } bg-white px-6 py-8 shadow-md`}
     >
-      <button
-        className="absolute right-3 top-3 text-[20px] font-bold text-gray09"
-        onClick={onClose}
-        aria-label="모달 닫기"
-      >
-        &times;
-      </button>
-      <div>{date ? date.toDateString() : "선택된 날짜 없음"}</div>
+      <div>
+        <h2 className="mb-[27px] text-[24px] font-bold text-black03">예약 정보</h2>
+        <button className="absolute right-6 top-6 text-[20px] font-bold text-gray09" onClick={onClose}>
+          <Image src="/icons/X.svg" alt="모달 닫기" width={40} height={40} />
+        </button>
+      </div>
+      <StatusModalNav />
+      <div>{!date}</div>
     </div>
   );
 };
