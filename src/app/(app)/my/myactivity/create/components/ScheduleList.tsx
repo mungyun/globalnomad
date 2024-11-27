@@ -40,7 +40,7 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
     <>
       <label className="text-xl font-bold leading-8 text-black03 md:text-2xl">예약 가능한 시간대</label>
       <div className="flex items-end gap-1 border-b border-gray03 pb-5 md:gap-[5px] xl:gap-5">
-        <label className="flex w-[40%] flex-col gap-2 xl:w-full xl:flex-1">
+        <label className="flex w-full min-w-[35%] flex-col gap-2 xl:w-full xl:flex-1">
           날짜
           <input
             className="h-11 w-full rounded border border-gray08 px-5 py-4 text-sm font-normal leading-[26px] outline-green02 placeholder:text-gray06 md:h-14 md:text-base"

@@ -54,7 +54,7 @@ const TimeInput = ({ label, value, onChange }: TimeInputProps) => {
           readOnly
           onClick={toggleDropdown}
         />
-        <IoIosArrowDown className="absolute bottom-3 right-3 size-5 md:bottom-4 md:right-4 md:size-6" />
+        <IoIosArrowDown className="absolute bottom-3 right-2 size-5 md:bottom-4 md:right-4 md:size-6" />
       </label>
       {isOpen && (
         <ul className="gap1 absolute top-24 flex h-[250px] w-[140px] gap-2 rounded border border-gray07 bg-white p-1 shadow-custom">
