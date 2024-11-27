@@ -13,12 +13,12 @@ interface DropdownInputProps {
 }
 
 const CATEGORY = [
-  { value: "문화 예술" },
-  { value: "식음료" },
+  { value: "교육 · 학습" },
+  { value: "문화 · 예술" },
   { value: "스포츠" },
-  { value: "투어" },
-  { value: "관광" },
-  { value: "웰빙" },
+  { value: "식음료" },
+  { value: "투어 · 관광" },
+  { value: "게임 · 취미" },
 ];
 
 const DropdownInput = ({ register, setValue }: DropdownInputProps) => {
