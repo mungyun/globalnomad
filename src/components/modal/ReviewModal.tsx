@@ -5,15 +5,16 @@ import { AiOutlineClose } from "react-icons/ai";
 import { mockReservations } from "../mockData";
 import RenderStars from "./RenderStars";
 
-interface ReviewModalProps {
-  setIsOpen: (value: boolean) => void;
-}
-const ReviewModal = ({ setIsOpen }: ReviewModalProps) => {
+// interface ReviewModalProps {
+//   setIsOpen: (value: boolean) => void;
+// }
+// const ReviewModal = ({ setIsOpen }: ReviewModalProps) => {
+const ReviewModal = () => {
   const activity = mockReservations.reservations[0];
 
-  const handelClose = () => {
-    setIsOpen(false);
-  };
+  // const handelClose = () => {
+  //   setIsOpen(false);
+  // };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +25,8 @@ const ReviewModal = ({ setIsOpen }: ReviewModalProps) => {
       <div className="h-full w-full bg-white p-4 md:fixed md:left-1/2 md:top-1/2 md:h-[750px] md:w-[480px] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-3xl md:p-7">
         <header className="mb-5 flex justify-between text-[28px] font-bold md:text-[24px]">
           <h2>후기작성</h2>
-          <button type="button" aria-label="닫기" onClick={handelClose}>
+          {/* <button type="button" aria-label="닫기" onClick={handelClose}> */}
+          <button type="button" aria-label="닫기">
             <AiOutlineClose className="text-gray09" />
           </button>
         </header>
