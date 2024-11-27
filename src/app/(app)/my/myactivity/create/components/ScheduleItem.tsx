@@ -15,13 +15,11 @@ const ScheduleItem = ({ schedule, schedules, setValue }: ScheduleItemProps) => {
   };
   return (
     <div className="flex gap-1 md:gap-[5px] xl:gap-5">
-      <label className="flex w-full flex-col">
-        <input
-          className="h-11 w-full rounded border border-gray08 px-3 text-sm font-normal leading-[26px] outline-green02 md:h-14 md:px-5 md:text-base"
-          value={schedule.date}
-          readOnly
-        />
-      </label>
+      <input
+        className="h-11 w-full rounded border border-gray08 px-3 text-sm font-normal leading-[26px] outline-green02 md:h-14 md:px-5 md:text-base"
+        value={schedule.date}
+        readOnly
+      />
       <div className="flex items-end gap-1 md:gap-[5px] xl:w-auto xl:gap-3">
         <input
           className="h-11 w-[80px] min-w-20 rounded border border-gray08 px-3 text-sm leading-6 outline-green02 md:h-14 md:w-[110px] md:px-4 md:text-base md:leading-[26px] xl:w-[140px]"
