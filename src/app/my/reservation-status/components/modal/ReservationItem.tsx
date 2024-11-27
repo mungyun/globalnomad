@@ -7,7 +7,7 @@ const reservationStyle = "flex h-[44px] w-[82px] items-center justify-center rou
 const ReservationItem = ({ item, type }: { item: Reservation; type: string }) => {
   const { nickname, headCount } = item;
   return (
-    <div className="mb-[14px] h-full w-[381px] rounded-[4px] border border-gray03 px-4 py-3 text-[16px] font-medium text-black03">
+    <div className="mb-[14px] h-full w-full rounded-[4px] border border-gray03 px-4 py-3 text-[16px] font-medium text-black03">
       <p className="mb-[6px]">
         <span className="font-semibold text-gray08">닉네임</span> {nickname}
       </p>
