@@ -2,12 +2,10 @@
 
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import { ActivityListMockData } from "./MockData";
 
-const StatusDropdown = () => {
-  const { activities } = ActivityListMockData;
+const StatusDropdown = ({ datas, type = "header" }: { datas: string[]; type: string }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<string | null>(activities[0].title);
+  const [selectedItem, setSelectedItem] = useState<string | null>(datas[0]);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
@@ -34,31 +32,33 @@ const StatusDropdown = () => {
     <div ref={dropdownRef} className="relative w-full rounded-md border border-gray-300">
       <button
         onClick={toggleDropdown}
-        className="relative flex h-[56px] w-full items-center justify-between rounded-md bg-white px-4"
+        className="relative flex h-[56px] w-full items-center justify-between rounded-[4px] border border-gray08 bg-white px-4"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
-        <div className="absolute bottom-10 left-3 h-[24px] w-[45px] bg-white text-[14px]">체험명</div>
+        {type === "header" && (
+          <div className="absolute bottom-10 left-3 h-[24px] w-[45px] bg-white text-[14px]">체험명</div>
+        )}
         <span className="text-[16px]">{selectedItem}</span>
         <Image src="/icons/dropdown2.svg" width={24} height={24} alt="드롭 다운" />
       </button>
       {isOpen && (
         <div
-          className="z-1 absolute left-0 mt-2 w-full rounded-md border border-gray03 shadow-lg"
+          className="absolute left-0 mt-2 w-full rounded-md border border-gray03 bg-white shadow-lg"
           style={{ zIndex: 50 }}
         >
-          {activities.map((activity, index) => {
+          {datas.map((data, index) => {
             const isFirst = index === 0;
-            const isLast = index === activities.length - 1;
+            const isLast = index === datas.length - 1;
             return (
               <span
-                key={activity.id}
-                onClick={() => handleSelect(activity.title)}
-                className={`relative flex h-[56px] cursor-pointer items-center bg-white px-4 text-gray08 hover:bg-gray01 ${
+                key={data}
+                onClick={() => handleSelect(data)}
+                className={`relative flex h-[56px] cursor-pointer items-center bg-white px-4 text-[16px] text-gray08 hover:bg-gray01 ${
                   isFirst ? "rounded-t-md" : ""
                 } ${isLast ? "rounded-b-md" : ""}`}
               >
-                {activity.title}
+                {data}
               </span>
             );
           })}
