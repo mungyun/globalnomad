@@ -19,7 +19,7 @@ const sizeClass = {
 
 const colorClass = {
   green: "bg-green02 text-white",
-  white: "border-[1px] border-green02 bg-white text-green02 ",
+  white: "border border-green02 bg-white text-green02 ",
 };
 
 const Button = ({ children, size = "full", color = "green", additionalClass, ...props }: ButtonProps) => {
