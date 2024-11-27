@@ -4,7 +4,7 @@ import "@/styles/ReservationCalender.css";
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 import { ReservationMockData } from "./MockData";
-import StatusModal from "./StatusModal";
+import StatusModal from "./modal/StatusModal";
 
 const caseStyle = "text-start text-[14px] font-medium h-[23px] rounded pl-1";
 const roundStyle = "absolute left-1 top-3 h-[8px] w-[8px] rounded-full";

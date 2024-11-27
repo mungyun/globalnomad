@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import ApplicationMode from "./ApplicationMode";
+import ApprovalMode from "./ApprovalMode";
+import RefusalMode from "./RefusalMode";
 
 const valueStyle = "text-[20px] cursor-pointer";
 
-const StatusModalNav = () => {
+const StatusModalNav = ({ date }: { date?: string }) => {
   const [value, setValue] = useState<string>("신청");
 
   return (
@@ -18,7 +21,15 @@ const StatusModalNav = () => {
           </li>
         ))}
       </ul>
-      <div>{value}</div>
+      <div>
+        {value === "신청" ? (
+          <ApplicationMode date={date || ""} />
+        ) : value === "승인" ? (
+          <ApprovalMode />
+        ) : (
+          <RefusalMode />
+        )}
+      </div>
     </div>
   );
 };

@@ -37,8 +37,7 @@ const StatusModal = ({ isOpen, onClose, date }: StatusModalProps) => {
           <Image src="/icons/X.svg" alt="모달 닫기" width={40} height={40} />
         </button>
       </div>
-      <StatusModalNav />
-      <div>{!date}</div>
+      <StatusModalNav date={date?.toLocaleDateString()} />
     </div>
   );
 };
