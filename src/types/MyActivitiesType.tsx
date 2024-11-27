@@ -1,4 +1,4 @@
-interface ScheduleCount {
+export interface ScheduleCount {
   declined: number;
   confirmed: number;
   pending: number;
@@ -32,4 +32,28 @@ export interface ActivityListResponse {
   cursorId: number;
   totalCount: number;
   activities: Activity[];
+}
+
+export interface Reservation {
+  id: number;
+  nickname: string;
+  userId: number;
+  teamId: string;
+  activityId: number;
+  scheduleId: number;
+  status: string;
+  reviewSubmitted: boolean;
+  totalPrice: number;
+  headCount: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ReservationList {
+  cursorId: number;
+  totalCount: number;
+  reservations: Reservation[];
 }

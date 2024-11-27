@@ -25,7 +25,7 @@ const StatusModal = ({ isOpen, onClose, date }: StatusModalProps) => {
 
   return (
     <div
-      className={`top-[60px] z-10 overflow-x-auto ${
+      className={`top-[60px] z-10 overflow-y-auto ${
         deviceType === "mobile"
           ? "fixed left-0 h-full w-full rounded-none"
           : "absolute right-0 h-[697px] w-[429px] rounded-3xl"
@@ -37,7 +37,7 @@ const StatusModal = ({ isOpen, onClose, date }: StatusModalProps) => {
           <Image src="/icons/X.svg" alt="모달 닫기" width={40} height={40} />
         </button>
       </div>
-      <StatusModalNav date={date ? date.toISOString().split("T")[0] : undefined} />
+      <StatusModalNav date={date} />
     </div>
   );
 };

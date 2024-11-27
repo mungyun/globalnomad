@@ -3,7 +3,15 @@
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
-const StatusDropdown = ({ datas, type = "header" }: { datas: string[]; type: string }) => {
+const StatusDropdown = ({
+  datas,
+  type = "header",
+  onSelect,
+}: {
+  datas: string[];
+  type: string;
+  onSelect?: (selected: string) => void;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string | null>(datas[0]);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -21,6 +29,7 @@ const StatusDropdown = ({ datas, type = "header" }: { datas: string[]; type: str
   const handleSelect = (item: string) => {
     setSelectedItem(item);
     setIsOpen(false);
+    if (onSelect) onSelect(item);
   };
 
   useEffect(() => {

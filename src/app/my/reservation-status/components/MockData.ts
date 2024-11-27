@@ -1,4 +1,4 @@
-import { ActivityListResponse, Schedule } from "@/types/MyActivitiesType";
+import { ActivityListResponse, ReservationList, Schedule } from "@/types/MyActivitiesType";
 
 export const ActivityListMockData: ActivityListResponse = {
   cursorId: 1,
@@ -125,3 +125,44 @@ export const SchedulemockData: Schedule[] = [
     },
   },
 ];
+
+export const ReservationListMockData: ReservationList = {
+  cursorId: 1,
+  totalCount: 3,
+  reservations: [
+    {
+      id: 1,
+      nickname: "JohnDoe",
+      userId: 101,
+      teamId: "TeamAlpha",
+      activityId: 201,
+      scheduleId: 301,
+      status: "pending",
+      reviewSubmitted: false,
+      totalPrice: 10000,
+      headCount: 2,
+      date: "2024-11-27",
+      startTime: "10:00",
+      endTime: "12:00",
+      createdAt: "2024-11-27T05:39:46.199Z",
+      updatedAt: "2024-11-27T05:39:46.199Z",
+    },
+    {
+      id: 2,
+      nickname: "JaneSmith",
+      userId: 102,
+      teamId: "TeamBeta",
+      activityId: 202,
+      scheduleId: 302,
+      status: "confirmed",
+      reviewSubmitted: true,
+      totalPrice: 20000,
+      headCount: 4,
+      date: "2024-11-28",
+      startTime: "14:00",
+      endTime: "16:00",
+      createdAt: "2024-11-27T05:40:00.199Z",
+      updatedAt: "2024-11-27T05:40:00.199Z",
+    },
+  ],
+};
