@@ -51,13 +51,9 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
           />
         </label>
         <div className="flex items-end gap-1 md:gap-[5px] xl:w-auto xl:gap-3">
-          <TimeInput
-            label="시작 시간"
-            value={schedule.startTime}
-            onChange={(value) => handleChange("startTime", value)}
-          />
+          <TimeInput label="시작 시간" onChange={(value) => handleChange("startTime", value)} />
           <span className="hidden h-[56px] items-center text-xl xl:flex">~</span>
-          <TimeInput label="종료 시간" value={schedule.endTime} onChange={(value) => handleChange("endTime", value)} />
+          <TimeInput label="종료 시간" onChange={(value) => handleChange("endTime", value)} />
         </div>
         <button
           onClick={addSchedule}
