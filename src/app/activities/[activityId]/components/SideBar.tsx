@@ -10,7 +10,7 @@ import DateModal from "./DateModal";
 import { mockData } from "./mockdata";
 
 // 동적 import로 Calendar 컴포넌트 불러오기
-const CalendarComponent = dynamic(() => import("./Calendar"), { ssr: false });
+const CalendarComponent = dynamic(() => import("./ActivityCalendar"), { ssr: false });
 
 const titleStyle = "font-bold text-black02";
 
