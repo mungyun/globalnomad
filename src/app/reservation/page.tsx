@@ -1,5 +1,6 @@
 import ReservationList from "@/components/ReservationList";
 import SideNavigation from "@/components/SideNavigation";
+import ReviewModal from "@/components/modal/ReviewModal";
 
 export default function Reservation() {
   return (
@@ -8,6 +9,7 @@ export default function Reservation() {
         <SideNavigation />
       </div>
       <ReservationList />
+      <ReviewModal />
     </div>
   );
 }
