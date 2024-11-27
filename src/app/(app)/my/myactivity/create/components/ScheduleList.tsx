@@ -39,17 +39,18 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
   return (
     <>
       <label className="text-xl font-bold leading-8 text-black03 md:text-2xl">예약 가능한 시간대</label>
-      <div className="flex items-end gap-1 border-b border-gray03 pb-5 md:gap-[5px] xl:gap-5">
-        <label className="flex w-full min-w-[35%] flex-col gap-2 xl:w-full xl:flex-1">
-          날짜
+      <div className="flex w-full items-end gap-1 border-b border-gray03 pb-5 md:gap-[5px] xl:gap-5">
+        <label className="flex w-full flex-col">
+          <span className="mb-2 text-base font-medium leading-[26px] md:text-xl md:leading-8">날짜</span>
           <input
-            className="h-11 w-full rounded border border-gray08 px-5 py-4 text-sm font-normal leading-[26px] outline-green02 placeholder:text-gray06 md:h-14 md:text-base"
-            type="date"
+            className="h-11 w-full rounded border border-gray08 px-3 text-sm font-normal leading-[26px] outline-green02 placeholder:text-gray06 md:h-14 md:px-4 md:text-base"
+            // type="date"
             value={schedule.date}
+            placeholder="YY/MM/DD"
             onChange={(e) => handleChange("date", e.target.value)}
           />
         </label>
-        <div className="flex w-1/2 items-end gap-1 md:gap-[5px] xl:w-auto xl:gap-3">
+        <div className="flex items-end gap-1 md:gap-[5px] xl:w-auto xl:gap-3">
           <TimeInput
             label="시작 시간"
             value={schedule.startTime}

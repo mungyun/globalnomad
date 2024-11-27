@@ -45,10 +45,10 @@ const TimeInput = ({ label, value, onChange }: TimeInputProps) => {
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <label className="flex flex-col gap-2 text-base font-medium leading-[26px] md:text-xl md:leading-8">
+      <label className="flex w-auto flex-col gap-2 text-base font-medium leading-[26px] md:text-xl md:leading-8">
         {label}
         <input
-          className="h-11 w-full min-w-20 rounded border border-gray08 px-3 text-sm leading-6 outline-green02 md:h-14 md:px-4 md:text-base md:leading-[26px] xl:max-w-[140px]"
+          className="h-11 w-[80px] min-w-20 rounded border border-gray08 px-3 text-sm leading-6 outline-green02 md:h-14 md:w-[110px] md:px-4 md:text-base md:leading-[26px] xl:w-[140px]"
           placeholder="00:00"
           value={value || ""}
           readOnly

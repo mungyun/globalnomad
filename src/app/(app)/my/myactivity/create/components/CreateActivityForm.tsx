@@ -23,7 +23,7 @@ const CreateActivityForm = () => {
     console.log(data);
   };
   return (
-    <div className="flex w-full max-w-[800px] flex-col gap-6">
+    <div className="flex w-full flex-col gap-6">
       <div className="flex justify-between">
         <h2 className="text-[32px] font-bold leading-[42px]">내 체험 등록</h2>
         <Button type="submit" disabled={!isValid} size="md" onClick={handleSubmit(onSubmit)}>

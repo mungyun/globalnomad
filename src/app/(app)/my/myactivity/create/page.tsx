@@ -2,7 +2,7 @@ import CreateActivityForm from "./components/CreateActivityForm";
 
 const CreateActivityPage = () => {
   return (
-    <div className="">
+    <div className="w-full max-w-[800px]">
       <CreateActivityForm />
     </div>
   );
