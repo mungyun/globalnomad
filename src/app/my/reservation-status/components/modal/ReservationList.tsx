@@ -2,15 +2,15 @@ import React from "react";
 import { ReservationListMockData } from "../MockData";
 import ReservationItem from "./ReservationItem";
 
-const ApplicationMode = () => {
+const ReservationList = ({ type }: { type: string }) => {
   const { reservations } = ReservationListMockData;
   return (
     <div>
       {reservations.map((item) => (
-        <ReservationItem item={item} key={item.id} type="application" />
+        <ReservationItem item={item} key={item.id} type={type} />
       ))}
     </div>
   );
 };
 
-export default ApplicationMode;
+export default ReservationList;

@@ -4,9 +4,7 @@ import { Schedule, ScheduleCount } from "@/types/MyActivitiesType";
 import React, { useEffect, useMemo, useState } from "react";
 import { SchedulemockData } from "../MockData";
 import StatusDropdown from "../StatusDropdown";
-import ApplicationMode from "./ApplicationMode";
-import ApprovalMode from "./ApprovalMode";
-import RefusalMode from "./RefusalMode";
+import ReservationList from "./ReservationList";
 
 const valueStyle = "text-[20px] cursor-pointer";
 const titleStyle = "mb-4 text-[20px] font-semibold text-[black03]";
@@ -98,7 +96,13 @@ const StatusModalNav = ({ date }: { date?: Date | null }) => {
         {/* 예약 내역 */}
         <div className="mt-6">
           <h3 className={`${titleStyle}`}>예약 내역</h3>
-          {value === "신청" ? <ApplicationMode /> : value === "승인" ? <ApprovalMode /> : <RefusalMode />}
+          {value === "신청" ? (
+            <ReservationList type="application" />
+          ) : value === "승인" ? (
+            <ReservationList type="approval" />
+          ) : (
+            <ReservationList type="refusal" />
+          )}
         </div>
       </div>
     </div>
