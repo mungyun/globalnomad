@@ -1,5 +1,4 @@
 import SideNavigation from "@/components/SideNavigation";
-import Footer from "@/components/layout/Footer";
 import { ReactNode } from "react";
 
 const Layout = ({ children }: { children: ReactNode }) => {
@@ -11,7 +10,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
         </div>
         {children}
       </div>
-      <Footer />
     </>
   );
 };
