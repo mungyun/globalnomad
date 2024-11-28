@@ -1,4 +1,5 @@
 import { ActivityList } from "@/types/types";
+import formatPrice from "@/utils/formatPrice";
 import Image from "next/image";
 import IconDropdown from "../dropdown/IconDropdown";
 
@@ -36,7 +37,7 @@ const ActivityItem = ({ activity }: ActivityItemProps) => {
 
         <div className="flex items-end justify-between">
           <span className="flex md:text-xl xl:text-2xl">
-            ₩ {price.toLocaleString()}
+            ₩ {formatPrice(price)}
             <span className="ml-2 hidden md:block"> /인</span>
           </span>
           <IconDropdown />
