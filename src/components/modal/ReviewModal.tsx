@@ -1,5 +1,6 @@
 "use client";
 
+import formatPrice from "@/utils/formatPrice";
 import Image from "next/image";
 import { AiOutlineClose } from "react-icons/ai";
 import { mockReservations } from "../mockData";
@@ -53,7 +54,7 @@ const ReviewModal = () => {
               </div>
             </div>
             <span className="border-t border-gray02 py-1 text-xl font-bold md:pt-3 md:text-[32px]">
-              ₩ {activity.totalPrice.toLocaleString()}
+              ₩ {formatPrice(activity.totalPrice)}
             </span>
           </div>
         </div>
