@@ -1,6 +1,8 @@
-export const mockData = {
+import { Activities } from "@/types/types";
+
+export const mockData: Activities = {
   cursorId: 10,
-  totalCount: 10,
+  totalCount: 21,
   activities: [
     {
       id: 1,

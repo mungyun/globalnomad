@@ -69,7 +69,7 @@ export interface ActivityItem {
   userId: number;
   title: string;
   description: string;
-  category: string;
+  category: "문화 · 예술" | "교육 · 학습" | "스포츠" | "식음료" | "투어 · 관광" | "게임 · 취미";
   price: number;
   address: string;
   bannerImageUrl: string;

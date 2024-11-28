@@ -3,8 +3,8 @@
 import { Login, LoginSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Button from "../Button";
-import AuthInput from "../input/AuthInput";
+import Button from "../../../components/Button";
+import AuthInput from "../../../components/input/AuthInput";
 
 const LoginForm = () => {
   const {
