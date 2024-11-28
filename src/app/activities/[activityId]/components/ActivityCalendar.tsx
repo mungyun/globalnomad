@@ -1,6 +1,6 @@
 "use client";
 
-import "@/styles/Calender.css";
+import "@/styles/ActivityCalender.css";
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 
@@ -10,7 +10,7 @@ interface Schedule {
   endTime: string;
 }
 
-interface CalendarComponentProps {
+interface ActivityCalendarProps {
   schedules: Schedule[];
 }
 
@@ -25,7 +25,7 @@ const TimeSlot = ({ time, isSelected, onClick }: { time: string; isSelected: boo
   </li>
 );
 
-const CalendarComponent: React.FC<CalendarComponentProps> = ({ schedules }) => {
+const ActivityCalendar: React.FC<ActivityCalendarProps> = ({ schedules }) => {
   const [timeList, setTimeList] = useState<string[]>([]);
   const [selectedTime, setSelectedTime] = useState<string | null>(null); // 선택된 시간 상태
 
@@ -83,4 +83,4 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ schedules }) => {
   );
 };
 
-export default CalendarComponent;
+export default ActivityCalendar;
