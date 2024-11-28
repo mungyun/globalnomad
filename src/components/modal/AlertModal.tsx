@@ -1,12 +1,21 @@
 import useDeviceType from "@/hooks/useDeviceType";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { AlertMockData } from "../layout/MockData";
 import AlertItem from "./AlertItem";
 
 const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const { totalCount, notifications } = AlertMockData;
   const deviceType = useDeviceType();
+
+  useEffect(() => {
+    if (deviceType === "mobile" && isOpen) {
+      document.body.style.overflow = "hidden"; // 모바일에서 모달이 열리면 스크롤을 막음
+    }
+    return () => {
+      document.body.style.overflow = ""; // 모달이 닫히면 스크롤을 복원
+    };
+  }, [deviceType, isOpen]);
 
   if (!isOpen) return null;
 
