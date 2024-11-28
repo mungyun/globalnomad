@@ -51,7 +51,7 @@ export default function SideNavigation({ img, onClick }: SideNavigationProps) {
           className="md absolute left-[195px] top-[145px] h-[44px] w-[44px] cursor-pointer md:left-[150px] xl:left-[215px]"
           aria-label="수정 버튼"
         >
-          <Image src="/icons/edit.svg" width={44} height={44} alt="이미지 수정" />
+          <Image src="/icons/edit.svg" alt="이미지 수정" fill />
         </button>
       </div>
       <div className="flex flex-col gap-3 bg-white text-base text-gray07">
