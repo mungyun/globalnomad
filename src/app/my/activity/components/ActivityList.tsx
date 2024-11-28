@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import EmptyActivity from "../EmptyActivity";
+import EmptyActivity from "../../../../components/EmptyActivity";
 import ActivityItem from "./ActivityItem";
 import { mockActivity } from "./mockData2";
 
@@ -12,7 +12,7 @@ const ActivityList = () => {
   const hasActivities = activities.length > 0;
 
   return (
-    <section className="flex w-full max-w-[800px] flex-col bg-white">
+    <section className="flex w-full max-w-[800px] flex-col bg-gray01">
       <header className="mb-5 flex justify-between">
         <h2 className="text-[32px] font-bold"> 내 체험관리</h2>
         <button

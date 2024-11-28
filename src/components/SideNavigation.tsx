@@ -14,7 +14,7 @@ interface ListProps {
 const NAVIGATION_ITEMS: ListProps[] = [
   { iconName: "mypage", text: "내 정보", link: "my" },
   { iconName: "reservation", text: "예약 정보", link: "my/reservation" },
-  { iconName: "myactivity", text: "내 체험 관리", link: "my/myactivity" },
+  { iconName: "myactivity", text: "내 체험 관리", link: "my/activity" },
   { iconName: "reservation-status", text: "예약 현황", link: "my/reservation-status" },
 ];
 
