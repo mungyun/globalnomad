@@ -14,16 +14,15 @@ const Header = () => {
     createdAt: "2024-11-18T19:46:59.369Z",
     updatedAt: "2024-11-23T14:19:30.749Z",
   };
-  const isLoggedIn = !!user;
 
   return (
     <div className="h-[70px] w-full border-b border-gray03 p-5">
       <div className="mx-auto flex max-w-[1200px] items-center justify-between text-sm font-medium leading-6 text-black03">
-        <Link href="/" className="relative h-[30px] w-[172px]" as="image">
+        <Link href="/" className="relative h-[30px] w-[172px]">
           <Image src="/icons/logo_md.svg" fill priority alt="로고 아이콘" />
         </Link>
 
-        {isLoggedIn ? (
+        {user ? (
           <div className="flex items-center gap-3 md:gap-[25px]">
             <div className="relative size-5">
               <Image src="/icons/Icon_notification.svg" alt="알림 아이콘" fill />
