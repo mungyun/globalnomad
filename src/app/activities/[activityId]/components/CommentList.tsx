@@ -1,11 +1,14 @@
+"use client";
+
 import Pagination from "@/components/Pagination";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import CommentItem from "./CommentItem";
 import { reviewMockData } from "./mockdata";
 
 const CommentList = () => {
   const { averageRating, totalCount, reviews } = reviewMockData;
+  const [page, setPage] = useState(1);
 
   return (
     <div className="mt-10">
@@ -27,7 +30,7 @@ const CommentList = () => {
           </li>
         ))}
       </ul>
-      <Pagination totalCount={totalCount} />
+      <Pagination totalCount={totalCount} currentPage={page} setCurrentPage={setPage} />
     </div>
   );
 };
