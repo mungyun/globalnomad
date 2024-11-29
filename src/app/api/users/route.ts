@@ -13,9 +13,8 @@ export const POST = async (req: NextRequest) => {
     });
 
     // 회원가입 성공 후 로그인 페이지로 리다이렉트
-    if (response.status === 201) {
-      const redirectUrl = `${req.nextUrl.origin}/login`; // 절대 URL 생성
-      return NextResponse.redirect(redirectUrl);
+    if (response.status >= 200 && response.status < 300) {
+      return NextResponse.json({ message: "회원가입 성공" });
     } else {
       return NextResponse.json({ message: "회원가입 실패" }, { status: 400 });
     }

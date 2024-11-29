@@ -5,9 +5,11 @@ import AuthInput from "@/components/input/AuthInput";
 import { postSignUp } from "@/lib/api/Users";
 import { Signup, SignupSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 const SignupForm = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -19,9 +21,15 @@ const SignupForm = () => {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onSubmit: SubmitHandler<Signup> = ({ confirmPassword, ...submitData }) => {
-    postSignUp(submitData);
-    reset();
+  const onSubmit: SubmitHandler<Signup> = async ({ confirmPassword, ...submitData }) => {
+    try {
+      await postSignUp(submitData); // 회원가입 요청
+      router.push("/login"); // 회원가입 성공 시 로그인 페이지로 리다이렉트
+    } catch (error) {
+      console.error("회원가입 중 오류 발생", error);
+    } finally {
+      reset(); // 폼 초기화
+    }
   };
 
   return (
