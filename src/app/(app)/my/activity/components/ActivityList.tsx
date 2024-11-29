@@ -1,7 +1,7 @@
 "use client";
 
+import EmptyActivity from "@/components/EmptyActivity";
 import { useRouter } from "next/navigation";
-import EmptyActivity from "../../../../components/EmptyActivity";
 import ActivityItem from "./ActivityItem";
 import { mockActivity } from "./mockData2";
 
