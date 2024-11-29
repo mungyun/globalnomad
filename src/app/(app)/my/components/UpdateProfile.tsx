@@ -69,8 +69,8 @@ const UpdateProfile = () => {
   };
 
   return (
-    <section className="flex w-full max-w-[800px] flex-col p-5 md:p-1">
-      <header className="mb-5 flex justify-between">
+    <section className="flex w-full max-w-[800px] flex-col">
+      <header className="mb-2 flex justify-between">
         <h2 className="text-[32px] font-bold"> 내 정보</h2>
         <button
           className="flex h-[48px] w-[120px] items-center justify-center rounded bg-black02 font-semibold text-white"
@@ -91,7 +91,7 @@ const UpdateProfile = () => {
             {...register(field.name)}
             errors={errors[field.name]?.message}
             placeholder={field.placeholder}
-            labelSize="text-2xl gap-5 mt-5 font-bold"
+            labelStyle="large"
             readOnly={field.readOnly}
           />
         ))}
