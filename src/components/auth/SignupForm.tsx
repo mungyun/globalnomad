@@ -2,6 +2,7 @@
 
 import Button from "@/components/Button";
 import AuthInput from "@/components/input/AuthInput";
+import { postSignUp } from "@/lib/api/Users";
 import { Signup, SignupSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -11,6 +12,7 @@ const SignupForm = () => {
     register,
     handleSubmit,
     formState: { errors, isValid, isSubmitting },
+    reset,
   } = useForm<Signup>({
     resolver: zodResolver(SignupSchema),
     mode: "onBlur",
@@ -18,7 +20,8 @@ const SignupForm = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit: SubmitHandler<Signup> = ({ confirmPassword, ...submitData }) => {
-    console.log(submitData);
+    postSignUp(submitData);
+    reset();
   };
 
   return (
