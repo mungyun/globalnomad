@@ -1,28 +1,26 @@
 "use client";
 
-import { useState } from "react";
-
 interface PaginationProps {
   totalCount: number; // 전체 아이템 수
   itemsPerPage?: number; // 페이지당 표시할 아이템 개수 (기본값: 10)
   pageSize?: number; // 페이지네이션에 표시할 페이지 번호 개수 (기본값: 5)
+  currentPage: number; // 상위 컴포넌트에서 전달받은 현재 페이지
+  setCurrentPage: (page: number) => void; // 상위 컴포넌트에서 전달받은 페이지 변경 함수
 }
 
 const buttonStyle =
   "flex md:h-[55px] md:w-[55px] h-[40px] w-[40px] items-center justify-center rounded-[15px] text-[18px] font-medium border border border-green02";
 
-const Pagination = ({ totalCount, itemsPerPage = 10, pageSize = 5 }: PaginationProps) => {
-  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
-
+const Pagination = ({ totalCount, itemsPerPage = 10, pageSize = 5, currentPage, setCurrentPage }: PaginationProps) => {
   const totalPages = Math.ceil(totalCount / itemsPerPage); // 전체 페이지 수 계산
 
-  // 현재 페이지 그룹 계산 (예: 페이지가 11이면 그룹은 3번째 그룹)
+  // 현재 페이지 그룹 계산
   const currentGroup = Math.ceil(currentPage / pageSize);
 
   // 현재 그룹의 시작 페이지 번호 계산
   const startPage = Math.max(1, (currentGroup - 1) * pageSize + 1);
 
-  // 현재 그룹의 마지막 페이지 번호 계산 (전체 페이지 수를 넘지 않도록 제한)
+  // 현재 그룹의 마지막 페이지 번호 계산
   const endPage = Math.min(currentGroup * pageSize, totalPages);
 
   // "이전" 버튼 클릭 핸들러
