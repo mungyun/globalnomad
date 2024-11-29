@@ -4,7 +4,7 @@ import { Query, SearchSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import SearchButton from "./SearchButton";
 
@@ -27,11 +27,6 @@ const SearchBar = () => {
     }
   };
 
-  useEffect(() => {
-    // 새로고침을 하면 기본 메인페이지로 리디렉션
-    router.replace("/");
-  }, []);
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -43,7 +38,7 @@ const SearchBar = () => {
           <Image src="/icons/search.svg" width={48} height={48} alt="검색 아이콘" className="absolute left-0 top-1" />
           <label
             htmlFor="query"
-            className={`absolute left-12 -translate-y-1/2 bg-background text-sm font-normal text-gray06 transition-all md:left-10 md:px-[10px] md:text-base ${
+            className={`t absolute left-12 -translate-y-1/2 bg-background text-sm font-normal text-gray06 transition-all md:left-10 md:px-[10px] md:text-base ${
               isFocused ? "top-0" : "top-1/2"
             }`}
           >
