@@ -10,7 +10,7 @@ interface DropdownInputProps {
 }
 
 const CATEGORY = [
-  { value: "교육 · 학습" },
+  { value: "교육 · 학습", title: "웰빙" },
   { value: "문화 · 예술" },
   { value: "스포츠" },
   { value: "식음료" },

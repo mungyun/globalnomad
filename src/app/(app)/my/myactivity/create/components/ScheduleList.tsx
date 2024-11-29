@@ -1,15 +1,15 @@
 "use client";
 
 import TimeInput from "@/components/input/TimeInput";
-import { PostActivities, Schedule } from "@/types/ActiviteyType";
+import { ActiviteForm, Schedule } from "@/types/ActiviteyType";
 import { useState } from "react";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { FiPlus } from "react-icons/fi";
 import ScheduleItem from "./ScheduleItem";
 
 interface ScheduleListProps {
-  watch: UseFormWatch<PostActivities>;
-  setValue: UseFormSetValue<PostActivities>;
+  watch: UseFormWatch<ActiviteForm>;
+  setValue: UseFormSetValue<ActiviteForm>;
 }
 
 const defaultSchedule = { date: "", startTime: "00:00", endTime: "00:00" };
@@ -51,9 +51,13 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
           />
         </label>
         <div className="flex items-end gap-1 md:gap-[5px] xl:w-auto xl:gap-3">
-          <TimeInput label="시작 시간" onChange={(value) => handleChange("startTime", value)} />
+          <TimeInput
+            label="시작 시간"
+            value={schedule.startTime}
+            onChange={(value) => handleChange("startTime", value)}
+          />
           <span className="hidden h-[56px] items-center text-xl xl:flex">~</span>
-          <TimeInput label="종료 시간" onChange={(value) => handleChange("endTime", value)} />
+          <TimeInput label="종료 시간" value={schedule.endTime} onChange={(value) => handleChange("endTime", value)} />
         </div>
         <button
           onClick={addSchedule}

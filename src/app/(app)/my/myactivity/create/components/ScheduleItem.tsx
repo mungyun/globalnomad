@@ -1,11 +1,11 @@
-import { PostActivities, Schedule } from "@/types/ActiviteyType";
+import { ActiviteForm, Schedule } from "@/types/ActiviteyType";
 import { UseFormSetValue } from "react-hook-form";
 import { FiMinus } from "react-icons/fi";
 
 interface ScheduleItemProps {
   schedule: Schedule;
   schedules: Schedule[];
-  setValue: UseFormSetValue<PostActivities>;
+  setValue: UseFormSetValue<ActiviteForm>;
 }
 
 const ScheduleItem = ({ schedule, schedules, setValue }: ScheduleItemProps) => {
