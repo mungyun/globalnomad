@@ -25,7 +25,7 @@ export const mockReservations = {
     {
       activity: {
         id: 992,
-        title: "놀러와아아~ 강아지의 숲dddddddddddddd",
+        title: "놀러와아아~ 강아지의 숲",
         bannerImageUrl: "/images/0.jpg",
       },
       scheduleId: 5015,
