@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (req: NextRequest) => {
   try {
     const { email, password } = await req.json();
-    console.log({ email, password });
 
     const response = await axiosInstance.post("/auth/login", {
       email,
