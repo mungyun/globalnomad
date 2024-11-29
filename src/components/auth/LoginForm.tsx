@@ -11,6 +11,7 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors, isValid, isSubmitting },
+    reset,
   } = useForm<Login>({
     resolver: zodResolver(LoginSchema),
     mode: "onBlur",
@@ -18,6 +19,7 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<Login> = (data) => {
     console.log(data);
+    reset();
   };
 
   return (
