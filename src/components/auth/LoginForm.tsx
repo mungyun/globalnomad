@@ -3,7 +3,6 @@
 import { postLogin } from "@/lib/api/Auth";
 import { Login, LoginSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { redirect } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../Button";
 import AuthInput from "../input/AuthInput";
@@ -22,7 +21,6 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<Login> = async (data) => {
     await postLogin(data);
     reset();
-    // redirect("/");
   };
 
   return (

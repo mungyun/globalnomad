@@ -33,7 +33,8 @@ export const POST = async (req: NextRequest) => {
         path: "/",
       });
 
-      return res;
+      // 로그인 후 '/'로 리다이렉트
+      return NextResponse.redirect("/");
     } else {
       return NextResponse.json({ message: "권한 없음" }, { status: 401 });
     }
