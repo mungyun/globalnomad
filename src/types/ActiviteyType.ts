@@ -1,5 +1,6 @@
 // 스케줄 타입
 export interface Schedule {
+  id?: number;
   date: string;
   startTime: string;
   endTime: string;
@@ -29,11 +30,11 @@ export interface PatchActivites {
   bannerImageFile?: File;
 
   subImageFiles?: File[];
-  subImageIdsToRemove?: string[];
+  subImageIdsToRemove?: number[];
   subImageUrlsToAdd?: string[];
 
   schedules: Schedule[];
-  scheduleIdsToRemove?: string[];
+  scheduleIdsToRemove?: number[];
   schedulesToAdd?: string[];
 }
 
