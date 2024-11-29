@@ -4,7 +4,7 @@ import StatusHeader from "./components/StatusHeader";
 
 const ReservationStatusPage = () => {
   return (
-    <div className="w-full max-w-[800px] px-4 md:px-[23px] xl:px-0">
+    <div className="w-full max-w-[800px]">
       <StatusHeader />
       <StatusCalendar />
     </div>
