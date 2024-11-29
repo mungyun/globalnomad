@@ -20,7 +20,7 @@ const List: React.FC<ListProps> = ({ iconName, text }) => (
 );
 
 interface SideNavigationProps {
-  img: string;
+  img?: string;
   onClick?: () => void;
 }
 
@@ -29,20 +29,21 @@ export default function SideNavigation({ img, onClick }: SideNavigationProps) {
   const [user] = useState(true);
   return (
     <>
-      <div className="relative flex h-[432px] w-[344px] flex-col gap-5 rounded-xl border border-gray03 bg-white p-6 md:w-[251px] xl:w-[384px]">
-        <div className="relative m-auto flex h-[160px] w-[160px] items-center justify-center overflow-hidden rounded-full bg-rose-300">
-          {user ? (
-            <Image src={img} layout="fill" objectFit="cover" alt="프로필이미지" />
-          ) : (
-            <IoPersonCircleOutline className="h-full w-full" color="grey" />
-          )}
+      <div className="relative flex h-[432px] w-[344px] flex-col gap-5 overflow-visible rounded-xl border border-gray03 bg-white p-6 md:w-[251px] xl:w-[384px]">
+        <div>
+          <div className="relative m-auto flex h-[160px] w-[160px] items-center justify-center overflow-hidden rounded-full bg-gray03">
+            {user && img ? (
+              <Image src={img} layout="fill" objectFit="cover" alt="프로필이미지" />
+            ) : (
+              <IoPersonCircleOutline className="h-full w-full text-gray07" />
+            )}
+          </div>
           <Image
             src="/icons/edit.svg"
-            className="md fixed left-[186px] top-[154px] cursor-pointer md:left-[142px] xl:left-[206px]"
-            width="44"
-            height="44"
+            className="md absolute left-[195px] top-[145px] h-[44px] w-[44px] cursor-pointer md:left-[150px] xl:left-[215px]"
+            width={44}
+            height={44}
             alt="editBtn"
-            // 프로필이미지 수정
             onClick={onClick}
           />
         </div>

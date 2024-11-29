@@ -2,6 +2,7 @@ import { ActivityItem } from "@/types/types";
 import formatPrice from "@/utils/formatPrice";
 import getJosa from "@/utils/getJosa";
 import Image from "next/image";
+import Link from "next/link";
 
 interface AllactivitiesProps {
   filteredData: ActivityItem[];
@@ -26,7 +27,7 @@ const AllActivities = ({ filteredData, currentCategory, query }: AllactivitiesPr
       )}
       <div className="grid grid-cols-2 gap-x-2 gap-y-[5px] md:grid-cols-3 md:gap-x-4 md:gap-y-8 xl:grid-cols-4 xl:gap-x-6 xl:gap-y-12">
         {filteredData.map((activity) => (
-          <div key={activity.id} className="flex flex-col gap-4">
+          <Link key={activity.id} href={`/activities/${activity.id}`} className="flex flex-col gap-4">
             {/* 이미지 대신 */}
             <div className="aspect-square w-full rounded-3xl bg-slate-400"></div>
             <div className="flex flex-col gap-[10px] leading-[26px] text-black03">
@@ -46,7 +47,7 @@ const AllActivities = ({ filteredData, currentCategory, query }: AllactivitiesPr
                 </span>
               </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

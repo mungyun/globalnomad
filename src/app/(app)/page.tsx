@@ -24,24 +24,11 @@ const CATEGORY = ["문화 · 예술", "교육 · 학습", "스포츠", "식음�
 const Home = () => {
   const [currentCategory, setCurrentCategory] = useState("");
   const [filteredData, setFilteredData] = useState(mockData.activities);
-  const [pageSize, setPageSize] = useState(ITEMS_PER_PAGE.mobile);
   const [query, setQuery] = useState<string | undefined>(undefined);
 
-  const mockdata = mockData;
   const searchParams = useSearchParams();
 
   const deviceType = useDeviceType();
-
-  useEffect(() => {
-    // 화면 크기에 맞게 페이지당 아이템 개수 설정
-    if (deviceType === "mobile") {
-      setPageSize(ITEMS_PER_PAGE.mobile);
-    } else if (deviceType === "tablet") {
-      setPageSize(ITEMS_PER_PAGE.tablet);
-    } else if (deviceType === "desktop") {
-      setPageSize(ITEMS_PER_PAGE.desktop);
-    }
-  }, [deviceType]);
 
   useEffect(() => {
     // 쿼리 매개변수 'query'에 접근
@@ -70,14 +57,14 @@ const Home = () => {
     }
   }, [query]);
 
-  const slicedData = filteredData.slice(0, pageSize);
+  const slicedData = filteredData.slice(0, ITEMS_PER_PAGE[deviceType]);
 
   return (
     <div className="bg-gray01">
       <Banner />
       <div className="relative mx-auto max-w-[1200px] pb-[120px] pt-[93px] md:pt-[142px] xl:pt-[158px]">
         <SearchBar />
-        {query ? "" : <BestActivities bestActivities={mockdata.activities} />}
+        {query ? "" : <BestActivities />}
         <div className="px-4 md:px-6 xl:px-0">
           {/* gap 조절 */}
           <div className={`mb-6 mt-10 flex justify-between gap-2 md:mb-[35px] md:mt-[60px] ${query ? "hidden" : ""}`}>
@@ -100,7 +87,7 @@ const Home = () => {
 
           <AllActivities filteredData={slicedData} currentCategory={currentCategory} query={query} />
 
-          <Pagination totalCount={mockdata.totalCount} itemsPerPage={4} />
+          <Pagination totalCount={mockData.totalCount} itemsPerPage={4} />
         </div>
       </div>
     </div>

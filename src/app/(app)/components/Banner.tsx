@@ -15,7 +15,9 @@ const Banner = () => {
           <br />
           스트릿 댄스
         </h1>
-        <p className="text-sm leading-[26px] md:text-xl xl:text-2xl xl:leading-[28.64px]">12월의 인기 경험 BEST 🔥</p>
+        <p className="z-10 text-sm leading-[26px] md:text-xl xl:text-2xl xl:leading-[28.64px]">
+          12월의 인기 경험 BEST 🔥
+        </p>
       </div>
     </section>
   );
