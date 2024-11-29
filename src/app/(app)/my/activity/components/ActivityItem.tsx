@@ -1,7 +1,7 @@
+import IconDropdown from "@/components/dropdown/IconDropdown";
 import { ActivityList } from "@/types/types";
 import formatPrice from "@/utils/formatPrice";
 import Image from "next/image";
-import IconDropdown from "../dropdown/IconDropdown";
 
 interface ActivityItemProps {
   activity: ActivityList;
