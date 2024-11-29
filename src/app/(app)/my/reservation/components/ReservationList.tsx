@@ -1,8 +1,11 @@
 import EmptyActivity from "@/components/EmptyActivity";
 import Dropdown from "@/components/dropdown/Dropdown";
-import Image from "next/image";
 import ReservationItem from "./ReservationItem";
 import { mockReservations } from "./mockData";
+
+interface ReservationListProps {
+  reservations: Omit<ReservationType, 'status'> & { status: string }[];
+}
 
 export default function ReservationList() {
   const hasReservations = mockReservations && mockReservations.reservations.length > 0;
@@ -22,7 +25,10 @@ export default function ReservationList() {
       <div className="flex flex-col gap-4">
         {hasReservations ? (
           mockReservations.reservations.map((reservation) => (
-            <ReservationItem key={reservation.id} reservation={reservation} />
+            <ReservationItem key={reservation.id}           reservation={{
+              ...reservation,
+              status: reservation.status as ReservationStatus
+            }}  />
           ))
         ) : (
           <EmptyActivity />
