@@ -14,10 +14,10 @@ const StatusModal = ({ isOpen, onClose, date }: StatusModalProps) => {
 
   useEffect(() => {
     if (deviceType === "mobile" && isOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = "hidden"; // 모바일에서 모달이 열리면 스크롤을 막음
     }
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = ""; // 모달이 닫히면 스크롤을 복원
     };
   }, [deviceType, isOpen]);
 
@@ -25,11 +25,11 @@ const StatusModal = ({ isOpen, onClose, date }: StatusModalProps) => {
 
   return (
     <div
-      className={`top-[60px] z-10 overflow-y-auto ${
+      className={`z-[9999] overflow-y-auto bg-white px-6 py-8 shadow-md ${
         deviceType === "mobile"
-          ? "fixed left-0 h-full w-full rounded-none"
-          : "absolute right-0 h-[697px] w-[429px] rounded-3xl"
-      } bg-white px-6 py-8 shadow-md`}
+          ? "fixed left-0 top-0 h-screen w-screen"
+          : "absolute right-0 top-[60px] h-[697px] w-[429px] rounded-3xl"
+      }`}
     >
       <div>
         <h2 className="mb-[27px] text-[24px] font-bold text-black03">예약 정보</h2>
