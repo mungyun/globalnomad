@@ -1,12 +1,12 @@
 "use client";
 
 import Button from "@/components/Button";
+import DropdownInput from "@/components/dropdown/DropdownInput";
 import LabelInput from "@/components/input/LabelInput";
 import Textarea from "@/components/input/Textarea";
 import { PostActivities } from "@/types/ActiviteyType";
 import { useForm } from "react-hook-form";
 import BannerImgForm from "./BannerImageForm";
-import DropdownInput from "./DropdownInput";
 import ScheduleList from "./ScheduleList";
 import SubImageForm from "./SubImageForm";
 
@@ -31,7 +31,7 @@ const CreateActivityForm = () => {
         </Button>
       </div>
       <LabelInput placeholder="제목" {...register("title")} />
-      <DropdownInput register={register} setValue={setValue} />
+      <DropdownInput setValue={(value) => setValue("category", value)} {...register("category")} />
       <Textarea placeholder="설명" {...register("description")} />
       <LabelInput label="가격" placeholder="가격" type="number" {...register("price")} />
       <LabelInput label="주소" placeholder="주소를 입력해주세요" {...register("address")} />
