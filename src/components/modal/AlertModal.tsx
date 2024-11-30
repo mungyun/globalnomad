@@ -31,7 +31,7 @@ const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
         <h2 className="text-[20px] font-bold text-black03">알림 {totalCount}개</h2>
         <Image className="cursor-pointer" onClick={onClose} src="/icons/X.svg" alt="모달 닫기" width={24} height={24} />
       </div>
-      <ul className="flex h-full flex-col gap-2 overflow-auto overflow-y-auto md:h-[260px]">
+      <ul className="flex h-full flex-col gap-2 overflow-y-auto md:h-[260px]">
         {notifications.map((item) => (
           <AlertItem key={item.id} item={item} />
         ))}

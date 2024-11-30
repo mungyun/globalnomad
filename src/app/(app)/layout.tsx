@@ -1,13 +1,15 @@
-import SideNavigation from "@/components/SideNavigation";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 import { ReactNode } from "react";
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="flex justify-center gap-6 px-6 py-6 xl:py-[72px]">
-      <SideNavigation />
+    <div>
+      <Header />
       {children}
+      <Footer />
     </div>
   );
 };
 
-export default Layout;
+export default layout;

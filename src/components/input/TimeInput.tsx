@@ -5,13 +5,15 @@ import { IoIosArrowDown } from "react-icons/io";
 
 interface TimeInputProps {
   label?: string;
-  onChange?: (value: string) => void;
+  value?: string;
+
+  onChange: (value: string) => void;
 }
 
 const hours = Array.from({ length: 24 }, (_, index) => String(index).padStart(2, "0"));
 const minutes = Array.from({ length: 12 }, (_, index) => String(index * 5).padStart(2, "0"));
 
-const TimeInput = ({ label, onChange }: TimeInputProps) => {
+const TimeInput = ({ label, value, onChange }: TimeInputProps) => {
   const [time, setTime] = useState({ hour: "00", minute: "00" });
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -31,8 +33,6 @@ const TimeInput = ({ label, onChange }: TimeInputProps) => {
       ...prevState,
       [field]: value,
     }));
-    const newTime = `${time.hour}:${time.minute}`;
-    onChange?.(newTime);
   };
 
   useEffect(() => {
@@ -42,6 +42,10 @@ const TimeInput = ({ label, onChange }: TimeInputProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    onChange(`${time.hour}:${time.minute}`);
+  }, [time]);
+
   return (
     <div className="relative" ref={dropdownRef}>
       <label className="flex w-auto flex-col gap-2 text-base font-medium leading-[26px] md:text-xl md:leading-8">
@@ -49,7 +53,7 @@ const TimeInput = ({ label, onChange }: TimeInputProps) => {
         <input
           className="h-11 w-[80px] min-w-20 rounded border border-gray08 px-3 text-sm leading-6 outline-green02 md:h-14 md:w-[110px] md:px-4 md:text-base md:leading-[26px] xl:w-[140px]"
           placeholder="00:00"
-          value={`${time.hour}:${time.minute}` || ""}
+          value={value}
           readOnly
           onClick={toggleDropdown}
         />
@@ -60,7 +64,7 @@ const TimeInput = ({ label, onChange }: TimeInputProps) => {
           <div className="h-full w-1/2 overflow-scroll [&::-webkit-scrollbar]:hidden">
             {hours.map((hour) => (
               <li
-                className={`flex h-7 select-none items-center justify-center rounded hover:bg-green02 hover:text-white ${time.hour === hour && "bg-green02 text-white"}`}
+                className={`flex h-7 select-none items-center justify-center rounded hover:bg-green01 hover:text-white ${time.hour === hour && "bg-green02 text-white"}`}
                 key={hour}
                 onClick={() => handleSelect("hour", hour)}
               >
@@ -71,7 +75,7 @@ const TimeInput = ({ label, onChange }: TimeInputProps) => {
           <div className="h-full w-1/2 overflow-scroll [&::-webkit-scrollbar]:hidden">
             {minutes.map((minute) => (
               <li
-                className={`flex h-7 select-none items-center justify-center rounded hover:bg-green02 hover:text-white ${time.minute === minute && "bg-green02 text-white"}`}
+                className={`flex h-7 select-none items-center justify-center rounded hover:bg-green01 hover:text-white ${time.minute === minute && "bg-green02 text-white"}`}
                 key={minute}
                 onClick={() => handleSelect("minute", minute)}
               >
