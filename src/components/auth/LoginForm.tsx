@@ -17,7 +17,7 @@ const LoginForm = () => {
     reset,
   } = useForm<Login>({
     resolver: zodResolver(LoginSchema),
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   const onSubmit: SubmitHandler<Login> = async (data) => {
