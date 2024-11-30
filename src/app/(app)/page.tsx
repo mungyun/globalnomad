@@ -5,7 +5,7 @@ import Banner from "@/app/(app)/components/Banner";
 import BestActivities from "@/app/(app)/components/BestActivities";
 import SearchBar from "@/app/(app)/components/SearchBar";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Categories from "./components/Categories";
 
 const Home = () => {
@@ -28,14 +28,15 @@ const Home = () => {
     <div className="bg-gray01">
       <Banner />
       <div className="relative mx-auto max-w-[1200px] pb-[120px] pt-[93px] md:pt-[142px] xl:pt-[158px]">
-        <SearchBar />
-        {query ? "" : <BestActivities />}
-        <div className="px-4 md:px-6 xl:px-0">
-          {/* gap 조절 */}
-          <Categories category={category} setCategory={setCategory} query={query} />
-
-          <AllActivities category={category} keyword={query} />
-        </div>
+        <Suspense>
+          <SearchBar />
+          {query ? "" : <BestActivities />}
+          <div className="px-4 md:px-6 xl:px-0">
+            {/* gap 조절 */}
+            <Categories category={category} setCategory={setCategory} query={query} />
+            <AllActivities category={category} keyword={query} />
+          </div>
+        </Suspense>
       </div>
     </div>
   );
