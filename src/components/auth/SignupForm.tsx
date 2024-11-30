@@ -13,7 +13,7 @@ const SignupForm = () => {
     formState: { errors, isValid, isSubmitting },
   } = useForm<Signup>({
     resolver: zodResolver(SignupSchema),
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
