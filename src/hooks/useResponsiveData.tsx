@@ -35,6 +35,7 @@ const useResponsiveData = ({
   let filteredData: ActivityItem[];
   if (keyword) {
     filteredData = activities.filter((activity) => activity.title.includes(keyword));
+    category = "";
   } else if (category) {
     filteredData = activities.filter((activity) => activity.category === category);
   } else {
