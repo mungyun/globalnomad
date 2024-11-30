@@ -1,5 +1,33 @@
-// mockData.ts
-export const mockReservations = {
+import { ReservationStatus } from "@/types/types";
+
+interface MockReservation {
+  activity: {
+    id: number;
+    title: string;
+    bannerImageUrl: string;
+  };
+  scheduleId: number;
+  id: number;
+  teamId: string;
+  userId: number;
+  status: ReservationStatus;
+  reviewSubmitted: boolean;
+  totalPrice: number;
+  headCount: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface MockReservationsData {
+  totalCount: number;
+  reservations: MockReservation[];
+  cursorId: number | null;
+}
+
+export const mockReservations: MockReservationsData = {
   totalCount: 10,
   reservations: [
     {
@@ -25,7 +53,7 @@ export const mockReservations = {
     {
       activity: {
         id: 992,
-        title: "놀러와아아~ 강아지의 숲dddddddddddddd",
+        title: "놀러와아아~ 강아지의 숲",
         bannerImageUrl: "/images/0.jpg",
       },
       scheduleId: 5015,
