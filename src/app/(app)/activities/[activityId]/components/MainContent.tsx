@@ -3,13 +3,10 @@
 import { getActivityDetail } from "@/lib/api/Activities";
 import { ActivityDetail } from "@/types/ActiviteyType";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
 import CommentList from "./CommentList";
 import KakaoMap from "./KakaoMap";
 
-const MainContent = () => {
-  const params = useParams();
-  const id = Number(params.activityId);
+const MainContent = ({ id }: { id: number }) => {
   const {
     data: activityDetail,
     isPending,

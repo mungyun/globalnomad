@@ -5,14 +5,11 @@ import { getActivityDetail } from "@/lib/api/Activities";
 import { ActivityDetail } from "@/types/ActiviteyType";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useParams } from "next/navigation";
 import Carousel from "./Carousel";
 import Dropdown from "./Dropdown";
 
-const Banner = () => {
+const Banner = ({ id }: { id: number }) => {
   const deviceType = useDeviceType();
-  const params = useParams();
-  const id = Number(params.activityId);
 
   const {
     data: activityDetail,
@@ -20,7 +17,7 @@ const Banner = () => {
     isError,
   } = useQuery<ActivityDetail, Error>({
     queryKey: ["activityDetail", id],
-    queryFn: () => getActivityDetail(id),
+    queryFn: () => getActivityDetail(Number(id)),
     enabled: !!id,
     staleTime: 60 * 5 * 1000, // 5분에 한 번씩 데이터 교체
   });
