@@ -21,7 +21,8 @@ const Banner = () => {
   } = useQuery<ActivityDetail, Error>({
     queryKey: ["activityDetail", id],
     queryFn: () => getActivityDetail(id),
-    enabled: !!id, // id가 있을 때만 쿼리 실행
+    enabled: !!id,
+    staleTime: 60 * 5 * 1000, // 5분에 한 번씩 데이터 교체
   });
 
   if (isPending) {
@@ -33,7 +34,7 @@ const Banner = () => {
   }
 
   if (!activityDetail) {
-    return <div>활동을 찾을 수 없습니다.</div>; // 데이터가 없을 때 표시
+    return <div>활동을 찾을 수 없습니다.</div>;
   }
 
   const { category, title, rating, reviewCount, address, bannerImageUrl, subImages } = activityDetail;
