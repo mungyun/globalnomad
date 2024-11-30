@@ -16,11 +16,13 @@ export const postSignUp = async ({
       return res.data;
     }
   } catch (error: unknown) {
-    // AxiosError인지 확인하는 타입 가드
     if (isAxiosError(error)) {
+      if (error.response?.status === 400) {
+        throw new Error("이메일 형식으로 작성해주세요.");
+      }
+
       if (error.response?.status === 409) {
-        console.error("중복된 이메일입니다.");
-        return { message: "중복된 이메일입니다.", status: 409 };
+        throw new Error("중복된 이메일입니다.");
       }
     }
     // 기타 에러 처리
