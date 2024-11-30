@@ -1,10 +1,10 @@
-import { PostActivities } from "@/types/ActiviteyType";
+import { ActiviteForm } from "@/types/ActiviteyType";
 import { InputHTMLAttributes } from "react";
 import { UseFormRegister } from "react-hook-form";
 import { FiPlus } from "react-icons/fi";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  register: UseFormRegister<PostActivities>;
+  register: UseFormRegister<ActiviteForm>;
   name: "bannerImageFile" | "subImageFiles";
 }
 

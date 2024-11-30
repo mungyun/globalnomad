@@ -1,9 +1,11 @@
 import { z } from "zod";
-import { EmailSchema, NicknameSchema, PasswordSchema, QuerySchema } from "./commonSchema";
+import { EmailSchema, NicknameSchema, SimplifyPasswordSchema } from "./commonSchema";
 
+// 개발의 편의성을 위해 비밀번호 규칙 간소화 -> 배포 시 수정 필요
 export const LoginSchema = z.object({
   email: EmailSchema,
-  password: PasswordSchema,
+  // password: PasswordSchema,
+  password: SimplifyPasswordSchema,
 });
 
 export type Login = z.infer<typeof LoginSchema>;
@@ -12,7 +14,8 @@ export const SignupSchema = z
   .object({
     email: EmailSchema,
     nickname: NicknameSchema,
-    password: PasswordSchema,
+    // password: PasswordSchema,
+    password: SimplifyPasswordSchema,
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -21,9 +24,3 @@ export const SignupSchema = z
   });
 
 export type Signup = z.infer<typeof SignupSchema>;
-
-export const SearchSchema = z.object({
-  query: QuerySchema,
-});
-
-export type Query = z.infer<typeof SearchSchema>;

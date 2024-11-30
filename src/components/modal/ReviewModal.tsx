@@ -3,7 +3,7 @@
 import formatPrice from "@/utils/formatPrice";
 import Image from "next/image";
 import { AiOutlineClose } from "react-icons/ai";
-import { mockReservations } from "../mockData";
+import { mockReservations } from "../../app/(app)/my/reservation/components/mockData";
 import RenderStars from "./RenderStars";
 
 // interface ReviewModalProps {

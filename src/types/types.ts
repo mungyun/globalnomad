@@ -65,6 +65,8 @@ export interface User {
 }
 
 // 예약내역 데이터를 정의하는 타입
+export type ReservationStatus = "pending" | "cancelled" | "confirmed" | "refused" | "completed";
+
 export interface ReservationList {
   id: number;
   activity: {
@@ -76,7 +78,7 @@ export interface ReservationList {
   endTime: string;
   headCount: number;
   totalPrice: number;
-  status: string;
+  status: ReservationStatus;
 }
 
 // 체험관리 데이터를 정의하는 타입
@@ -94,24 +96,3 @@ export interface ActivityList {
   createdAt: string;
   updatedAt: string;
 }
-
-export interface ActivityItem {
-  id: number;
-  userId: number;
-  title: string;
-  description: string;
-  category: "문화 · 예술" | "교육 · 학습" | "스포츠" | "식음료" | "투어 · 관광" | "게임 · 취미";
-  price: number;
-  address: string;
-  bannerImageUrl: string;
-  rating: number;
-  reviewCount: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export type Activities = {
-  cursorId: number;
-  totalCount: number;
-  activities: ActivityItem[];
-};

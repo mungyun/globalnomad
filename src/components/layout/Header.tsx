@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import HeaderDropdown from "../dropdown/HeaderDropdown";
+import Notification from "./Notification";
 
 const Header = () => {
   const user: User = {
@@ -14,7 +15,6 @@ const Header = () => {
     createdAt: "2024-11-18T19:46:59.369Z",
     updatedAt: "2024-11-23T14:19:30.749Z",
   };
-  const isLoggedIn = !!user;
 
   return (
     <div className="h-[70px] w-full border-b border-gray03 p-5">
@@ -23,11 +23,9 @@ const Header = () => {
           <Image src="/icons/logo_md.svg" fill priority alt="로고 아이콘" />
         </Link>
 
-        {isLoggedIn ? (
+        {user ? (
           <div className="flex items-center gap-3 md:gap-[25px]">
-            <div className="relative size-5">
-              <Image src="/icons/Icon_notification.svg" alt="알림 아이콘" fill />
-            </div>
+            <Notification />
 
             <div className="h-[22px] w-[1px] bg-gray03"></div>
 

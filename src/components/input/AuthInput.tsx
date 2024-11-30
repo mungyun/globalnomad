@@ -3,10 +3,16 @@ import { InputHTMLAttributes, useState } from "react";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
+  labelStyle?: "small" | "large";
   errors?: string;
 }
 
-const AuthInput = ({ label, errors, ...props }: InputProps) => {
+const LABEL_STYLES = {
+  small: "text-base font-normal",
+  large: "text-2xl font-bold gap-5 mt-5",
+} as const;
+
+const AuthInput = ({ label, labelStyle = "small", errors, ...props }: InputProps) => {
   const [inputType, setInputType] = useState(props.type || "text");
 
   const togglePasswordVisibility = () => {
@@ -15,7 +21,7 @@ const AuthInput = ({ label, errors, ...props }: InputProps) => {
 
   const errorClass = "border-red03";
   return (
-    <label className="flex flex-col gap-2 text-base leading-[26px] text-black03">
+    <label className={`flex flex-col gap-2 leading-[26px] text-black03 ${LABEL_STYLES[labelStyle]}`}>
       {label}
       <div className="relative">
         <input

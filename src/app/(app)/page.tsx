@@ -4,8 +4,6 @@ import AllActivities from "@/app/(app)/components/AllActivities";
 import Banner from "@/app/(app)/components/Banner";
 import BestActivities from "@/app/(app)/components/BestActivities";
 import SearchBar from "@/app/(app)/components/SearchBar";
-import { mockData } from "@/app/(app)/components/mockdata";
-import Pagination from "@/components/Pagination";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Categories from "./components/Categories";
@@ -37,8 +35,6 @@ const Home = () => {
           <Categories category={category} setCategory={setCategory} query={query} />
 
           <AllActivities category={category} keyword={query} />
-
-          <Pagination totalCount={mockData.totalCount} itemsPerPage={4} />
         </div>
       </div>
     </div>

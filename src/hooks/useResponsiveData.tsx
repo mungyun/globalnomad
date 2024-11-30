@@ -1,5 +1,5 @@
 import { mockData } from "@/app/(app)/components/mockdata";
-import { ActivityItem } from "@/types/types";
+import { ActivityItem } from "@/types/ActiviteyType";
 import { useEffect, useState } from "react";
 import useDeviceType from "./useDeviceType";
 
@@ -12,11 +12,14 @@ interface useResponsiveDataProps {
 
 interface UseResponsiveData {
   data: ActivityItem[];
+  pageData: ActivityItem[];
   prevPage: () => void;
   nextPage: () => void;
+  setPage: (page: number) => void;
   deviceType: "mobile" | "tablet" | "desktop";
   page: number;
   cursor: number | null;
+  totalCount: number;
 }
 
 const useResponsiveData = ({
@@ -26,6 +29,7 @@ const useResponsiveData = ({
   sort = "latest",
 }: useResponsiveDataProps): UseResponsiveData => {
   const [data, setData] = useState<ActivityItem[]>([]);
+  const [pageData, setPageData] = useState<ActivityItem[]>([]);
   const [page, setPage] = useState<number>(1);
   const [cursor, setCursor] = useState<number | null>(0);
 
@@ -65,6 +69,7 @@ const useResponsiveData = ({
 
     const newItems = sortedData.slice(startIndex, endIndex);
 
+    setPageData(newItems);
     setData((prev) => {
       const existingIds = new Set(prev.map((item) => item.id));
       const filteredItems = newItems.filter((item) => !existingIds.has(item.id));
@@ -97,7 +102,7 @@ const useResponsiveData = ({
     loadData();
   }, [category, sort]);
 
-  return { data, prevPage, nextPage, deviceType, page, cursor };
+  return { data, pageData, prevPage, nextPage, setPage, deviceType, page, cursor, totalCount };
 };
 
 export default useResponsiveData;

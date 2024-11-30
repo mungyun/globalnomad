@@ -25,3 +25,13 @@ export const NicknameSchema = z
 
 // 검색어 스키마
 export const QuerySchema = z.string().min(1);
+
+// 개발 환경: 간소화된 비밀번호 정규 표현식 (regex)
+const simplifyPasswordRegex = /^(?=.*[a-z])(?=.*\d)[a-z\d]{8,}$/;
+
+// 개발 환경: 간소화된 비밀번호 스키마
+export const SimplifyPasswordSchema = z
+  .string()
+  .min(8, "비밀번호는 8자 이상이어야 합니다.")
+  .max(32, "비밀번호는 최대 32자까지 가능합니다.")
+  .regex(simplifyPasswordRegex, "영문 소문자, 숫자를 모두 포함해야 합니다.");

@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-sync-scripts */
-import Header from "@/components/layout/Header";
 import "@/styles/globals.css";
 
 export default function RootLayout({
@@ -10,7 +9,6 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <Header />
         {children}
         <script
           type="text/javascript"
