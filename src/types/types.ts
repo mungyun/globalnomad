@@ -65,6 +65,8 @@ export interface User {
 }
 
 // 예약내역 데이터를 정의하는 타입
+export type ReservationStatus = "pending" | "cancelled" | "confirmed" | "refused" | "completed";
+
 export interface ReservationList {
   id: number;
   activity: {
@@ -76,7 +78,7 @@ export interface ReservationList {
   endTime: string;
   headCount: number;
   totalPrice: number;
-  status: string;
+  status: ReservationStatus;
 }
 
 // 체험관리 데이터를 정의하는 타입
