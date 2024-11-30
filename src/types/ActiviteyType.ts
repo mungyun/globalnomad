@@ -39,3 +39,27 @@ export interface PatchActivites {
 }
 
 export type ActiviteForm = PostActivities | PatchActivites;
+
+interface SubImage {
+  id: number;
+  imageUrl: string;
+}
+
+// 체험 상세 타입
+
+export interface ActivityDetail {
+  id: number;
+  userId: number;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  address: string;
+  bannerImageUrl: string;
+  subImages: SubImage[];
+  schedules: Schedule[];
+  reviewCount: number;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
+}
