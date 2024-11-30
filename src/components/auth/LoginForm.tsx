@@ -3,11 +3,13 @@
 import { postLogin } from "@/lib/api/Auth";
 import { Login, LoginSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../Button";
 import AuthInput from "../input/AuthInput";
 
 const LoginForm = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -19,8 +21,14 @@ const LoginForm = () => {
   });
 
   const onSubmit: SubmitHandler<Login> = async (data) => {
-    await postLogin(data);
-    reset();
+    try {
+      await postLogin(data); // 로그인 요청
+      router.push("/"); // 로그인 성공 시 로그인 페이지로 리다이렉트
+    } catch (error) {
+      console.error("로그인 중 오류 발생", error);
+    } finally {
+      reset();
+    }
   };
 
   return (
