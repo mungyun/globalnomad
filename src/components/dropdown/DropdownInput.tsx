@@ -1,9 +1,9 @@
 "use client";
 
+import LabelInput from "@/components/input/LabelInput";
 import { useEffect, useRef, useState } from "react";
 import { GoCheck } from "react-icons/go";
 import { IoIosArrowDown } from "react-icons/io";
-import LabelInput from "../input/LabelInput";
 
 interface DropdownInputProps {
   setValue: (value: string) => void;
