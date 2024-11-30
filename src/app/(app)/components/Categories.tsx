@@ -1,3 +1,5 @@
+"use client";
+
 import Dropdown from "@/components/dropdown/Dropdown";
 import useDeviceType from "@/hooks/useDeviceType";
 import { Dispatch, SetStateAction } from "react";

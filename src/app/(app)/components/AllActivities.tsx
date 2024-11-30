@@ -1,3 +1,5 @@
+"use client";
+
 import Pagination from "@/components/Pagination";
 import useResponsiveData from "@/hooks/useResponsiveData";
 import formatPrice from "@/utils/formatPrice";
