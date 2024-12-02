@@ -11,7 +11,6 @@ export const getActivityDetail = async (id: number) => {
 };
 
 // 체험 예약 신청
-
 export const postReservation = async ({
   activityId,
   scheduleId,
@@ -26,5 +25,23 @@ export const postReservation = async ({
     return response.data;
   } catch (error) {
     console.error("체험 예약 신청 오류: ", error);
+  }
+};
+
+// 체험 리뷰 조회
+export const getReviews = async ({
+  activityId,
+  page = 1,
+  size = 3,
+}: {
+  activityId: number;
+  page?: number;
+  size?: number;
+}) => {
+  try {
+    const response = await axiosInstance.get(`/activities/${activityId}/reviews?page=${page}&size=${size}`);
+    return response.data;
+  } catch (error) {
+    console.error("체험 리뷰 조회 오류: ", error);
   }
 };

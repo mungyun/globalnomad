@@ -42,7 +42,7 @@ const MainContent = ({ id }: { id: number }) => {
         <div className="z-0 pt-4 md:border-b md:border-b-gray08 md:py-10">
           <KakaoMap address={address} />
         </div>
-        <CommentList />
+        <CommentList activityId={id} />
       </div>
     </div>
   );

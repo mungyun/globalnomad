@@ -1,15 +1,41 @@
 "use client";
 
 import Pagination from "@/components/Pagination";
+import { getReviews } from "@/lib/api/Activities";
+import { ReviewData } from "@/types/ActiviteyType";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useState } from "react";
 import CommentItem from "./CommentItem";
-import { reviewMockData } from "./mockdata";
 
-const CommentList = () => {
-  const { averageRating, totalCount, reviews } = reviewMockData;
+const CommentList = ({ activityId }: { activityId: number }) => {
   const [page, setPage] = useState(1);
+  const {
+    data: reviewData,
+    isLoading,
+    error,
+  } = useQuery<ReviewData, Error>({
+    queryKey: ["reviewData", activityId],
+    queryFn: () => getReviews({ activityId: Number(activityId) }),
+    enabled: !!activityId,
+    staleTime: 60 * 5 * 1000,
+  });
 
+  // 로딩 상태 처리
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  // 오류 처리
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (!reviewData) {
+    return <div>리뷰 데이터가 없습니다.</div>;
+  }
+
+  const { averageRating, totalCount, reviews } = reviewData;
   return (
     <div className="mt-10">
       <h3 className="mb-6 text-[18px] font-bold">후기</h3>
@@ -23,13 +49,17 @@ const CommentList = () => {
           </div>
         </div>
       </div>
-      <ul>
-        {reviews.map((item) => (
-          <li key={item.id}>
-            <CommentItem item={item} />
-          </li>
-        ))}
-      </ul>
+      {reviews.length === 0 ? (
+        <p className="h-[100px] text-[18px]">등록된 리뷰가 없습니다.</p>
+      ) : (
+        <ul>
+          {reviews.map((item) => (
+            <li key={item.id}>
+              <CommentItem item={item} />
+            </li>
+          ))}
+        </ul>
+      )}
       <Pagination totalCount={totalCount} currentPage={page} setCurrentPage={setPage} />
     </div>
   );

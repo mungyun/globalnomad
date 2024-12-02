@@ -63,3 +63,25 @@ export interface ActivityDetail {
   createdAt: string;
   updatedAt: string;
 }
+
+interface User {
+  profileImageUrl: string;
+  nickname: string;
+  id: number;
+}
+
+interface Review {
+  id: number;
+  user: User;
+  activityId: number;
+  rating: number;
+  content: string;
+  createdAt: string; // ISO 형식의 날짜
+  updatedAt: string; // ISO 형식의 날짜
+}
+
+export interface ReviewData {
+  averageRating: number;
+  totalCount: number;
+  reviews: Review[];
+}
