@@ -12,7 +12,7 @@ const Banner = ({ id }: { id: number }) => {
   const deviceType = useDeviceType();
 
   const {
-    data: activityDetail,
+    data: activityDetailData,
     isPending,
     isError,
   } = useQuery<ActivityDetail, Error>({
@@ -30,11 +30,11 @@ const Banner = ({ id }: { id: number }) => {
     return <div>활동을 가져오는 데 실패했습니다.</div>;
   }
 
-  if (!activityDetail) {
+  if (!activityDetailData) {
     return <div>활동을 찾을 수 없습니다.</div>;
   }
 
-  const { category, title, rating, reviewCount, address, bannerImageUrl, subImages } = activityDetail;
+  const { category, title, rating, reviewCount, address, bannerImageUrl, subImages } = activityDetailData;
 
   // 배너 이미지와 보조 이미지를 하나의 배열로 준비
   const images = [

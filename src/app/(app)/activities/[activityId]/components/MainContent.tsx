@@ -8,11 +8,11 @@ import KakaoMap from "./KakaoMap";
 
 const MainContent = ({ id }: { id: number }) => {
   const {
-    data: activityDetail,
+    data: activityDetailData,
     isPending,
     isError,
   } = useQuery<ActivityDetail, Error>({
-    queryKey: ["activityDetail", id],
+    queryKey: ["activityDetailData", id],
     queryFn: () => getActivityDetail(id),
     enabled: !!id,
     staleTime: 60 * 5 * 1000, // 5분에 한 번씩 데이터 교체
@@ -26,11 +26,11 @@ const MainContent = ({ id }: { id: number }) => {
     return <div>활동을 가져오는 데 실패했습니다.</div>;
   }
 
-  if (!activityDetail) {
+  if (!activityDetailData) {
     return <div>활동을 찾을 수 없습니다.</div>;
   }
 
-  const { description, address } = activityDetail;
+  const { description, address } = activityDetailData;
 
   return (
     <div>

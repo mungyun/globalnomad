@@ -11,7 +11,7 @@ const ActivityDetailPage = async ({ params }: { params: Promise<{ activityId: st
       <Banner id={Number(activityId)} />
       <div className="relative flex pb-48 xl:gap-6">
         <MainContent id={Number(activityId)} />
-        <SideBar />
+        <SideBar id={Number(activityId)} />
       </div>
     </div>
   );

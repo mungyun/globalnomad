@@ -1,14 +1,10 @@
 "use client";
 
 import "@/styles/ActivityCalender.css";
+import { Schedule } from "@/types/types";
+import { formatToLocalDateString, isDateAvailable } from "@/utils/calendarUtils";
 import React, { useState } from "react";
 import Calendar from "react-calendar";
-
-interface Schedule {
-  date: string;
-  startTime: string;
-  endTime: string;
-}
 
 interface ActivityCalendarProps {
   schedules: Schedule[];
@@ -27,25 +23,20 @@ const TimeSlot = ({ time, isSelected, onClick }: { time: string; isSelected: boo
 
 const ActivityCalendar: React.FC<ActivityCalendarProps> = ({ schedules }) => {
   const [timeList, setTimeList] = useState<string[]>([]);
-  const [selectedTime, setSelectedTime] = useState<string | null>(null); // 선택된 시간 상태
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
-  const getAvailableDates = () => schedules.map((schedule) => schedule.date);
+  const handleDateClick = (date: Date): void => {
+    const localFormattedDate = formatToLocalDateString(date);
 
-  const isDateAvailable = (date: Date) => {
-    const formattedDate = date.toISOString().split("T")[0];
-    return getAvailableDates().includes(formattedDate);
-  };
-
-  const handleDateClick = (date: Date) => {
-    const formattedDate = date.toISOString().split("T")[0];
     const times = schedules
-      .filter((schedule) => schedule.date === formattedDate)
+      .filter((schedule) => schedule.date === localFormattedDate)
       .map((schedule) => `${schedule.startTime} ~ ${schedule.endTime}`);
+
     setTimeList(times);
     setSelectedTime(null);
   };
 
-  const handleTimeClick = (time: string) => {
+  const handleTimeClick = (time: string): void => {
     setSelectedTime(time);
   };
 
@@ -54,7 +45,7 @@ const ActivityCalendar: React.FC<ActivityCalendarProps> = ({ schedules }) => {
       <div className="mb-4 flex h-full justify-center">
         <Calendar
           onClickDay={handleDateClick}
-          tileClassName={({ date }) => (isDateAvailable(date) ? "text-black02" : "text-gray06")}
+          tileClassName={({ date }) => (isDateAvailable(date, schedules) ? "text-black02" : "text-gray06")}
           className="w-full rounded-md border border-gray03"
           minDate={new Date()}
           locale="en-US"

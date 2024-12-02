@@ -1,16 +1,17 @@
 "use client";
 
 import useDeviceType from "@/hooks/useDeviceType";
+import { getActivityDetail } from "@/lib/api/Activities";
 import { Schedule } from "@/types/types";
 import formatPrice from "@/utils/formatPrice";
+import { useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import React, { useState } from "react";
 import DateModal from "./DateModal";
-import { mockData } from "./mockdata";
 
 // 동적 import로 Calendar 컴포넌트 불러오기
-const CalendarComponent = dynamic(() => import("./ActivityCalendar"), { ssr: false });
+const ActivityCalendar = dynamic(() => import("./ActivityCalendar"), { ssr: false });
 
 const titleStyle = "font-bold text-black02";
 
@@ -41,7 +42,7 @@ const DateSelector = ({
   onOpenModal: () => void;
 }) => {
   if (deviceType === "desktop") {
-    return <CalendarComponent schedules={schedules} />;
+    return <ActivityCalendar schedules={schedules} />;
   } else if (deviceType === "tablet" || deviceType === "mobile") {
     return (
       <button className="mb-[27px] text-[16px] font-semibold" onClick={onOpenModal} aria-label="날짜 선택하기 버튼">
@@ -51,11 +52,31 @@ const DateSelector = ({
   }
 };
 
-const SideBar = () => {
-  const { price, schedules } = mockData;
+const SideBar = ({ id }: { id: number }) => {
+  const deviceType = useDeviceType();
   const [partyNum, setPartyNum] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const deviceType = useDeviceType();
+  const {
+    data: activityDetailData,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ["activityDetailData", id],
+    queryFn: () => getActivityDetail(id),
+    enabled: !!id,
+    staleTime: 60 * 5 * 1000,
+  });
+
+  if (isPending) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (isError) {
+    return <div>활동을 가져오는 데 실패했습니다.</div>;
+  }
+
+  const { price, schedules } = activityDetailData;
+  console.log(schedules);
 
   return deviceType !== "mobile" ? (
     <div className="relative top-20 rounded-xl border border-gray02 p-6 shadow-md transition-all md:sticky md:h-[423px] md:w-[251px] md:min-w-[251px] xl:h-full xl:w-[384px]">
