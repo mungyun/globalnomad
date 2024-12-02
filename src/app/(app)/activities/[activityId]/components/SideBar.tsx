@@ -59,6 +59,7 @@ const SideBar = ({ id }: { id: number }) => {
   const [partyNum, setPartyNum] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedId, setSelectedId] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
     data: activityDetailData,
@@ -80,6 +81,17 @@ const SideBar = ({ id }: { id: number }) => {
   }
 
   const { price, schedules } = activityDetailData;
+
+  const handleSubmit = async () => {
+    try {
+      setIsLoading(true);
+      await postReservation({ activityId: id, scheduleId: selectedId, headCount: partyNum });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return deviceType !== "mobile" ? (
     <div className="relative top-20 rounded-xl border border-gray02 p-6 shadow-md transition-all md:sticky md:h-[423px] md:w-[251px] md:min-w-[251px] xl:h-full xl:w-[384px]">
@@ -113,8 +125,9 @@ const SideBar = ({ id }: { id: number }) => {
           <h4 className={`mb-2 text-[18px] ${titleStyle}`}>참여 인원 수</h4>
           <PartyNumberSelector partyNum={partyNum} setPartyNum={setPartyNum} />
           <button
-            onClick={() => postReservation({ activityId: id, scheduleId: selectedId, headCount: partyNum })}
+            onClick={handleSubmit}
             className="h-[56px] w-full rounded bg-black02 text-[16px] font-bold text-white md:mt-8 xl:mt-6"
+            disabled={isLoading}
           >
             예약하기
           </button>
