@@ -1,3 +1,14 @@
-export default function Home() {
-  return <div>메인 페이지</div>;
-}
+"use client";
+
+import { Suspense } from "react";
+import MainPage from "./components/MainPage";
+
+const Home = () => {
+  return (
+    <Suspense>
+      <MainPage />
+    </Suspense>
+  );
+};
+
+export default Home;
