@@ -1,0 +1,8 @@
+.Toastify__toast {
+  border-radius: 14px;
+}
+
+.Toastify__toast:hover {
+  transform: translateY(-4px);
+  transition: transform 0.2s ease;
+}

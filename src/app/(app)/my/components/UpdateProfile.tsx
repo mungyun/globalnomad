@@ -69,7 +69,7 @@ const UpdateProfile = () => {
   };
 
   return (
-    <section className="flex w-full max-w-[800px] flex-col">
+    <section className="flex h-screen w-full max-w-[800px] flex-col">
       <header className="mb-2 flex justify-between">
         <h2 className="text-[32px] font-bold"> 내 정보</h2>
         <button
