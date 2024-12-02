@@ -1,0 +1,22 @@
+.Toastify__toast {
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color:#0B3B2D;
+    color: #fff;
+    font-weight: 600;
+  }
+
+.Toastify__progress-bar {
+    height: 3px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3));
+}
+
+  .Toastify__close-button {
+    color: #fff;
+    opacity: 0.7;
+}
+
+.Toastify__toast:hover {
+    transform: translateY(-4px);
+    transition: transform 0.2s ease;
+}
