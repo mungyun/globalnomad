@@ -48,7 +48,7 @@ const Banner = ({ id }: { id: number }) => {
         <span className="mb-[10px] text-[14px] text-black02">{category}</span>
         <div className="mb-4 flex justify-between">
           <h2 className="text-[24px] font-bold text-black02 md:text-[32px]">{title}</h2>
-          <Dropdown />
+          <Dropdown id={id} />
         </div>
         <div className="mb-[25px] flex gap-3">
           <div className="flex gap-[6px]">
