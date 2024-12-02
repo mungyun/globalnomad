@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-sync-scripts */
-import ToastProvider from "@/components/toast/ToastProvider";
+import { ToastProvider } from "@/components/toast/ToastProvider";
 import "@/styles/globals.css";
 
 export default function RootLayout({
