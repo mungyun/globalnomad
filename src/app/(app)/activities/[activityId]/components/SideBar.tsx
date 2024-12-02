@@ -1,7 +1,7 @@
 "use client";
 
 import useDeviceType from "@/hooks/useDeviceType";
-import { getActivityDetail } from "@/lib/api/Activities";
+import { getActivityDetail, postReservation } from "@/lib/api/Activities";
 import { Schedule } from "@/types/types";
 import formatPrice from "@/utils/formatPrice";
 import { useQuery } from "@tanstack/react-query";
@@ -36,13 +36,15 @@ const DateSelector = ({
   deviceType,
   schedules,
   onOpenModal,
+  onChange,
 }: {
   deviceType: string;
   schedules: Schedule[];
   onOpenModal: () => void;
+  onChange: (id: number) => void;
 }) => {
   if (deviceType === "desktop") {
-    return <ActivityCalendar schedules={schedules} />;
+    return <ActivityCalendar schedules={schedules} onChange={(id) => onChange(id)} />;
   } else if (deviceType === "tablet" || deviceType === "mobile") {
     return (
       <button className="mb-[27px] text-[16px] font-semibold" onClick={onOpenModal} aria-label="날짜 선택하기 버튼">
@@ -56,6 +58,8 @@ const SideBar = ({ id }: { id: number }) => {
   const deviceType = useDeviceType();
   const [partyNum, setPartyNum] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedId, setSelectedId] = useState<number>(0);
+
   const {
     data: activityDetailData,
     isPending,
@@ -76,7 +80,6 @@ const SideBar = ({ id }: { id: number }) => {
   }
 
   const { price, schedules } = activityDetailData;
-  console.log(schedules);
 
   return deviceType !== "mobile" ? (
     <div className="relative top-20 rounded-xl border border-gray02 p-6 shadow-md transition-all md:sticky md:h-[423px] md:w-[251px] md:min-w-[251px] xl:h-full xl:w-[384px]">
@@ -89,7 +92,12 @@ const SideBar = ({ id }: { id: number }) => {
         <label htmlFor="calendar" className={`block text-[20px] md:pb-[5px] md:pt-[13px] xl:py-4 ${titleStyle}`}>
           날짜
         </label>
-        <DateSelector deviceType={deviceType} schedules={schedules} onOpenModal={() => setIsModalOpen(true)} />
+        <DateSelector
+          deviceType={deviceType}
+          schedules={schedules}
+          onChange={(id) => setSelectedId(id)}
+          onOpenModal={() => setIsModalOpen(true)}
+        />
       </div>
       {/* 날짜 선택 모달 */}
       <DateModal
@@ -104,7 +112,10 @@ const SideBar = ({ id }: { id: number }) => {
         <div className="border-b border-b-gray03 pb-6 md:mb-4 xl:mb-6 xl:mt-4">
           <h4 className={`mb-2 text-[18px] ${titleStyle}`}>참여 인원 수</h4>
           <PartyNumberSelector partyNum={partyNum} setPartyNum={setPartyNum} />
-          <button className="h-[56px] w-full rounded bg-black02 text-[16px] font-bold text-white md:mt-8 xl:mt-6">
+          <button
+            onClick={() => postReservation({ activityId: id, scheduleId: selectedId, headCount: partyNum })}
+            className="h-[56px] w-full rounded bg-black02 text-[16px] font-bold text-white md:mt-8 xl:mt-6"
+          >
             예약하기
           </button>
         </div>

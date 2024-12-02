@@ -16,7 +16,7 @@ const Banner = ({ id }: { id: number }) => {
     isPending,
     isError,
   } = useQuery<ActivityDetail, Error>({
-    queryKey: ["activityDetail", id],
+    queryKey: ["activityDetailData", id],
     queryFn: () => getActivityDetail(Number(id)),
     enabled: !!id,
     staleTime: 60 * 5 * 1000, // 5분에 한 번씩 데이터 교체
@@ -74,10 +74,10 @@ const Banner = ({ id }: { id: number }) => {
             alt="배너 이미지"
             width={375}
             height={310}
-            className="h-full w-full object-cover md:max-h-[534px] md:max-w-[50%] md:rounded-l-xl"
+            className="h-full w-full object-cover md:max-h-[534px] md:rounded-l-xl"
           />
           {/* 보조 이미지 그리드 */}
-          <div className="rounded-r-xl md:grid md:grid-cols-2 md:grid-rows-2 md:gap-1 xl:gap-2">
+          <div className="h-full w-full rounded-r-xl sm:max-h-[310px] md:grid md:max-h-[534px] md:grid-cols-2 md:grid-rows-2 md:gap-1 xl:gap-2">
             {subImages.map((item) => (
               <Image
                 src={item.imageUrl}
@@ -85,7 +85,7 @@ const Banner = ({ id }: { id: number }) => {
                 width={375}
                 height={310}
                 key={item.id}
-                className="h-full w-full object-cover md:max-h-[263px] md:max-w-[293px]"
+                className="h-full w-full overflow-hidden object-cover md:max-h-[263px]"
               />
             ))}
           </div>

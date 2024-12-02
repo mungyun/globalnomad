@@ -8,6 +8,7 @@ import Calendar from "react-calendar";
 
 interface ActivityCalendarProps {
   schedules: Schedule[];
+  onChange: (id: number) => void;
 }
 
 const TimeSlot = ({ time, isSelected, onClick }: { time: string; isSelected: boolean; onClick: () => void }) => (
@@ -21,23 +22,32 @@ const TimeSlot = ({ time, isSelected, onClick }: { time: string; isSelected: boo
   </li>
 );
 
-const ActivityCalendar: React.FC<ActivityCalendarProps> = ({ schedules }) => {
+const ActivityCalendar = ({ schedules, onChange }: ActivityCalendarProps) => {
   const [timeList, setTimeList] = useState<string[]>([]);
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string>("null");
 
   const handleDateClick = (date: Date): void => {
     const localFormattedDate = formatToLocalDateString(date);
 
     const times = schedules
       .filter((schedule) => schedule.date === localFormattedDate)
-      .map((schedule) => `${schedule.startTime} ~ ${schedule.endTime}`);
+      .map((schedule) => ({
+        time: `${schedule.startTime} ~ ${schedule.endTime}`,
+        id: schedule.id,
+      }));
 
-    setTimeList(times);
-    setSelectedTime(null);
+    setTimeList(times.map((time) => time.time));
+    setSelectedTime("");
   };
 
   const handleTimeClick = (time: string): void => {
-    setSelectedTime(time);
+    // 선택된 시간에 해당하는 id를 찾아서 selectedId에 저장
+    const selectedSchedule = schedules.find((schedule) => `${schedule.startTime} ~ ${schedule.endTime}` === time);
+
+    if (selectedSchedule) {
+      setSelectedTime(time);
+      onChange(selectedSchedule.id);
+    }
   };
 
   return (
