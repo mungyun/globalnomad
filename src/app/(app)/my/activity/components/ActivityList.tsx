@@ -8,8 +8,10 @@ import { mockActivity } from "./mockData2";
 const ActivityList = () => {
   const router = useRouter();
   const activities = mockActivity?.activities || [];
-  const handleCreateActivity = () => router.push("/createactivity");
   const hasActivities = activities.length > 0;
+  const handleCreateActivity = () => {
+    router.push("/my/activity/create");
+  };
 
   return (
     <section className="flex w-full max-w-[800px] flex-col bg-gray01">
