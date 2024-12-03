@@ -12,6 +12,7 @@ const ActivityItem = ({ activity }: ActivityItemProps) => {
 
   return (
     <section className="flex rounded-3xl shadow-md">
+      {/* 이미지 */}
       <div className="relative aspect-square w-1/3">
         <Image
           src={bannerImageUrl}
@@ -21,7 +22,7 @@ const ActivityItem = ({ activity }: ActivityItemProps) => {
           className="rounded-l-3xl object-cover"
         />
       </div>
-
+      {/* 텍스트 */}
       <div className="flex min-h-[128px] flex-1 flex-col justify-between rounded-r-3xl p-3 md:p-4 xl:p-5">
         <div>
           <div className="mb-1 flex gap-2 text-sm md:text-base xl:mb-4">

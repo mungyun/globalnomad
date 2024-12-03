@@ -2,13 +2,29 @@
 
 import EmptyActivity from "@/components/EmptyActivity";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import ActivityItem from "./ActivityItem";
-import { mockActivity } from "./mockData2";
+import { TestAuth } from "./qwe";
 
 const ActivityList = () => {
   const router = useRouter();
-  const activities = mockActivity?.activities || [];
-  const hasActivities = activities.length > 0;
+  const [activities, setActivities] = useState([]);
+  const hasActivities = Array.isArray(activities) && activities.length > 0;
+
+  //  내체험목록 가져오기
+  useEffect(() => {
+    (async () => {
+      const response = await fetch("https://sp-globalnomad-api.vercel.app/9-1/my-activities?size=20", {
+        headers: {
+          Authorization: `Bearer ${TestAuth}`,
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+      setActivities(data.activities);
+    })();
+  }, []);
+
   const handleCreateActivity = () => {
     router.push("/my/activity/create");
   };

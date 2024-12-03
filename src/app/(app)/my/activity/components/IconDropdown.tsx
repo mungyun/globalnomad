@@ -3,42 +3,37 @@
 import { ActivityList } from "@/types/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import Modal from "../../../../../components/modal/Modal";
 import { useToast } from "../../../../../components/toast/ToastProvider";
+import ActivityModal from "./ActivityModal";
 
 interface IconDropdownProps {
   activity: ActivityList;
 }
 
 const IconDropdown = ({ activity }: IconDropdownProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isModalOpen, setModalIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { success } = useToast();
   const toggleDropdown = () => setIsOpen((prev) => !prev);
-  console.log(activity.id);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setModalIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // 수정버튼
+  const handleEditClick = () => {
+    router.push(`/my/activity/${activity.id}`);
+    success("수정하기 페이지 이동합니다");
+  };
+
+  // 삭제버튼
+  const handleDeleteClick = () => {
+    setModalIsOpen(true);
+  };
+  // 바깥 클릭 시 모달 닫음
   const handleClickOutside = (e: MouseEvent) => {
     if (!dropdownRef.current?.contains(e.target as Node)) {
       setIsOpen(false);
     }
   };
-
-  const handleEditClick = () => {
-    router.push(`/my/activity/${activity.id}`);
-    setIsOpen(false);
-    success("수정하기 페이지 이동합니다");
-  };
-
-  const handleDeleteClick = () => {
-    setModalIsOpen(true);
-  };
-
-  // const deleteActivity = () => {
-  //   const index = activity
-  // }
-
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
@@ -68,9 +63,7 @@ const IconDropdown = ({ activity }: IconDropdownProps) => {
           </li>
         </ul>
       )}
-      {isModalOpen && (
-        <Modal setIsModalOpen={setModalIsOpen} text="해당 체험을 삭제하시겠습니까?" buttonText="삭제하기" />
-      )}
+      {isModalOpen && <ActivityModal setIsModalOpen={setModalIsOpen} activityId={activity.id} />}
     </div>
   );
 };
