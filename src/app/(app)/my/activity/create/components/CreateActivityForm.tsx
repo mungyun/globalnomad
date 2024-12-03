@@ -36,8 +36,8 @@ const CreateActivityForm = () => {
       <LabelInput label="가격" placeholder="가격" type="number" {...register("price")} />
       <LabelInput label="주소" placeholder="주소를 입력해주세요" {...register("address")} />
       <ScheduleList watch={watch} setValue={setValue} />
-      <BannerImgForm register={register} watch={watch} setValue={setValue} />
-      <SubImageForm register={register} watch={watch} setValue={setValue} />
+      <BannerImgForm watch={watch} setValue={setValue} />
+      <SubImageForm watch={watch} setValue={setValue} />
     </div>
   );
 };

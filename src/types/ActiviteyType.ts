@@ -14,10 +14,9 @@ export interface PostActivities {
   price: number;
   address: string;
   bannerImageUrl?: string;
-  bannerImageFile?: File;
+  subImageUrls?: string[];
+
   schedules: Schedule[];
-  subImageUrls?: File[];
-  subImageFiles?: File[];
 }
 
 export interface PatchActivites {
@@ -27,12 +26,8 @@ export interface PatchActivites {
   price: number;
   address: string;
   bannerImageUrl?: string;
-  bannerImageFile?: File;
-
-  subImageFiles?: File[];
   subImageIdsToRemove?: number[];
   subImageUrlsToAdd?: string[];
-
   schedules: Schedule[];
   scheduleIdsToRemove?: number[];
   schedulesToAdd?: string[];
