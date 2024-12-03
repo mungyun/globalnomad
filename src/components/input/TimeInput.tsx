@@ -64,7 +64,7 @@ const TimeInput = ({ label, value, timeReset, onChange }: TimeInputProps) => {
         <IoIosArrowDown className="absolute bottom-3 right-2 size-5 md:bottom-4 md:right-4 md:size-6" />
       </label>
       {isOpen && (
-        <ul className="gap1 absolute top-20 flex h-[250px] w-[140px] gap-2 rounded border border-gray07 bg-white p-1 shadow-custom md:top-[100px]">
+        <ul className="gap1 absolute top-20 z-10 flex h-[250px] w-[140px] gap-2 rounded border border-gray07 bg-white p-1 shadow-custom md:top-[100px]">
           <div className="h-full w-1/2 overflow-scroll [&::-webkit-scrollbar]:hidden">
             {hours.map((hour) => (
               <li
