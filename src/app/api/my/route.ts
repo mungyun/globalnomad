@@ -24,8 +24,6 @@ export const DELETE = async (req: NextRequest) => {
     }
   } catch (error: unknown) {
     if (isAxiosError(error)) {
-      // 409 상태 코드일 때 중복된 이메일 메시지 반환
-
       const errorMessage = error.response?.data?.message || "서버 오류";
       return NextResponse.json({ message: errorMessage }, { status: error.response?.status || 500 });
     }
