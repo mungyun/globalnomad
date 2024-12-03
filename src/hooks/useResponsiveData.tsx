@@ -63,7 +63,7 @@ const useResponsiveData = ({
 
   useEffect(() => {
     setPage(1);
-  }, [activities, category, keyword, sort]);
+  }, [activities, category, keyword, sort, deviceType]);
 
   useEffect(() => {
     const loadData = () => {
