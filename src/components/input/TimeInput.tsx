@@ -6,14 +6,14 @@ import { IoIosArrowDown } from "react-icons/io";
 interface TimeInputProps {
   label?: string;
   value?: string;
-
+  timeReset: boolean;
   onChange: (value: string) => void;
 }
 
 const hours = Array.from({ length: 24 }, (_, index) => String(index).padStart(2, "0"));
 const minutes = Array.from({ length: 12 }, (_, index) => String(index * 5).padStart(2, "0"));
 
-const TimeInput = ({ label, value, onChange }: TimeInputProps) => {
+const TimeInput = ({ label, value, timeReset, onChange }: TimeInputProps) => {
   const [time, setTime] = useState({ hour: "00", minute: "00" });
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -45,6 +45,10 @@ const TimeInput = ({ label, value, onChange }: TimeInputProps) => {
   useEffect(() => {
     onChange(`${time.hour}:${time.minute}`);
   }, [time]);
+
+  useEffect(() => {
+    setTime({ hour: "00", minute: "00" });
+  }, [timeReset]);
 
   return (
     <div className="relative" ref={dropdownRef}>

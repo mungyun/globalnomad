@@ -17,6 +17,7 @@ const defaultSchedule = { date: "", startTime: "00:00", endTime: "00:00" };
 const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
   const [schedule, setSchedule] = useState<Schedule>(defaultSchedule);
   const schedules = watch("schedules", []);
+  const [timeReset, setTimeReset] = useState<boolean>(false);
 
   const addSchedule = () => {
     // 시작 시간이 종료 시간보다 작을 경우 스케줄 추가 안됨
@@ -24,6 +25,7 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
       setValue("schedules", [schedule, ...schedules]);
       // 스케줄 추가 시 input value 초기화
       setSchedule(defaultSchedule);
+      setTimeReset((prev) => !prev);
     } else {
       console.log("실패");
     }
@@ -53,11 +55,17 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
         <div className="flex items-end gap-1 md:gap-[5px] xl:w-auto xl:gap-3">
           <TimeInput
             label="시작 시간"
+            timeReset={timeReset}
             value={schedule.startTime}
             onChange={(value) => handleChange("startTime", value)}
           />
           <span className="hidden h-[56px] items-center text-xl xl:flex">~</span>
-          <TimeInput label="종료 시간" value={schedule.endTime} onChange={(value) => handleChange("endTime", value)} />
+          <TimeInput
+            label="종료 시간"
+            timeReset={timeReset}
+            value={schedule.endTime}
+            onChange={(value) => handleChange("endTime", value)}
+          />
         </div>
         <button
           onClick={addSchedule}
