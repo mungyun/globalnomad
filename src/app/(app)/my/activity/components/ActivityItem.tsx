@@ -1,4 +1,4 @@
-import IconDropdown from "@/components/dropdown/IconDropdown";
+import IconDropdown from "@/app/(app)/my/activity/components/IconDropdown";
 import { ActivityList } from "@/types/types";
 import formatPrice from "@/utils/formatPrice";
 import Image from "next/image";
@@ -40,7 +40,7 @@ const ActivityItem = ({ activity }: ActivityItemProps) => {
             ₩ {formatPrice(price)}
             <span className="ml-2 hidden md:block"> /인</span>
           </span>
-          <IconDropdown />
+          <IconDropdown activity={activity} />
         </div>
       </div>
     </section>
