@@ -21,6 +21,9 @@ const CreateActivityForm = () => {
 
   const onSubmit = (data: PostActivities) => {
     console.log(data);
+    if (!data.subImageUrls || data.subImageUrls.length < 4) {
+      console.log("소개 이미지를 최소 4개 입력해 주세요");
+    }
   };
   return (
     <div className="flex w-full flex-col gap-6">
