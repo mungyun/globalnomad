@@ -24,7 +24,7 @@ export const NicknameSchema = z
   .regex(nicknameRegex, "닉네임은 영문, 한글, 숫자만 입력 가능하며, 특수문자와 공백은 포함할 수 없습니다.");
 
 // 개발 환경: 간소화된 비밀번호 정규 표현식 (regex)
-const simplifyPasswordRegex = /^(?=.*[a-z])(?=.*\d)[a-z\d]{8,}$/;
+const simplifyPasswordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-z\d]{8,}$/;
 
 // 개발 환경: 간소화된 비밀번호 스키마
 export const SimplifyPasswordSchema = z
