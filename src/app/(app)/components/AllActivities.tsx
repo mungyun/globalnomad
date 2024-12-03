@@ -8,19 +8,24 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface AllactivitiesProps {
-  category: string;
+  category?: string;
   keyword?: string;
+  sort?: string;
 }
 
-const sort = "latest";
-const pageSize = {
+const ITEMS_PER_PAGE = {
   mobile: 4,
   tablet: 9,
   desktop: 8,
 };
 
-const AllActivities = ({ category, keyword }: AllactivitiesProps) => {
-  const { pageData, totalCount, deviceType, page, setPage } = useResponsiveData({ pageSize, category, keyword, sort });
+const AllActivities = ({ category, keyword, sort }: AllactivitiesProps) => {
+  const { data, totalCount, deviceType, page, setPage } = useResponsiveData({
+    ITEMS_PER_PAGE,
+    category,
+    keyword,
+    sort,
+  });
 
   return (
     <>
@@ -31,15 +36,15 @@ const AllActivities = ({ category, keyword }: AllactivitiesProps) => {
               <span className="font-bold">{keyword}</span>
               {getJosa(keyword)} 검색한 결과입니다.
             </p>
-            <p className="leading-[26px]">총 {pageData.length}개의 결과</p>
+            <p className="leading-[26px]">총 {totalCount}개의 결과</p>
           </div>
         ) : (
           <p className="text-lg font-bold leading-[21.48px] text-black03 md:text-4xl md:leading-[42.96px]">
-            {category === "" ? "🛶 모든 체험" : category}
+            {category ? category : "🛶 모든 체험"}
           </p>
         )}
         <div className="grid grid-cols-2 gap-x-2 gap-y-[5px] md:grid-cols-3 md:gap-x-4 md:gap-y-8 xl:grid-cols-4 xl:gap-x-6 xl:gap-y-12">
-          {pageData.map((activity) => (
+          {data.map((activity) => (
             <Link key={activity.id} href={`/activities/${activity.id}`} className="flex flex-col gap-4">
               {/* 이미지 대신 */}
               <div className="aspect-square w-full rounded-3xl bg-slate-400"></div>
@@ -66,7 +71,7 @@ const AllActivities = ({ category, keyword }: AllactivitiesProps) => {
       </div>
       <Pagination
         totalCount={totalCount}
-        itemsPerPage={pageSize[deviceType]}
+        itemsPerPage={ITEMS_PER_PAGE[deviceType]}
         currentPage={page}
         setCurrentPage={setPage}
       />

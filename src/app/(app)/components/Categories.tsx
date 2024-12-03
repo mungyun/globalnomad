@@ -2,25 +2,25 @@
 
 import Dropdown from "@/components/dropdown/Dropdown";
 import useDeviceType from "@/hooks/useDeviceType";
-import { Dispatch, SetStateAction } from "react";
+import { useRouter } from "next/navigation";
 import CategoryButton from "./CategoryButton";
 
 const OPTIONS = ["가격이 낮은 순", "가격이 높은 순"];
 const CATEGORY = ["문화 · 예술", "교육 · 학습", "스포츠", "식음료", "투어 · 관광", "게임 · 취미"];
 
-interface CategoriesProps {
-  category: string;
-  setCategory: Dispatch<SetStateAction<string>>;
-  query?: string | undefined;
-}
-const Categories = ({ category, setCategory, query }: CategoriesProps) => {
+const Categories = ({ currentCategory }: { currentCategory?: string }) => {
   const deviceType = useDeviceType();
+  const router = useRouter();
+
+  const handleCategoryClick = (option: string) => {
+    router.push(`/?category=${option}&sort=latest`);
+  };
 
   return (
-    <div className={`mb-6 mt-10 flex justify-between gap-2 md:mb-[35px] md:mt-[60px] ${query ? "hidden" : ""}`}>
+    <div className="mb-6 mt-10 flex justify-between gap-2 md:mb-[35px] md:mt-[60px]">
       <div className="flex gap-2 overflow-x-auto md:gap-[14px] xl:gap-6">
         {CATEGORY.map((option) => (
-          <CategoryButton key={option} active={option === category} onClick={() => setCategory(option)}>
+          <CategoryButton key={option} active={option === currentCategory} onClick={() => handleCategoryClick(option)}>
             {option}
           </CategoryButton>
         ))}

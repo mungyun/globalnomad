@@ -4,105 +4,84 @@ import { useEffect, useState } from "react";
 import useDeviceType from "./useDeviceType";
 
 interface useResponsiveDataProps {
-  pageSize: { [key: string]: number };
+  ITEMS_PER_PAGE: { [key: string]: number };
   category?: string;
-  keyword?: string | undefined;
-  sort?: "mostReviewed" | "priceAsc" | "priceDesc" | "latest";
+  keyword?: string;
+  sort?: string;
 }
 
 interface UseResponsiveData {
   data: ActivityItem[];
-  pageData: ActivityItem[];
-  prevPage: () => void;
-  nextPage: () => void;
-  setPage: (page: number) => void;
   deviceType: "mobile" | "tablet" | "desktop";
-  page: number;
-  cursor: number | null;
   totalCount: number;
+  page: number;
+  setPage: (page: number) => void;
 }
 
 const useResponsiveData = ({
-  pageSize,
-  category = "",
-  keyword = "",
+  ITEMS_PER_PAGE,
+  category,
+  keyword,
   sort = "latest",
 }: useResponsiveDataProps): UseResponsiveData => {
   const [data, setData] = useState<ActivityItem[]>([]);
-  const [pageData, setPageData] = useState<ActivityItem[]>([]);
-  const [page, setPage] = useState<number>(1);
-  const [cursor, setCursor] = useState<number | null>(0);
+  const [filteredData, setFilteredData] = useState<ActivityItem[]>([]);
+  const [sortedData, setSortedData] = useState<ActivityItem[]>([]);
+  const [page, setPage] = useState(1);
 
   const deviceType = useDeviceType();
-  const { totalCount, activities } = mockData;
-
-  let filteredData: ActivityItem[];
-  if (keyword) {
-    filteredData = activities.filter((activity) => activity.title.includes(keyword));
-    category = "";
-  } else if (category) {
-    filteredData = activities.filter((activity) => activity.category === category);
-  } else {
-    filteredData = activities;
-  }
-
-  let sortedData: ActivityItem[];
-  switch (sort) {
-    case "mostReviewed":
-      sortedData = filteredData.sort((a, b) => b.reviewCount - a.reviewCount);
-      break;
-    case "priceAsc":
-      sortedData = filteredData.sort((a, b) => a.price - b.price);
-      break;
-    case "priceDesc":
-      sortedData = filteredData.sort((a, b) => b.price - a.price);
-      break;
-    case "latest":
-      sortedData = filteredData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-      break;
-  }
-
-  const loadData = () => {
-    const itemsPerPage = pageSize[deviceType];
-    const startIndex = (page - 1) * itemsPerPage;
-    const endIndex = Math.min(startIndex + itemsPerPage, totalCount - 1);
-
-    const newItems = sortedData.slice(startIndex, endIndex);
-
-    setPageData(newItems);
-    setData((prev) => {
-      const existingIds = new Set(prev.map((item) => item.id));
-      const filteredItems = newItems.filter((item) => !existingIds.has(item.id));
-      return [...prev, ...filteredItems];
-    });
-  };
-
-  const prevPage = () => {
-    if (page !== 1) setPage((prev) => prev - 1);
-  };
-
-  const nextPage = () => {
-    if (cursor !== null) setPage((prev) => prev + 1);
-  };
+  const { activities } = mockData;
 
   useEffect(() => {
-    if (totalCount <= data.length) {
-      setCursor(null);
+    let filtered = activities;
+    if (keyword) {
+      filtered = activities.filter((activity) => activity.title.includes(keyword));
+    } else if (category) {
+      filtered = activities.filter((activity) => activity.category === category);
     }
-  }, [data]);
+    setFilteredData(filtered); // 필터링된 데이터를 상태로 설정
+  }, [activities, category, keyword]);
 
   useEffect(() => {
-    loadData();
-  }, [page, deviceType]);
+    let sorted = [...filteredData];
+    switch (sort) {
+      case "mostReviewed":
+        sorted = [...filteredData].sort((a, b) => b.reviewCount - a.reviewCount);
+        break;
+      case "priceAsc":
+        sorted = [...filteredData].sort((a, b) => a.price - b.price);
+        break;
+      case "priceDesc":
+        sorted = [...filteredData].sort((a, b) => b.price - a.price);
+        break;
+      case "latest":
+        sorted = [...filteredData].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        break;
+    }
+    setSortedData(sorted); // 정렬된 데이터를 상태로 설정
+  }, [filteredData, sort]);
 
   useEffect(() => {
-    setData([]);
     setPage(1);
-    setCursor(0);
-    loadData();
-  }, [category, sort]);
+  }, [activities, category, keyword, sort]);
 
-  return { data, pageData, prevPage, nextPage, setPage, deviceType, page, cursor, totalCount };
+  useEffect(() => {
+    const loadData = () => {
+      const itemsPerPage = ITEMS_PER_PAGE[deviceType];
+      const startIndex = (page - 1) * itemsPerPage;
+      const endIndex = Math.min(startIndex + itemsPerPage, filteredData.length);
+
+      const slicedData = sortedData.slice(startIndex, endIndex);
+
+      setData(slicedData);
+    };
+
+    loadData();
+  }, [deviceType, page, sortedData, filteredData.length]);
+
+  const totalCount = filteredData.length;
+
+  return { data, deviceType, totalCount, page, setPage };
 };
 
 export default useResponsiveData;

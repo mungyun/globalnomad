@@ -21,9 +21,9 @@ const SearchBar = () => {
   });
 
   const onSubmit: SubmitHandler<Query> = (data) => {
-    const query = data.query; // 폼 데이터에서 query 값을 추출
-    if (query) {
-      router.push(`/?query=${query}`); // query 값이 있을 경우 해당 값으로 페이지 이동
+    const keyword = data.keyword; // 폼 데이터에서 keyword 값을 추출
+    if (keyword) {
+      router.push(`/?keyword=${keyword}`); // keyword 값이 있을 경우 해당 값으로 페이지 이동
     }
   };
 
@@ -37,7 +37,7 @@ const SearchBar = () => {
         <div className="relative flex items-center gap-3">
           <Image src="/icons/search.svg" width={48} height={48} alt="검색 아이콘" className="absolute left-0 top-1" />
           <label
-            htmlFor="query"
+            htmlFor="keyword"
             className={`t absolute left-12 -translate-y-1/2 bg-background text-sm font-normal text-gray06 transition-all md:left-10 md:px-[10px] md:text-base ${
               isFocused ? "top-0" : "top-1/2"
             }`}
@@ -45,9 +45,9 @@ const SearchBar = () => {
             내가 원하는 체험은
           </label>
           <input
-            id="query"
+            id="keyword"
             type="text"
-            {...register("query")}
+            {...register("keyword")}
             autoComplete="off"
             onFocus={() => setIsFocused(true)}
             onBlur={(e) => setIsFocused(e.target.value !== "")}

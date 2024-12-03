@@ -4,29 +4,17 @@ import useResponsiveData from "@/hooks/useResponsiveData";
 import formatPrice from "@/utils/formatPrice";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useRef } from "react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
 const sort = "mostReviewed";
-const pageSize = {
-  mobile: 4,
-  tablet: 4,
-  desktop: 3,
+const ITEMS_PER_PAGE = {
+  mobile: 9,
+  tablet: 9,
+  desktop: 9,
 };
 
 const BestActivities = () => {
-  const { data, prevPage, nextPage, deviceType, page, cursor } = useResponsiveData({ pageSize, sort });
-
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const handleScroll = useCallback(() => {
-    if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      if (scrollLeft + clientWidth >= scrollWidth - 10) {
-        nextPage();
-      }
-    }
-  }, [nextPage]);
+  const { data, deviceType } = useResponsiveData({ ITEMS_PER_PAGE, sort });
 
   return (
     <section className="flex flex-col gap-4 pl-4 md:gap-8 md:pl-6 xl:pl-0">
@@ -36,20 +24,10 @@ const BestActivities = () => {
         </h2>
         {deviceType === "desktop" ? (
           <div className="flex gap-3">
-            <button
-              onClick={prevPage}
-              disabled={page === 1}
-              className="flex size-11 items-center justify-center disabled:text-gray07"
-              aria-label="이전 페이지"
-            >
+            <button className="flex size-11 items-center justify-center disabled:text-gray07" aria-label="이전 페이지">
               <SlArrowLeft className="size-[22px]" />
             </button>
-            <button
-              onClick={nextPage}
-              disabled={cursor === null}
-              className="flex size-11 items-center justify-center disabled:text-gray07"
-              aria-label="다음 페이지"
-            >
+            <button className="flex size-11 items-center justify-center disabled:text-gray07" aria-label="다음 페이지">
               <SlArrowRight className="size-[22px]" />
             </button>
           </div>
@@ -57,14 +35,7 @@ const BestActivities = () => {
           ""
         )}
       </div>
-      <div
-        ref={scrollRef}
-        onScroll={handleScroll}
-        className="flex w-full gap-4 overflow-x-auto md:gap-8 xl:gap-6 xl:transition-transform xl:duration-500 xl:ease-in-out"
-        // style={{
-        //   transform: `translateX(calc(-${(page - 1) * 100}% - ${(page - 1) * 24}px))`,
-        // }}
-      >
+      <div className="flex w-full gap-4 overflow-x-auto md:gap-8 xl:gap-6 xl:transition-transform xl:duration-500 xl:ease-in-out">
         {data.map((activity) => (
           <Link key={activity.id} href={`/activities/${activity.id}`} className="rounded-3xl bg-gray09">
             <div className="flex size-[186px] flex-col gap-[6px] px-5 pt-12 text-white md:size-[384px] md:gap-5 md:pt-[174px]">
