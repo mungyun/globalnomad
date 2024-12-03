@@ -1,10 +1,59 @@
+"use client";
+
 import EmptyActivity from "@/components/EmptyActivity";
 import Dropdown from "@/components/dropdown/Dropdown";
+import { useEffect, useState } from "react";
+import { TestAuth } from "../../activity/components/qwe";
 import ReservationItem from "./ReservationItem";
 import { mockReservations } from "./mockData";
 
+// Activity 데이터 인터페이스
+interface Activity {
+  id: number;
+  title: string;
+  bannerImageUrl: string;
+  createdAt: string;
+}
+
+// Reservation 데이터 인터페이스
+interface Reservation {
+  id: number;
+  activity: Activity;
+  scheduleId: number;
+  teamId: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  status: string; // 예: "confirmed"
+  headCount: number;
+  totalPrice: number;
+  reviewSubmitted: boolean;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Reservations 리스트 인터페이스
+interface ReservationsResponse {
+  reservations: Reservation[];
+}
+
 export default function ReservationList() {
   const hasReservations = mockReservations && mockReservations.reservations.length > 0;
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetch("https://sp-globalnomad-api.vercel.app/9-1/my-reservations?size=10", {
+        headers: {
+          Authorization: `Bearer ${TestAuth}`,
+        },
+      });
+      const data: ReservationsResponse = await response.json();
+      console.log(data);
+      setReservations(data.reservations);
+    })();
+  }, []);
 
   return (
     <section className="flex w-full max-w-[800px] flex-col bg-gray01">
@@ -20,9 +69,7 @@ export default function ReservationList() {
       </header>
       <div className="flex flex-col gap-4">
         {hasReservations ? (
-          mockReservations.reservations.map((reservation) => (
-            <ReservationItem key={reservation.id} reservation={reservation} />
-          ))
+          reservations.map((reservation) => <ReservationItem key={reservation.id} reservation={reservation} />)
         ) : (
           <EmptyActivity />
         )}
