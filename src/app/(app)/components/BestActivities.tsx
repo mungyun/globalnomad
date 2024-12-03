@@ -14,7 +14,16 @@ const ITEMS_PER_PAGE = {
 };
 
 const BestActivities = () => {
-  const { data, deviceType } = useResponsiveData({ ITEMS_PER_PAGE, sort });
+  const { data, deviceType, page, setPage } = useResponsiveData({ ITEMS_PER_PAGE, sort });
+
+  const prevPage = () => {
+    if (page > 1) setPage(page - 1);
+  };
+
+  const nextPage = () => {
+    if (page < data.length) setPage(page + 1);
+  };
+  console.log(data.length);
 
   return (
     <section className="flex flex-col gap-4 pl-4 md:gap-8 md:pl-6 xl:pl-0">
@@ -24,10 +33,20 @@ const BestActivities = () => {
         </h2>
         {deviceType === "desktop" ? (
           <div className="flex gap-3">
-            <button className="flex size-11 items-center justify-center disabled:text-gray07" aria-label="이전 페이지">
+            <button
+              disabled={page === 1}
+              onClick={prevPage}
+              className="flex size-11 items-center justify-center disabled:text-gray07"
+              aria-label="이전 페이지"
+            >
               <SlArrowLeft className="size-[22px]" />
             </button>
-            <button className="flex size-11 items-center justify-center disabled:text-gray07" aria-label="다음 페이지">
+            <button
+              disabled={page === data.length}
+              onClick={nextPage}
+              className="flex size-11 items-center justify-center disabled:text-gray07"
+              aria-label="다음 페이지"
+            >
               <SlArrowRight className="size-[22px]" />
             </button>
           </div>
