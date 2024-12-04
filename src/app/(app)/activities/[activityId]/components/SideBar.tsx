@@ -74,7 +74,7 @@ const SideBar = ({ id }: { id: number }) => {
   });
 
   if (isPending) {
-    return deviceType !== "mobile" && <SideBarSkeleton />;
+    return <SideBarSkeleton />;
   }
 
   if (isError) {

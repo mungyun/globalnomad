@@ -1,6 +1,7 @@
 "use client";
 
 import { getActivityDetail } from "@/lib/api/Activities";
+import MainContentSkeleton from "@/skeleton/activities/MainContentSkeleton";
 import { ActivityDetail } from "@/types/ActiviteyType";
 import { useQuery } from "@tanstack/react-query";
 import CommentList from "./CommentList";
@@ -19,7 +20,7 @@ const MainContent = ({ id }: { id: number }) => {
   });
 
   if (isPending) {
-    return <div>로딩 중...</div>;
+    return <MainContentSkeleton />;
   }
 
   if (isError) {
