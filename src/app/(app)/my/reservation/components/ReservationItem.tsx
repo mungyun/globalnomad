@@ -1,18 +1,10 @@
 "use client";
 
-import Modal from "@/components/modal/Modal";
-import { ReservationList, ReservationStatus } from "@/types/types";
+import ReservationModal from "@/app/(app)/my/reservation/components/ReservationModal";
+import { Reservation, ReservationStatus, ReservationStatusType } from "@/types/MyReservationType";
 import formatPrice from "@/utils/formatPrice";
 import Image from "next/image";
 import { useState } from "react";
-
-interface ReservationStatusType {
-  color: string;
-  text: string;
-  buttonColor?: string;
-  buttonText?: string;
-  showButton: boolean;
-}
 
 const RESERVATION_STATUS: Record<ReservationStatus, ReservationStatusType> = {
   pending: {
@@ -22,7 +14,7 @@ const RESERVATION_STATUS: Record<ReservationStatus, ReservationStatusType> = {
     buttonText: "예약 취소",
     showButton: true,
   },
-  cancelled: {
+  canceled: {
     color: "text-gray08",
     text: "예약 취소",
     showButton: false,
@@ -48,7 +40,7 @@ const RESERVATION_STATUS: Record<ReservationStatus, ReservationStatusType> = {
   },
 } as const;
 
-const ReservationItem = ({ reservation }: { reservation: ReservationList }) => {
+const ReservationItem = ({ reservation }: { reservation: Reservation }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const status = RESERVATION_STATUS[reservation.status];
 
@@ -67,9 +59,7 @@ const ReservationItem = ({ reservation }: { reservation: ReservationList }) => {
       <div className="flex min-h-[128px] flex-1 flex-col justify-between rounded-r-3xl p-3 md:p-4 xl:p-5">
         <div className="flex flex-col gap-2">
           <p className={`text-sm font-bold ${status.color} xl:text-base`}>{status.text}</p>
-
           <h3 className="text-sm font-bold md:text-lg xl:text-xl">{reservation.activity.title}</h3>
-
           <div className="flex gap-1 whitespace-nowrap text-xs font-normal md:text-sm xl:text-lg">
             <span>{reservation.date}</span>
             <span>·</span>
@@ -83,7 +73,9 @@ const ReservationItem = ({ reservation }: { reservation: ReservationList }) => {
           <span>₩ {formatPrice(reservation.totalPrice)}</span>
           {status.showButton && (
             <button
-              className={`${status.buttonColor} absolute right-5 hidden rounded-md px-4 py-2 text-sm font-bold transition-all group-hover:block md:px-6 md:py-3 md:text-base`}
+              type="button"
+              aria-label={status.buttonText}
+              className={`${status.buttonColor} absolute right-5 hidden rounded-md px-4 py-2 text-sm font-bold transition-all hover:opacity-90 group-hover:block md:px-6 md:py-3 md:text-base`}
               onClick={() => setIsModalOpen(true)}
             >
               {status.buttonText}
@@ -92,7 +84,7 @@ const ReservationItem = ({ reservation }: { reservation: ReservationList }) => {
         </div>
       </div>
 
-      {isModalOpen && <Modal setIsModalOpen={setIsModalOpen} />}
+      {isModalOpen && <ReservationModal setIsModalOpen={setIsModalOpen} reservationId={reservation.id} />}
     </section>
   );
 };
