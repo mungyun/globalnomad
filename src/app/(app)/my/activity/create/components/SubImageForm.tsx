@@ -1,5 +1,5 @@
 import ImageInput from "@/components/input/ImageInput";
-import { proxy } from "@/lib/api/axiosInstanceApi";
+import { PostActivitiesImage } from "@/lib/api/activities";
 import { ActiviteForm } from "@/types/ActiviteyType";
 import { useRef } from "react";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
@@ -20,16 +20,21 @@ const SubImageForm = ({ watch, setValue }: FormProps) => {
     if (!files) return;
 
     const imageUrls: string[] = [];
-    for (const file of files) {
-      const formData = new FormData();
-      formData.append("image", file);
 
-      const res = await proxy.post("/api/activities/image", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      imageUrls.push(res.data.activityImageUrl);
+    for (const file of files) {
+      try {
+        const data = await PostActivitiesImage(file);
+        imageUrls.push(data.activityImageUrl);
+      } catch (error) {
+        if (error instanceof Error) {
+          // toast로 바꿀 예정
+          alert(`${error.message}`);
+        }
+      } finally {
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      }
     }
     setValue("subImageUrls", [...watchImages, ...imageUrls]);
   };

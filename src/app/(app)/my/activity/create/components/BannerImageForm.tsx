@@ -1,5 +1,5 @@
 import ImageInput from "@/components/input/ImageInput";
-import { proxy } from "@/lib/api/axiosInstanceApi";
+import { PostActivitiesImage } from "@/lib/api/activities";
 import { ActiviteForm } from "@/types/ActiviteyType";
 import { useRef } from "react";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
@@ -19,19 +19,23 @@ const BannerImageForm = ({ watch, setValue }: FormProps) => {
 
     if (!file) return;
 
-    const formData = new FormData();
-    formData.append("image", file);
-
-    const res = await proxy.post("/api/activities/image", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    setValue("bannerImageUrl", res.data.activityImageUrl);
+    try {
+      const data = await PostActivitiesImage(file);
+      setValue("bannerImageUrl", data.activityImageUrl);
+    } catch (error) {
+      if (error instanceof Error) {
+        // toast로 바꿀 예정
+        alert(`${error.message}`);
+      }
+    } finally {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
   };
 
   const clearImage = () => {
-    setValue("bannerImageUrl", undefined);
+    setValue("bannerImageUrl", "");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
