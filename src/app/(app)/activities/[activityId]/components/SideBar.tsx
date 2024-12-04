@@ -2,6 +2,7 @@
 
 import useDeviceType from "@/hooks/useDeviceType";
 import { getActivityDetail, postReservation } from "@/lib/api/Activities";
+import SideBarSkeleton from "@/skeleton/activities/SideBarSkeleton";
 import { Schedule } from "@/types/types";
 import formatPrice from "@/utils/formatPrice";
 import { useQuery } from "@tanstack/react-query";
@@ -73,7 +74,7 @@ const SideBar = ({ id }: { id: number }) => {
   });
 
   if (isPending) {
-    return <div>로딩 중...</div>;
+    return deviceType !== "mobile" && <SideBarSkeleton />;
   }
 
   if (isError) {
