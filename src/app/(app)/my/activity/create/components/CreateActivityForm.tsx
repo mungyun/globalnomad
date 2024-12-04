@@ -4,27 +4,37 @@ import Button from "@/components/Button";
 import DropdownInput from "@/components/dropdown/DropdownInput";
 import LabelInput from "@/components/input/LabelInput";
 import Textarea from "@/components/input/Textarea";
-import { proxy } from "@/lib/api/axiosInstanceApi";
-import { PostActivities } from "@/types/ActiviteyType";
+import { PostActivities } from "@/lib/api/activities";
+import { PostActivityType } from "@/types/ActiviteyType";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import BannerImgForm from "./BannerImageForm";
 import ScheduleList from "./ScheduleList";
 import SubImageForm from "./SubImageForm";
 
 const CreateActivityForm = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
     watch,
     setValue,
     formState: { isValid },
-  } = useForm<PostActivities>();
+  } = useForm<PostActivityType>();
 
-  const onSubmit = async (data: PostActivities) => {
+  const onSubmit = async (data: PostActivityType) => {
     console.log(data);
     if (!data.subImageUrls || data.subImageUrls.length < 4) return;
-    const res = await proxy.post("/api/activities", data);
-    console.log(res);
+    try {
+      await PostActivities(data);
+      router.push("/my/activity");
+    } catch (error) {
+      if (error instanceof Error) {
+        // toast로 바꿀 예정
+        alert(`${error.message}`);
+      }
+    }
   };
   return (
     <div className="flex w-full flex-col gap-6">

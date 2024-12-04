@@ -7,7 +7,7 @@ export interface Schedule {
 }
 
 // 체험 등록 body 타입
-export interface PostActivities {
+export interface PostActivityType {
   title: string;
   category: string;
   description: string;
@@ -18,7 +18,7 @@ export interface PostActivities {
   schedules: Schedule[];
 }
 
-export interface PatchActivites {
+export interface PatchActivityType {
   title: string;
   category: string;
   description: string;
@@ -32,4 +32,4 @@ export interface PatchActivites {
   schedulesToAdd?: string[];
 }
 
-export type ActiviteForm = PostActivities | PatchActivites;
+export type ActiviteForm = PostActivityType | PatchActivityType;

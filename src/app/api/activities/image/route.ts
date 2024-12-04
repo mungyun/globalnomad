@@ -22,14 +22,11 @@ export const POST = async (req: NextRequest) => {
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (!error.response) {
-        return NextResponse.json(
-          { message: "네트워크 오류가 발생했습니다. 나중에 다시 시도해주세요." },
-          { status: 503 }
-        );
+        return NextResponse.json({ message: "네트워크 오류가 발생했습니다." }, { status: 503 });
       }
       const errorMessage = error.response.data?.message || "서버 오류";
       return NextResponse.json({ message: errorMessage }, { status: error.response?.status || 500 });
     }
-    return NextResponse.json({ message: "알 수 없는 오류가 발생했습니다. 관리자에게 문의하세요." }, { status: 500 });
+    return NextResponse.json({ message: "알 수 없는 오류가 발생했습니다." }, { status: 500 });
   }
 };
