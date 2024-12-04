@@ -64,6 +64,21 @@ export interface ActivityDetail {
   updatedAt: string;
 }
 
+export interface ActivityItem {
+  id: number;
+  userId: number;
+  title: string;
+  description: string;
+  category: "문화 · 예술" | "교육 · 학습" | "스포츠" | "식음료" | "투어 · 관광" | "게임 · 취미";
+  price: number;
+  address: string;
+  bannerImageUrl: string;
+  rating: number;
+  reviewCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface User {
   profileImageUrl: string;
   nickname: string;
@@ -85,3 +100,9 @@ export interface ReviewData {
   totalCount: number;
   reviews: Review[];
 }
+
+export type GetActivities = {
+  cursorId: number;
+  totalCount: number;
+  activities: ActivityItem[];
+};

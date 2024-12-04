@@ -15,7 +15,7 @@ const HeaderDropdown = ({ children }: { children: ReactNode }) => {
   const handleSelect = (value: string) => {
     setIsOpen(false);
     if (value === "mypage") {
-      router.push("/mypage");
+      router.push("/my");
     } else {
       console.log("로그아웃");
     }
