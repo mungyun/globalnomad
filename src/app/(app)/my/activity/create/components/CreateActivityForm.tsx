@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import DropdownInput from "@/components/dropdown/DropdownInput";
 import LabelInput from "@/components/input/LabelInput";
 import Textarea from "@/components/input/Textarea";
+import { proxy } from "@/lib/api/axiosInstanceApi";
 import { PostActivities } from "@/types/ActiviteyType";
 import { useForm } from "react-hook-form";
 import BannerImgForm from "./BannerImageForm";
@@ -19,11 +20,11 @@ const CreateActivityForm = () => {
     formState: { isValid },
   } = useForm<PostActivities>();
 
-  const onSubmit = (data: PostActivities) => {
+  const onSubmit = async (data: PostActivities) => {
     console.log(data);
-    if (!data.subImageUrls || data.subImageUrls.length < 4) {
-      console.log("소개 이미지를 최소 4개 입력해 주세요");
-    }
+    if (!data.subImageUrls || data.subImageUrls.length < 4) return;
+    const res = await proxy.post("/api/activities", data);
+    console.log(res);
   };
   return (
     <div className="flex w-full flex-col gap-6">
