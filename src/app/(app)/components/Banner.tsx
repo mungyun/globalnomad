@@ -15,6 +15,7 @@ const Banner = () => {
     queryKey: ["bannerData"],
     queryFn: () => getActivities({ sort: "most_reviewed", size: 3 }),
     staleTime: 60 * 1000 * 60, // 1시간
+    gcTime: 60 * 1000 * 60 * 24, // 24시간 동안 캐시 유지
   });
 
   // 배너를 스크롤하는 데 사용할 ref
