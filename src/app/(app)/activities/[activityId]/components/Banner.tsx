@@ -2,6 +2,7 @@
 
 import useDeviceType from "@/hooks/useDeviceType";
 import { getActivityDetail } from "@/lib/api/Activities";
+import BannerSkeleton from "@/skeleton/activities/BannerSkeleton";
 import { ActivityDetail } from "@/types/ActiviteyType";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -23,7 +24,7 @@ const Banner = ({ id }: { id: number }) => {
   });
 
   if (isPending) {
-    return <div>로딩 중...</div>;
+    return <BannerSkeleton />;
   }
 
   if (isError) {
@@ -36,7 +37,6 @@ const Banner = ({ id }: { id: number }) => {
 
   const { category, title, rating, reviewCount, address, bannerImageUrl, subImages } = activityDetailData;
 
-  // 배너 이미지와 보조 이미지를 하나의 배열로 준비
   const images = [
     { src: bannerImageUrl, alt: "배너 이미지" },
     ...subImages.map((item) => ({ src: item.imageUrl, alt: "보조 이미지" })),
@@ -63,12 +63,10 @@ const Banner = ({ id }: { id: number }) => {
           </div>
         </div>
       </div>
-      {/* 모바일과 데스크톱 레이아웃 분리 */}
       {deviceType === "mobile" ? (
         <Carousel images={images} />
       ) : (
         <div className="flex w-full justify-center gap-1 md:rounded-xl xl:gap-2">
-          {/* 배너 이미지 */}
           <Image
             src={bannerImageUrl}
             alt="배너 이미지"
@@ -76,7 +74,6 @@ const Banner = ({ id }: { id: number }) => {
             height={310}
             className="h-full w-full object-cover md:max-h-[534px] md:rounded-l-xl"
           />
-          {/* 보조 이미지 그리드 */}
           <div className="h-full w-full rounded-r-xl sm:max-h-[310px] md:grid md:max-h-[534px] md:grid-cols-2 md:grid-rows-2 md:gap-1 xl:gap-2">
             {subImages.map((item) => (
               <Image
