@@ -13,7 +13,7 @@ import DateModal from "./DateModal";
 // 동적 import로 Calendar 컴포넌트 불러오기
 const ActivityCalendar = dynamic(() => import("./ActivityCalendar"), { ssr: false });
 
-const titleStyle = "font-bold text-black02";
+const titleStyle = "text-[20px] font-bold text-black02";
 
 interface PartyNumberSelectorProps {
   partyNum: number;
@@ -58,7 +58,7 @@ const SideBar = ({ id }: { id: number }) => {
   const deviceType = useDeviceType();
   const [partyNum, setPartyNum] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [selectedId, setSelectedId] = useState<number>(0);
+  const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
@@ -85,6 +85,7 @@ const SideBar = ({ id }: { id: number }) => {
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
+      if (!selectedId) return;
       await postReservation({ activityId: id, scheduleId: selectedId, headCount: partyNum });
     } catch (error) {
       console.error(error);
@@ -115,6 +116,7 @@ const SideBar = ({ id }: { id: number }) => {
       <DateModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        onChange={(id) => setSelectedId(id)}
         schedules={schedules}
         partyNum={partyNum}
         setPartyNum={setPartyNum}
@@ -133,17 +135,20 @@ const SideBar = ({ id }: { id: number }) => {
           </button>
         </div>
         <div className="flex items-center justify-between">
-          <span className={`text-[20px] ${titleStyle}`}>총 합계</span>
-          <span className={`text-[20px] ${titleStyle}`}>￦ {formatPrice(partyNum * price)}</span>
+          <span className={` ${titleStyle}`}>총 합계</span>
+          <span className={`${titleStyle}`}>￦ {formatPrice(partyNum * price)}</span>
         </div>
       </div>
     </div>
   ) : (
-    <div className="z-1 fixed bottom-0 left-0 flex h-[83px] w-full items-center justify-between border-t border-t-gray07 bg-white p-4">
+    <div className="fixed bottom-0 left-0 z-[9999] flex h-[83px] w-full items-center justify-between border-t border-t-gray07 bg-white p-4">
       <div className="flex flex-col gap-2">
-        <h4 className="text-[18px] font-medium">
-          <span className="text-[20px] font-bold text-black02">￦ {formatPrice(price)} / </span> 1명
-        </h4>
+        <div className="flex text-[18px] font-medium">
+          <span className={`${titleStyle}`}>
+            ￦ {formatPrice(price * partyNum)} / {partyNum}명
+          </span>
+        </div>
+
         <button
           className="w-[77px] text-[14px] font-semibold text-green02 underline"
           onClick={() => setIsModalOpen(true)}
@@ -151,12 +156,17 @@ const SideBar = ({ id }: { id: number }) => {
           날짜 선택하기
         </button>
       </div>
-      <button className="flex h-[48px] w-[106px] items-center justify-center rounded-md bg-gray06 text-white">
+      <button
+        onClick={handleSubmit}
+        disabled={!(selectedId && partyNum > 0)}
+        className="flex h-[48px] w-[106px] items-center justify-center rounded-md bg-black02 text-white disabled:bg-gray06"
+      >
         예약하기
       </button>
       <DateModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        onChange={(id) => setSelectedId(id)}
         schedules={schedules}
         partyNum={partyNum}
         setPartyNum={setPartyNum}

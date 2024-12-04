@@ -7,12 +7,14 @@ import { PartyNumberSelector } from "./SideBar";
 const DateModal = ({
   isOpen,
   onClose,
+  onChange,
   schedules,
   partyNum,
   setPartyNum,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  onChange: (id: number) => void;
   schedules: Schedule[];
   partyNum: number;
   setPartyNum: React.Dispatch<React.SetStateAction<number>>;
@@ -49,7 +51,7 @@ const DateModal = ({
         &times;
       </button>
       <h3 className="mb-4 text-[20px] font-bold text-black02">날짜 선택</h3>
-      <ActivityCalendar schedules={schedules} />
+      <ActivityCalendar schedules={schedules} onChange={(id) => onChange(id)} />
       {deviceType === "mobile" && (
         <div>
           <h3 className="mb-4 text-[20px] font-bold text-black02">인원 선택</h3>
