@@ -21,10 +21,12 @@ axiosInstance.interceptors.response.use(
         const response = await axiosInstance.post("/auth/token/refresh", undefined);
 
         // 새로 갱신된 액세스 토큰을 쿠키에 저장
-        const newAccessToken = response.data.accessToken; // 응답에 맞게 수정 필요
+        const newAccessToken = response.data.accessToken;
+        const newRefreshToken = response.data.refreshToken;
 
         // 쿠키에 토큰을 저장하는 방법
         document.cookie = `accessToken=${newAccessToken}; path=/; Secure; HttpOnly`;
+        document.cookie = `accessToken=${newRefreshToken}; path=/; Secure; HttpOnly`;
 
         // 새 토큰을 Authorization 헤더에 설정
         axiosInstance.defaults.headers["Authorization"] = `Bearer ${newAccessToken}`;
