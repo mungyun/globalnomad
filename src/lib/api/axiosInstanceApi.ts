@@ -7,6 +7,13 @@ const axiosInstance = axios.create({
   },
 });
 
+export const proxy = axios.create({
+  baseURL: "http://localhost:3000",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 axiosInstance.interceptors.response.use(
   (res) => res, // 성공적인 응답은 그대로 반환
   async (error) => {
