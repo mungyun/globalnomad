@@ -1,12 +1,12 @@
 import ImageInput from "@/components/input/ImageInput";
-import { PostActivities } from "@/types/ActiviteyType";
+import { ActiviteForm } from "@/types/ActiviteyType";
 import { UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import PrevImage from "./PrevImage";
 
 interface FormProps {
-  register: UseFormRegister<PostActivities>;
-  watch: UseFormWatch<PostActivities>;
-  setValue: UseFormSetValue<PostActivities>;
+  register: UseFormRegister<ActiviteForm>;
+  watch: UseFormWatch<ActiviteForm>;
+  setValue: UseFormSetValue<ActiviteForm>;
 }
 
 const SubImageForm = ({ register, watch, setValue }: FormProps) => {

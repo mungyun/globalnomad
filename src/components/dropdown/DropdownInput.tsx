@@ -1,27 +1,24 @@
 "use client";
 
-import { PostActivities } from "@/types/ActiviteyType";
+import LabelInput from "@/components/input/LabelInput";
 import { useEffect, useRef, useState } from "react";
-import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { GoCheck } from "react-icons/go";
 import { IoIosArrowDown } from "react-icons/io";
-import LabelInput from "../../../../../../components/input/LabelInput";
 
 interface DropdownInputProps {
-  register: UseFormRegister<PostActivities>;
-  setValue: UseFormSetValue<PostActivities>;
+  setValue: (value: string) => void;
 }
 
 const CATEGORY = [
-  { value: "교육 · 학습" },
   { value: "문화 · 예술" },
   { value: "스포츠" },
   { value: "식음료" },
-  { value: "투어 · 관광" },
-  { value: "게임 · 취미" },
+  { value: "투어" },
+  { value: "관광" },
+  { value: "웰빙" },
 ];
 
-const DropdownInput = ({ register, setValue }: DropdownInputProps) => {
+const DropdownInput = ({ setValue, ...props }: DropdownInputProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
@@ -31,7 +28,7 @@ const DropdownInput = ({ register, setValue }: DropdownInputProps) => {
   };
 
   const handleSelect = (value: string) => {
-    setValue("category", value);
+    setValue(value);
     setIsOpen(false);
   };
 
@@ -52,7 +49,7 @@ const DropdownInput = ({ register, setValue }: DropdownInputProps) => {
   return (
     <div ref={dropdownRef} className="relative">
       <label>
-        <LabelInput placeholder="카테고리" {...register("category")} readOnly onClick={toggleDropdown} />
+        <LabelInput placeholder="카테고리" {...props} readOnly onClick={toggleDropdown} />
         <IoIosArrowDown className="absolute right-4 top-4 size-6" />
       </label>
       {isOpen && (

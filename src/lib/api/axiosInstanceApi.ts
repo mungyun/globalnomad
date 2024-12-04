@@ -1,13 +1,16 @@
 import axios from "axios";
 
-const TEMP_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMyNCwidGVhbUlkIjoiOS0xIiwiaWF0IjoxNzMzMjM2NjM1LCJleHAiOjE3MzMyMzg0MzUsImlzcyI6InNwLWdsb2JhbG5vbWFkIn0.U9i1AFV20FICeYYbbbS5DKNZr7kQvRzoZP-ek-NVkSo";
-
-export const proxy = axios.create({
-  baseURL: "https://sp-globalnomad-api.vercel.app/9-1",
+const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${TEMP_TOKEN}`,
+  },
+});
+
+export const proxy = axios.create({
+  baseURL: "http://localhost:3000",
+  headers: {
+    "Content-Type": "application/json",
   },
 });
 
