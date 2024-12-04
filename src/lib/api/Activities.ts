@@ -1,6 +1,6 @@
-// 체험 리스트 조회
 import axiosInstance from "./axiosInstanceApi";
 
+// 체험 리스트 조회
 export const getActivities = async ({
   method = "cursor",
   cursorId,
