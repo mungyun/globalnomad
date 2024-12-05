@@ -1,4 +1,4 @@
-import { ActiviteForm, Schedule } from "@/types/ActiviteyType";
+import { ActiviteForm, Schedule } from "@/types/ActivityType";
 import { UseFormSetValue } from "react-hook-form";
 import { FiMinus } from "react-icons/fi";
 

@@ -1,14 +1,17 @@
 "use client";
 
-import "@/styles/ActivityCalender.css";
-import { Schedule } from "@/types/types";
-import { formatToLocalDateString, isDateAvailable } from "@/utils/calendarUtils";
+import "@/styles/Calender.css";
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 
-interface ActivityCalendarProps {
+interface Schedule {
+  date: string;
+  startTime: string;
+  endTime: string;
+}
+
+interface CalendarComponentProps {
   schedules: Schedule[];
-  onChange: (id: number) => void;
 }
 
 const TimeSlot = ({ time, isSelected, onClick }: { time: string; isSelected: boolean; onClick: () => void }) => (
@@ -22,32 +25,28 @@ const TimeSlot = ({ time, isSelected, onClick }: { time: string; isSelected: boo
   </li>
 );
 
-const ActivityCalendar = ({ schedules, onChange }: ActivityCalendarProps) => {
+const CalendarComponent: React.FC<CalendarComponentProps> = ({ schedules }) => {
   const [timeList, setTimeList] = useState<string[]>([]);
-  const [selectedTime, setSelectedTime] = useState<string>("null");
+  const [selectedTime, setSelectedTime] = useState<string | null>(null); // 선택된 시간 상태
 
-  const handleDateClick = (date: Date): void => {
-    const localFormattedDate = formatToLocalDateString(date);
+  const getAvailableDates = () => schedules.map((schedule) => schedule.date);
 
-    const times = schedules
-      .filter((schedule) => schedule.date === localFormattedDate)
-      .map((schedule) => ({
-        time: `${schedule.startTime} ~ ${schedule.endTime}`,
-        id: schedule.id,
-      }));
-
-    setTimeList(times.map((time) => time.time));
-    setSelectedTime("");
+  const isDateAvailable = (date: Date) => {
+    const formattedDate = date.toISOString().split("T")[0];
+    return getAvailableDates().includes(formattedDate);
   };
 
-  const handleTimeClick = (time: string): void => {
-    // 선택된 시간에 해당하는 id를 찾아서 selectedId에 저장
-    const selectedSchedule = schedules.find((schedule) => `${schedule.startTime} ~ ${schedule.endTime}` === time);
+  const handleDateClick = (date: Date) => {
+    const formattedDate = date.toISOString().split("T")[0];
+    const times = schedules
+      .filter((schedule) => schedule.date === formattedDate)
+      .map((schedule) => `${schedule.startTime} ~ ${schedule.endTime}`);
+    setTimeList(times);
+    setSelectedTime(null);
+  };
 
-    if (selectedSchedule) {
-      setSelectedTime(time);
-      onChange(selectedSchedule.id);
-    }
+  const handleTimeClick = (time: string) => {
+    setSelectedTime(time);
   };
 
   return (
@@ -55,7 +54,7 @@ const ActivityCalendar = ({ schedules, onChange }: ActivityCalendarProps) => {
       <div className="mb-4 flex h-full justify-center">
         <Calendar
           onClickDay={handleDateClick}
-          tileClassName={({ date }) => (isDateAvailable(date, schedules) ? "text-black02" : "text-gray06")}
+          tileClassName={({ date }) => (isDateAvailable(date) ? "text-black02" : "text-gray06")}
           className="w-full rounded-md border border-gray03"
           minDate={new Date()}
           locale="en-US"
@@ -84,4 +83,4 @@ const ActivityCalendar = ({ schedules, onChange }: ActivityCalendarProps) => {
   );
 };
 
-export default ActivityCalendar;
+export default CalendarComponent;
