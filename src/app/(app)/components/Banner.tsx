@@ -2,7 +2,8 @@
 
 import { useCarousel } from "@/hooks/useCarousel";
 import { getActivities } from "@/lib/api/Activities";
-import { GetActivities } from "@/types/ActiviteyType";
+import BannerSkeleton from "@/skeleton/main/BannerSkeleton";
+import { GetActivities } from "@/types/ActivityType";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 
@@ -21,7 +22,7 @@ const Banner = () => {
   const { carouselRef } = useCarousel({ autoScroll: true, intervalTime: 7000 });
 
   if (isLoading) {
-    return <div className="h-60 w-full md:h-[550px]">Loading...</div>;
+    return <BannerSkeleton />;
   }
 
   if (error) {
@@ -55,7 +56,7 @@ const Banner = () => {
             <h1 className="z-10 w-[55vw] whitespace-normal break-keep text-2xl leading-[28.64px] md:text-[54px] md:leading-[64.44px] xl:text-[68px] xl:leading-[81.15px]">
               {activity.title}
             </h1>
-            <p className="z-10 text-sm leading-[26px] md:text-xl xl:text-2xl xl:leading-[28.64px]">
+            <p className="z-10 w-fit text-sm leading-[26px] md:text-xl xl:text-2xl xl:leading-[28.64px]">
               {currentMonth}월의 인기 경험 BEST 🔥
             </p>
           </div>

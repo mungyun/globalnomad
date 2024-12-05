@@ -1,6 +1,6 @@
-// 체험 상세 조회
 import axiosInstance, { proxy } from "./axiosInstanceApi";
 
+// 체험 상세 조회
 export const getActivityDetail = async (id: number) => {
   try {
     const response = await axiosInstance.get(`/activities/${id}`);
