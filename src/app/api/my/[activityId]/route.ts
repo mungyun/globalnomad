@@ -2,9 +2,9 @@ import axiosInstance from "@/lib/api/axiosInstanceApi";
 import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
-export const DELETE = async (req: NextRequest, context: { params: { activityId: string } }) => {
+export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ activityId: string }> }) => {
   try {
-    const { activityId } = context.params;
+    const { activityId } = await params;
 
     const accessToken = req.cookies.get("accessToken")?.value;
 
