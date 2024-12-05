@@ -34,6 +34,30 @@ export interface PatchActivityType {
 
 export type ActiviteForm = PostActivityType | PatchActivityType;
 
+interface SubImage {
+  id: number;
+  imageUrl: string;
+}
+
+// 체험 상세 타입
+
+export interface ActivityDetail {
+  id: number;
+  userId: number;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  address: string;
+  bannerImageUrl: string;
+  subImages: SubImage[];
+  schedules: Schedule[];
+  reviewCount: number;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ActivityItem {
   id: number;
   userId: number;
@@ -47,6 +71,28 @@ export interface ActivityItem {
   reviewCount: number;
   createdAt: string;
   updatedAt: string;
+}
+
+interface User {
+  profileImageUrl: string;
+  nickname: string;
+  id: number;
+}
+
+interface Review {
+  id: number;
+  user: User;
+  activityId: number;
+  rating: number;
+  content: string;
+  createdAt: string; // ISO 형식의 날짜
+  updatedAt: string; // ISO 형식의 날짜
+}
+
+export interface ReviewData {
+  averageRating: number;
+  totalCount: number;
+  reviews: Review[];
 }
 
 export type GetActivities = {

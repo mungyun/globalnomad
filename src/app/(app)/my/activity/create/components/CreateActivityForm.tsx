@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import DropdownInput from "@/components/dropdown/DropdownInput";
 import LabelInput from "@/components/input/LabelInput";
 import Textarea from "@/components/input/Textarea";
-import { PostActivities } from "@/lib/api/activities";
+import { PostActivities } from "@/lib/api/Activities";
 import { PostActivityType } from "@/types/ActiviteyType";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
