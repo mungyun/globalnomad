@@ -10,7 +10,7 @@ export interface Reservation {
   userId: number;
   activity: Activity;
   scheduleId: number;
-  status: "pending" | "confirmed" | "completed" | "declined" | "canceled";
+  status: "pending" | "confirmed" | "declined" | "canceled" | "completed";
   reviewSubmitted: boolean;
   totalPrice: number;
   headCount: number;
@@ -27,7 +27,7 @@ export interface Activity {
   bannerImageUrl: string;
 }
 
-export type ReservationStatus = "pending" | "canceled" | "confirmed" | "refused" | "completed";
+export type ReservationStatus = "pending" | "confirmed" | "declined" | "canceled" | "completed";
 
 export interface ReservationStatusType {
   color: string;

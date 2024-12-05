@@ -23,8 +23,7 @@ export const cancelMyReservation = async (reservationId: number): Promise<void> 
   try {
     const { data } = await axios.patch(
       `${BASE_URL}/my-reservations/${reservationId}`,
-      // ㄴㄴㄴㄴ지움
-      { status: "canceleㄴㄴㄴㄴd" },
+      { status: "canceled" },
       { headers: { Authorization: `Bearer ${TestAuth}` } }
     );
     return data;

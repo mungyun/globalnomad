@@ -26,7 +26,7 @@ const RESERVATION_STATUS: Record<ReservationStatus, ReservationStatusType> = {
     buttonText: "예약 취소",
     showButton: true,
   },
-  refused: {
+  declined: {
     color: "text-red03",
     text: "예약 거절",
     showButton: false,
