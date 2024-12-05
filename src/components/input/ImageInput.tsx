@@ -1,4 +1,4 @@
-import { ActiviteForm } from "@/types/ActiviteyType";
+import { ActiviteForm } from "@/types/ActivityType";
 import { InputHTMLAttributes } from "react";
 import { UseFormRegister } from "react-hook-form";
 import { FiPlus } from "react-icons/fi";

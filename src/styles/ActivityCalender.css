@@ -95,10 +95,6 @@
   font-weight: bold;
 }
 
-.react-calendar__month-view__days__day--weekend {
-  color: #d10000;
-}
-
 .react-calendar__month-view__days__day--neighboringMonth,
 .react-calendar__decade-view__years__year--neighboringDecade,
 .react-calendar__century-view__decades__decade--neighboringCentury {
@@ -143,8 +139,8 @@
 }
 
 .react-calendar__tile--now {
-  background: #0b3b2d;
-  color: #ced8d5;
+  background: #ced8d5;
+  color: #0b3b2d;
 }
 
 .react-calendar__tile--now:enabled:hover,

@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import DropdownInput from "@/components/dropdown/DropdownInput";
 import LabelInput from "@/components/input/LabelInput";
 import Textarea from "@/components/input/Textarea";
-import { PostActivities } from "@/types/ActiviteyType";
+import { PostActivities } from "@/types/ActivityType";
 import { useForm } from "react-hook-form";
 import BannerImgForm from "./BannerImageForm";
 import ScheduleList from "./ScheduleList";
