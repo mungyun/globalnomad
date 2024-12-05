@@ -2,9 +2,9 @@ import axiosInstance from "@/lib/api/axiosInstanceApi";
 import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
-export const DELETE = async (req: NextRequest, { params }: { params: { activityId: string } }) => {
+export const DELETE = async (req: NextRequest, context: { params: { activityId: string } }) => {
   try {
-    const { activityId } = params;
+    const { activityId } = context.params;
 
     const accessToken = req.cookies.get("accessToken")?.value;
 
@@ -25,7 +25,6 @@ export const DELETE = async (req: NextRequest, { params }: { params: { activityI
       return NextResponse.json({ message: errorMessage }, { status: error.response?.status || 500 });
     }
 
-    // 기타 서버 오류 처리
     console.error(error);
     return NextResponse.json({ message: "서버 오류" }, { status: 500 });
   }
