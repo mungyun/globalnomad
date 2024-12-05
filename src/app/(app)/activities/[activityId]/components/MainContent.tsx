@@ -2,7 +2,7 @@
 
 import { getActivityDetail } from "@/lib/api/Activities";
 import MainContentSkeleton from "@/skeleton/activities/MainContentSkeleton";
-import { ActivityDetail } from "@/types/ActiviteyType";
+import { ActivityDetail } from "@/types/ActivityType";
 import { useQuery } from "@tanstack/react-query";
 import CommentList from "./CommentList";
 import KakaoMap from "./KakaoMap";

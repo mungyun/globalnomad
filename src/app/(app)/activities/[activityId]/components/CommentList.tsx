@@ -2,7 +2,7 @@
 
 import Pagination from "@/components/Pagination";
 import { getReviews } from "@/lib/api/Activities";
-import { ReviewData } from "@/types/ActiviteyType";
+import { ReviewData } from "@/types/ActivityType";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useState } from "react";

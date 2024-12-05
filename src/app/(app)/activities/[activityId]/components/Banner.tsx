@@ -3,7 +3,7 @@
 import useDeviceType from "@/hooks/useDeviceType";
 import { getActivityDetail } from "@/lib/api/Activities";
 import BannerSkeleton from "@/skeleton/activities/BannerSkeleton";
-import { ActivityDetail } from "@/types/ActiviteyType";
+import { ActivityDetail } from "@/types/ActivityType";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Carousel from "./Carousel";

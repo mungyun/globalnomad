@@ -1,5 +1,5 @@
 import { mockData } from "@/app/(app)/components/mockdata";
-import { ActivityItem } from "@/types/ActiviteyType";
+import { ActivityItem } from "@/types/ActivityType";
 import { useEffect, useState } from "react";
 import useDeviceType from "./useDeviceType";
 
