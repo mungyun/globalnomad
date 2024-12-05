@@ -1,5 +1,5 @@
 import axiosInstance from "@/lib/api/axiosInstanceApi";
-import { PostActivityType } from "@/types/ActiviteyType";
+import { PostActivityType } from "@/types/ActivityType";
 import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 

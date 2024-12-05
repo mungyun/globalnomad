@@ -5,7 +5,7 @@ import DropdownInput from "@/components/dropdown/DropdownInput";
 import LabelInput from "@/components/input/LabelInput";
 import Textarea from "@/components/input/Textarea";
 import { PostActivities } from "@/lib/api/Activities";
-import { PostActivityType } from "@/types/ActiviteyType";
+import { PostActivityType } from "@/types/ActivityType";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import BannerImgForm from "./BannerImageForm";
