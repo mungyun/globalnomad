@@ -1,5 +1,5 @@
 import ImageInput from "@/components/input/ImageInput";
-import { ActiviteForm } from "@/types/ActiviteyType";
+import { ActiviteForm } from "@/types/ActivityType";
 import { UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import PrevImage from "./PrevImage";
 

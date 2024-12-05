@@ -1,4 +1,4 @@
-import { GetActivities } from "@/types/ActiviteyType";
+import { GetActivities } from "@/types/ActivityType";
 
 export const mockData: GetActivities = {
   cursorId: 10,
