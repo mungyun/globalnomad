@@ -1,10 +1,10 @@
 "use client";
 
+import { useCarousel } from "@/hooks/useCarousel";
 import { getActivities } from "@/lib/api/Activities";
 import { GetActivities } from "@/types/ActiviteyType";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
 
 const Banner = () => {
   const {
@@ -18,46 +18,7 @@ const Banner = () => {
     gcTime: 60 * 1000 * 60 * 24, // 24시간 동안 캐시 유지
   });
 
-  // 배너를 스크롤하는 데 사용할 ref
-  const carouselRef = useRef<HTMLDivElement | null>(null);
-
-  // 스크롤을 이동시키는 함수
-  const scrollCarousel = (toPosition: number) => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollTo({ left: toPosition, behavior: "smooth" });
-    }
-  };
-
-  // 첫 번째 배너로 스크롤 이동
-  const scrollToFirstBanner = () => {
-    scrollCarousel(0);
-  };
-
-  // 다음 배너로 스크롤 이동
-  const scrollToNextBanner = () => {
-    if (carouselRef.current) {
-      const nextPosition = carouselRef.current.scrollLeft + carouselRef.current.offsetWidth;
-      scrollCarousel(nextPosition);
-    }
-  };
-
-  // 컴포넌트가 렌더링된 후 배너 자동 스크롤 기능 설정
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (carouselRef.current) {
-        const carousel = carouselRef.current;
-        const isAtEnd = carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth;
-
-        if (isAtEnd) {
-          scrollToFirstBanner(); // 끝에 도달하면 첫 번째 배너로 이동
-        } else {
-          scrollToNextBanner(); // 끝에 도달하지 않으면 다음 배너로 이동
-        }
-      }
-    }, 7000); // 7초마다 자동으로 스크롤 이동
-
-    return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 클리어
-  }, []);
+  const { carouselRef } = useCarousel({ autoScroll: true, intervalTime: 7000 });
 
   if (isLoading) {
     return <div className="h-60 w-full md:h-[550px]">Loading...</div>;
