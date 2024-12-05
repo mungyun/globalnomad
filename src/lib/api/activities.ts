@@ -1,5 +1,5 @@
 // 체험 상세 조회
-import { PostActivityType } from "@/types/ActiviteyType";
+import { PostActivityType } from "@/types/ActivityType";
 import { isAxiosError } from "axios";
 import axiosInstance, { proxy } from "./axiosInstanceApi";
 
