@@ -1,5 +1,5 @@
 import ImageInput from "@/components/input/ImageInput";
-import { PostActivitiesImage } from "@/lib/api/Activities";
+import useUploadImage from "@/hooks/useUploadImage";
 import { ActiviteForm } from "@/types/ActivityType";
 import { useRef } from "react";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
@@ -13,24 +13,18 @@ interface FormProps {
 const BannerImageForm = ({ watch, setValue }: FormProps) => {
   const watchImage = watch("bannerImageUrl");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const mutation = useUploadImage();
 
   const imageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
 
-    try {
-      const data = await PostActivitiesImage(file);
-      setValue("bannerImageUrl", data.activityImageUrl);
-    } catch (error) {
-      if (error instanceof Error) {
-        // toast로 바꿀 예정
-        alert(`${error.message}`);
-      }
-    } finally {
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+    const data = await mutation.mutateAsync(file);
+    setValue("bannerImageUrl", data);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
