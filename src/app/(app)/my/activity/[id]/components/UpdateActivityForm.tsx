@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import DropdownInput from "@/components/dropdown/DropdownInput";
 import LabelInput from "@/components/input/LabelInput";
 import Textarea from "@/components/input/Textarea";
-import { PatchActivityType } from "@/types/ActiviteyType";
+import { PatchActivityType } from "@/types/ActivityType";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import BannerImageForm from "../../create/components/BannerImageForm";
