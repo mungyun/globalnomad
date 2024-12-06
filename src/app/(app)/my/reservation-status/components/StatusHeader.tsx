@@ -1,30 +1,33 @@
-import { proxy } from "@/lib/api/axiosInstanceApi";
+import axiosInstance from "@/lib/api/axiosInstanceApi";
+import { cookies } from "next/headers";
 import StatusDropdown from "./StatusDropdown";
 
-const StatusHeader = async () => {
-  try {
-    const response = await proxy.get("/api/my-activities");
+const StatusHeader = async ({ cursorId = null, size = 20 }: { cursorId?: number | null; size?: number }) => {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+  console.log("Access Token:", accessToken);
 
-    // 서버에서 응답 데이터를 처리
-    const activityTitles = response.data.map((activity: { title: string }) => activity.title);
+  // Authorization 헤더 설정
+  const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
 
-    return (
-      <div className="mb-[30px]">
-        <h2 className="mb-6 text-[32px] font-bold md:mb-8">예약현황</h2>
-        <StatusDropdown datas={activityTitles} type="header" />
-      </div>
-    );
-  } catch (error) {
-    console.error("데이터를 가져오는 데 실패했습니다.", error);
+  // 요청 URL 설정
+  const url = cursorId ? `/my-reservations?cursorId=${cursorId}&size=${size}` : `/my-reservations?size=${size}`;
+  console.log("Request URL:", url);
 
-    // 오류 처리 UI
-    return (
-      <div className="mb-[30px]">
-        <h2 className="mb-6 text-[32px] font-bold md:mb-8">예약현황</h2>
-        <div>데이터를 가져오는 데 실패했습니다.</div>
-      </div>
-    );
-  }
+  // API 요청 보내기
+  const response = await axiosInstance.get(url, { headers });
+
+  // 응답 데이터 처리
+  const activityTitles = response.data.reservations.map(
+    (reservation: { activity: { title: string } }) => reservation.activity.title
+  );
+
+  return (
+    <div className="mb-[30px]">
+      <h2 className="mb-6 text-[32px] font-bold md:mb-8">예약현황</h2>
+      <StatusDropdown datas={activityTitles} type="header" />
+    </div>
+  );
 };
 
 export default StatusHeader;
