@@ -6,6 +6,7 @@ import BannerSkeleton from "@/skeleton/main/BannerSkeleton";
 import { GetActivities } from "@/types/ActivityType";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import Link from "next/link";
 
 const Banner = () => {
   const {
@@ -24,11 +25,9 @@ const Banner = () => {
   if (isLoading) {
     return <BannerSkeleton />;
   }
-
   if (error) {
     return <div className="h-60 w-full md:h-[550px]">Error: {error.message}</div>;
   }
-
   if (!bannerData) {
     return <div className="h-60 w-full md:h-[550px]">배너 데이터가 없습니다.</div>;
   }
@@ -43,23 +42,25 @@ const Banner = () => {
           key={activity.id}
           className="relative w-full flex-shrink-0 pl-6 pt-[74px] md:pl-8 md:pt-[144px] xl:pl-0 xl:pt-[159px]"
         >
-          <div className="absolute left-0 top-0 size-full">
-            <Image
-              src={activity.bannerImageUrl}
-              fill
-              priority
-              style={{ objectFit: "cover" }}
-              alt={`${currentMonth}월의 인기 경험: ${activity.title}`}
-            />
-          </div>
-          <div className="mx-auto flex max-w-[1200px] flex-col gap-2 font-bold text-white xl:gap-5">
-            <h1 className="z-10 w-[55vw] whitespace-normal break-keep text-2xl leading-[28.64px] md:text-[54px] md:leading-[64.44px] xl:text-[68px] xl:leading-[81.15px]">
-              {activity.title}
-            </h1>
-            <p className="z-10 w-fit text-sm leading-[26px] md:text-xl xl:text-2xl xl:leading-[28.64px]">
-              {currentMonth}월의 인기 경험 BEST 🔥
-            </p>
-          </div>
+          <Link href={`/activities/${activity.id}`} aria-label={`${currentMonth}월의 인기 경험: ${activity.title}`}>
+            <div className="absolute left-0 top-0 size-full">
+              <Image
+                src={activity.bannerImageUrl}
+                fill
+                priority
+                style={{ objectFit: "cover" }}
+                alt={`${activity.title} 이미지`}
+              />
+            </div>
+            <div className="mx-auto flex max-w-[1200px] flex-col gap-2 font-bold text-white xl:gap-5">
+              <h2 className="z-10 w-[55vw] whitespace-normal break-keep text-2xl leading-[28.64px] md:text-[54px] md:leading-[64.44px] xl:text-[68px] xl:leading-[81.15px]">
+                {activity.title}
+              </h2>
+              <span className="z-10 w-fit text-sm leading-[26px] md:text-xl xl:text-2xl xl:leading-[28.64px]">
+                {currentMonth}월의 인기 경험 BEST 🔥
+              </span>
+            </div>
+          </Link>
         </section>
       ))}
     </div>
