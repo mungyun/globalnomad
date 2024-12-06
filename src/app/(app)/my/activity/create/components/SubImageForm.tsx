@@ -1,5 +1,5 @@
 import ImageInput from "@/components/input/ImageInput";
-import { PostActivitiesImage } from "@/lib/api/Activities";
+import useUploadImage from "@/hooks/useUploadImage";
 import { ActiviteForm } from "@/types/ActivityType";
 import { useRef } from "react";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
@@ -13,30 +13,24 @@ interface FormProps {
 const SubImageForm = ({ watch, setValue }: FormProps) => {
   const watchImages = watch("subImageUrls", []) as string[];
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const mutation = useUploadImage();
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-
     if (!files) return;
 
     const imageUrls: string[] = [];
 
     for (const file of files) {
-      try {
-        const data = await PostActivitiesImage(file);
-        imageUrls.push(data.activityImageUrl);
-      } catch (error) {
-        if (error instanceof Error) {
-          // toast로 바꿀 예정
-          alert(`${error.message}`);
-        }
-      } finally {
-        if (fileInputRef.current) {
-          fileInputRef.current.value = "";
-        }
-      }
+      const imageUrl = await mutation.mutateAsync(file);
+      imageUrls.push(imageUrl);
     }
-    setValue("subImageUrls", [...watchImages, ...imageUrls]);
+
+    setValue("subImageUrls", [...watchImages, ...imageUrls], { shouldValidate: true });
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const clearImage = (index: number) => {
@@ -57,7 +51,7 @@ const SubImageForm = ({ watch, setValue }: FormProps) => {
             <PrevImage key={index} imageFile={image} clearImage={() => clearImage(index)} />
           ))}
       </div>
-      <p className="pl-2 text-lg text-gray09">*이미지를 최소 4개 이상 제출해주세요.</p>
+      <p className="pl-2 text-lg text-gray09">*소개 이미지를 4개 입력해 주세요.</p>
     </>
   );
 };

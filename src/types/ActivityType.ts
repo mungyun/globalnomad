@@ -14,7 +14,7 @@ export interface PostActivityType {
   price: number;
   address: string;
   bannerImageUrl: string;
-  subImageUrls?: string[];
+  subImageUrls: string[];
   schedules: Schedule[];
 }
 
@@ -27,6 +27,7 @@ export interface PatchActivityType {
   bannerImageUrl: string;
   subImageIdsToRemove?: number[];
   subImageUrlsToAdd?: string[];
+  subImageUrls: string[];
   schedules: Schedule[];
   scheduleIdsToRemove?: number[];
   schedulesToAdd?: string[];
