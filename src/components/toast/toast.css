@@ -1,8 +1,18 @@
 .Toastify__toast {
-  border-radius: 14px;
+  border-radius: 16px;
+  color: #0b3b2d;
+  font-weight: 800;
 }
 
-.Toastify__toast:hover {
-  transform: translateY(-4px);
-  transition: transform 0.2s ease;
+@media (max-width: 768px) {
+  .Toastify__toast-container--top-right {
+    top: 20px !important;
+    left: 50% !important;
+    width: 85% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
+.Toastify__close-button {
+  display: none;
 }
