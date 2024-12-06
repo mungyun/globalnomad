@@ -6,14 +6,14 @@ import { IoIosArrowDown } from "react-icons/io";
 interface TimeInputProps {
   label?: string;
   value?: string;
-
+  timeReset: boolean;
   onChange: (value: string) => void;
 }
 
 const hours = Array.from({ length: 24 }, (_, index) => String(index).padStart(2, "0"));
 const minutes = Array.from({ length: 12 }, (_, index) => String(index * 5).padStart(2, "0"));
 
-const TimeInput = ({ label, value, onChange }: TimeInputProps) => {
+const TimeInput = ({ label, value, timeReset, onChange }: TimeInputProps) => {
   const [time, setTime] = useState({ hour: "00", minute: "00" });
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -46,6 +46,10 @@ const TimeInput = ({ label, value, onChange }: TimeInputProps) => {
     onChange(`${time.hour}:${time.minute}`);
   }, [time]);
 
+  useEffect(() => {
+    setTime({ hour: "00", minute: "00" });
+  }, [timeReset]);
+
   return (
     <div className="relative" ref={dropdownRef}>
       <label className="flex w-auto flex-col gap-2 text-base font-medium leading-[26px] md:text-xl md:leading-8">
@@ -60,7 +64,7 @@ const TimeInput = ({ label, value, onChange }: TimeInputProps) => {
         <IoIosArrowDown className="absolute bottom-3 right-2 size-5 md:bottom-4 md:right-4 md:size-6" />
       </label>
       {isOpen && (
-        <ul className="gap1 absolute top-24 flex h-[250px] w-[140px] gap-2 rounded border border-gray07 bg-white p-1 shadow-custom">
+        <ul className="gap1 absolute top-20 z-10 flex h-[250px] w-[140px] gap-2 rounded border border-gray07 bg-white p-1 shadow-custom md:top-[100px]">
           <div className="h-full w-1/2 overflow-scroll [&::-webkit-scrollbar]:hidden">
             {hours.map((hour) => (
               <li

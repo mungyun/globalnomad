@@ -4,23 +4,37 @@ import Button from "@/components/Button";
 import DropdownInput from "@/components/dropdown/DropdownInput";
 import LabelInput from "@/components/input/LabelInput";
 import Textarea from "@/components/input/Textarea";
-import { PostActivities } from "@/types/ActivityType";
+import { PostActivities } from "@/lib/api/Activities";
+import { PostActivityType } from "@/types/ActivityType";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import BannerImgForm from "./BannerImageForm";
 import ScheduleList from "./ScheduleList";
 import SubImageForm from "./SubImageForm";
 
 const CreateActivityForm = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
     watch,
     setValue,
     formState: { isValid },
-  } = useForm<PostActivities>();
+  } = useForm<PostActivityType>();
 
-  const onSubmit = (data: PostActivities) => {
+  const onSubmit = async (data: PostActivityType) => {
     console.log(data);
+    if (!data.subImageUrls || data.subImageUrls.length < 4) return;
+    try {
+      await PostActivities(data);
+      router.push("/my/activity");
+    } catch (error) {
+      if (error instanceof Error) {
+        // toast로 바꿀 예정
+        alert(`${error.message}`);
+      }
+    }
   };
   return (
     <div className="flex w-full flex-col gap-6">
@@ -36,8 +50,8 @@ const CreateActivityForm = () => {
       <LabelInput label="가격" placeholder="가격" type="number" {...register("price")} />
       <LabelInput label="주소" placeholder="주소를 입력해주세요" {...register("address")} />
       <ScheduleList watch={watch} setValue={setValue} />
-      <BannerImgForm register={register} watch={watch} setValue={setValue} />
-      <SubImageForm register={register} watch={watch} setValue={setValue} />
+      <BannerImgForm watch={watch} setValue={setValue} />
+      <SubImageForm watch={watch} setValue={setValue} />
     </div>
   );
 };
