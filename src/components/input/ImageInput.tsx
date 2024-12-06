@@ -1,21 +1,16 @@
-import { ActiviteForm } from "@/types/ActiviteyType";
-import { InputHTMLAttributes } from "react";
-import { UseFormRegister } from "react-hook-form";
+import { InputHTMLAttributes, forwardRef } from "react";
 import { FiPlus } from "react-icons/fi";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  register: UseFormRegister<ActiviteForm>;
-  name: "bannerImageFile" | "subImageFiles";
-}
-
-const ImageInput = ({ register, name, ...props }: InputProps) => {
+const ImageInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(({ ...props }, ref) => {
   return (
     <label className="flex aspect-square flex-col items-center justify-center gap-7 rounded-xl border border-dashed border-gray09 xl:size-[182px]">
       <FiPlus className="size-12" />
       이미지 등록
-      <input className="hidden" type="file" {...register(name)} accept="image/*" {...props} />
+      <input className="hidden" type="file" accept="image/*" ref={ref} {...props} />
     </label>
   );
-};
+});
+
+ImageInput.displayName = "ImageInput";
 
 export default ImageInput;
