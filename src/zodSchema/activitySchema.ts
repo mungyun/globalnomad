@@ -18,6 +18,6 @@ export const PostActivitySchema = z.object({
   price: z.number().min(0, "Price must be a positive number"),
   address: z.string().min(1),
   bannerImageUrl: z.string().url(),
-  subImageUrls: z.array(z.string().url()).length(4),
+  subImageUrls: z.array(z.string().url()).min(1),
   schedules: z.array(ScheduleSchema).min(1),
 });

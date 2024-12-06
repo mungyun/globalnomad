@@ -43,11 +43,27 @@ const CreateActivityForm = () => {
     },
   });
 
+  const formatWithCommas = (value: string) => {
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  const removeCommas = (value: string) => {
+    return value.replace(/,/g, "");
+  };
+
   const onSubmit = async (data: PostActivityType) => {
     data.price = Number(data.price);
-    if (!data.subImageUrls || data.subImageUrls.length < 4) return;
+    if (!data.subImageUrls || data.subImageUrls.length < 4) {
+      Toast.error("소개 이미지를 4개 입력해 주세요.");
+      return;
+    }
+    if (data.subImageUrls.length > 4) {
+      Toast.error("소개 이미지는 4개만 입력이 가능합니다.");
+      return;
+    }
     mutation.mutate(data);
   };
+
   return (
     <div className="flex w-full flex-col gap-6">
       <div className="flex justify-between">
@@ -59,7 +75,18 @@ const CreateActivityForm = () => {
       <LabelInput placeholder="제목" {...register("title")} />
       <DropdownInput setValue={(value) => setValue("category", value)} {...register("category")} />
       <Textarea placeholder="설명" {...register("description")} />
-      <LabelInput label="가격" placeholder="가격" {...register("price", { valueAsNumber: true })} type="number" />
+      <LabelInput
+        label="가격"
+        placeholder="가격"
+        value={formatWithCommas(watch("price")?.toString() || "")}
+        onChange={(e) => {
+          const price = removeCommas(e.target.value);
+          if (!isNaN(Number(price))) {
+            setValue("price", Number(price));
+          }
+        }}
+        type="text"
+      />
       <LabelInput label="주소" placeholder="주소를 입력해주세요" {...register("address")} />
       <ScheduleList watch={watch} setValue={setValue} />
       <BannerImgForm watch={watch} setValue={setValue} />

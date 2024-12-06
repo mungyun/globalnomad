@@ -51,7 +51,7 @@ const SubImageForm = ({ watch, setValue }: FormProps) => {
             <PrevImage key={index} imageFile={image} clearImage={() => clearImage(index)} />
           ))}
       </div>
-      <p className="pl-2 text-lg text-gray09">*이미지를 최소 4개 이상 제출해주세요.</p>
+      <p className="pl-2 text-lg text-gray09">*소개 이미지를 4개 입력해 주세요.</p>
     </>
   );
 };
