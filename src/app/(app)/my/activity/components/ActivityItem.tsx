@@ -2,6 +2,7 @@ import IconDropdown from "@/app/(app)/my/activity/components/IconDropdown";
 import { ActivityList } from "@/types/types";
 import formatPrice from "@/utils/formatPrice";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface ActivityItemProps {
   activity: ActivityList;
@@ -10,8 +11,13 @@ interface ActivityItemProps {
 const ActivityItem = ({ activity }: ActivityItemProps) => {
   const { bannerImageUrl, rating, reviewCount, title, price } = activity;
 
+  const router = useRouter();
+  const handlePushActivity = () => {
+    router.push(`/my/activities/${activity.id}`);
+  };
+
   return (
-    <section className="flex rounded-3xl shadow-md">
+    <section className="flex rounded-3xl shadow-md" onClick={handlePushActivity}>
       {/* 이미지 */}
       <div className="relative aspect-square w-1/3">
         <Image
@@ -41,7 +47,9 @@ const ActivityItem = ({ activity }: ActivityItemProps) => {
             ₩ {formatPrice(price)}
             <span className="ml-2 hidden md:block"> /인</span>
           </span>
-          <IconDropdown activity={activity} />
+          <div onClick={(e) => e.stopPropagation()}>
+            <IconDropdown activity={activity} />
+          </div>
         </div>
       </div>
     </section>

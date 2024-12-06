@@ -18,17 +18,14 @@ const IconDropdown = ({ activity }: IconDropdownProps) => {
   const [isModalOpen, setModalIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // 수정버튼
   const handleEditClick = () => {
     router.push(`/my/activity/${activity.id}`);
-    success("수정하기 페이지 이동합니다");
+    success("수정하기 페이지로 이동합니다");
   };
 
-  // 삭제버튼
   const handleDeleteClick = () => {
     setModalIsOpen(true);
   };
-  // 바깥 클릭 시 모달 닫음
   const handleClickOutside = (e: MouseEvent) => {
     if (!dropdownRef.current?.contains(e.target as Node)) {
       setIsOpen(false);
