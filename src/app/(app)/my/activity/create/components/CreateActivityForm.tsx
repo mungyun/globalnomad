@@ -69,7 +69,11 @@ const CreateActivityForm = () => {
       <div className="flex justify-between">
         <h2 className="text-[32px] font-bold leading-[42px]">내 체험 등록</h2>
         <Button type="submit" disabled={!isValid || mutation.isPending} size="md" onClick={handleSubmit(onSubmit)}>
-          {mutation.isPending ? "등록중" : "등록하기"}
+          {mutation.isPending ? (
+            <div className="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent" />
+          ) : (
+            "등록하기"
+          )}
         </Button>
       </div>
       <LabelInput placeholder="제목" {...register("title")} />
