@@ -1,5 +1,6 @@
 "use client";
 
+import useReservationStore from "@/store/my/useReservationStore";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -8,13 +9,15 @@ const StatusDropdown = ({
   type = "header",
   onSelect,
 }: {
-  datas: string[];
+  datas: { id: number; title: string }[];
   type: string;
-  onSelect?: (selected: string) => void;
+  onSelect?: (selected: { id: number; title: string }) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<string | null>(datas[0]);
+  const [selectedItem, setSelectedItem] = useState<{ id: number; title: string } | null>(datas[0]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const setActivityId = useReservationStore((state) => state.setActivityId);
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -26,10 +29,11 @@ const StatusDropdown = ({
     }
   };
 
-  const handleSelect = (item: string) => {
+  const handleSelect = (item: { id: number; title: string }) => {
     setSelectedItem(item);
     setIsOpen(false);
     if (onSelect) onSelect(item);
+    setActivityId(item.id);
   };
 
   useEffect(() => {
@@ -48,7 +52,7 @@ const StatusDropdown = ({
         {type === "header" && (
           <div className="absolute bottom-10 left-3 h-[24px] w-[45px] bg-white text-[14px]">체험명</div>
         )}
-        <span className="text-[16px]">{selectedItem}</span>
+        <span className="text-[16px]">{selectedItem?.title}</span>
         <Image src="/icons/dropdown2.svg" width={24} height={24} alt="드롭 다운" />
       </button>
       {isOpen && (
@@ -61,13 +65,13 @@ const StatusDropdown = ({
             const isLast = index === datas.length - 1;
             return (
               <span
-                key={data}
+                key={data.id}
                 onClick={() => handleSelect(data)}
                 className={`relative flex h-[56px] cursor-pointer items-center bg-white px-4 text-[16px] text-gray08 hover:bg-gray01 ${
                   isFirst ? "rounded-t-md" : ""
                 } ${isLast ? "rounded-b-md" : ""}`}
               >
-                {data}
+                {data.title}
               </span>
             );
           })}

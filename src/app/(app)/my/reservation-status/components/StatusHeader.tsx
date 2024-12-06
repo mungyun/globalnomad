@@ -15,15 +15,15 @@ const StatusHeader = async ({ cursorId = null, size = 10 }: { cursorId?: number 
   const response = await axiosInstance.get(url, { headers });
 
   // 응답 데이터 처리
-  const activityTitles = response.data.reservations.map(
-    (reservation: { activity: { title: string } }) => reservation.activity.title
-  );
+  const activityData = response.data.reservations.map((reservation: { activity: { id: number; title: string } }) => ({
+    id: reservation.activity.id,
+    title: reservation.activity.title,
+  }));
 
-  console.log("activityTitles:", activityTitles);
   return (
     <div className="mb-[30px]">
       <h2 className="mb-6 text-[32px] font-bold md:mb-8">예약현황</h2>
-      <StatusDropdown datas={activityTitles} type="header" />
+      <StatusDropdown datas={activityData} type="header" />
     </div>
   );
 };
