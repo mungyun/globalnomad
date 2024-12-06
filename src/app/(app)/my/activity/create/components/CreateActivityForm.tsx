@@ -44,7 +44,6 @@ const CreateActivityForm = () => {
   });
 
   const onSubmit = async (data: PostActivityType) => {
-    console.log(data);
     data.price = Number(data.price);
     if (!data.subImageUrls || data.subImageUrls.length < 4) return;
     mutation.mutate(data);
