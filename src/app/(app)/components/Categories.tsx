@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import CategoryButton from "./CategoryButton";
 
 const OPTIONS = ["가격이 낮은 순", "가격이 높은 순"];
-const CATEGORY = ["문화 · 예술", "교육 · 학습", "스포츠", "식음료", "투어 · 관광", "게임 · 취미"];
+const CATEGORY = ["문화 · 예술", "스포츠", "식음료", "투어", "관광", "웰빙"];
 
 const Categories = ({ currentCategory }: { currentCategory?: string }) => {
   const deviceType = useDeviceType();

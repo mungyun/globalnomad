@@ -1,25 +1,69 @@
-import Image from "next/image";
+"use client";
 
-const IMAGE_URL =
-  "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/9-1_1279_1732781341207.png";
+import { useCarousel } from "@/hooks/useCarousel";
+import { getActivities } from "@/lib/api/Activities";
+import BannerSkeleton from "@/skeleton/main/BannerSkeleton";
+import { GetActivities } from "@/types/ActivityType";
+import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
+import Link from "next/link";
 
 const Banner = () => {
+  const {
+    data: bannerData,
+    isLoading,
+    error,
+  } = useQuery<GetActivities, Error>({
+    queryKey: ["bannerData"],
+    queryFn: () => getActivities({ sort: "most_reviewed", size: 3 }),
+    staleTime: 60 * 1000 * 60, // 1시간
+    gcTime: 60 * 1000 * 60 * 24, // 24시간 동안 캐시 유지
+  });
+
+  const { carouselRef } = useCarousel({ autoScroll: true, intervalTime: 7000 });
+
+  if (isLoading) {
+    return <BannerSkeleton />;
+  }
+  if (error) {
+    return <div className="h-60 w-full md:h-[550px]">Error: {error.message}</div>;
+  }
+  if (!bannerData) {
+    return <div className="h-60 w-full md:h-[550px]">배너 데이터가 없습니다.</div>;
+  }
+
+  const { activities } = bannerData;
+  const currentMonth = new Date().getMonth() + 1;
+
   return (
-    <section className="relative h-60 w-full pl-6 pt-[74px] md:h-[550px] md:pl-8 md:pt-[144px] xl:pl-0 xl:pt-[159px]">
-      <div className="absolute left-0 top-0 size-full">
-        <Image src={IMAGE_URL} fill priority style={{ objectFit: "cover" }} alt="메인 페이지 배너 이미지" />
-      </div>
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-2 font-bold text-white xl:gap-5">
-        <h1 className="z-10 text-2xl leading-[28.64px] md:text-[54px] md:leading-[64.44px] xl:text-[68px] xl:leading-[81.15px]">
-          함께 배우면 즐거운
-          <br />
-          스트릿 댄스
-        </h1>
-        <p className="z-10 text-sm leading-[26px] md:text-xl xl:text-2xl xl:leading-[28.64px]">
-          12월의 인기 경험 BEST 🔥
-        </p>
-      </div>
-    </section>
+    <div ref={carouselRef} className="flex h-60 w-full overflow-auto md:h-[550px]">
+      {activities.map((activity) => (
+        <section
+          key={activity.id}
+          className="relative w-full flex-shrink-0 pl-6 pt-[74px] md:pl-8 md:pt-[144px] xl:pl-0 xl:pt-[159px]"
+        >
+          <Link href={`/activities/${activity.id}`} aria-label={`${currentMonth}월의 인기 경험: ${activity.title}`}>
+            <div className="absolute left-0 top-0 size-full">
+              <Image
+                src={activity.bannerImageUrl}
+                fill
+                priority
+                style={{ objectFit: "cover" }}
+                alt={`${activity.title} 이미지`}
+              />
+            </div>
+            <div className="mx-auto flex max-w-[1200px] flex-col gap-2 font-bold text-white xl:gap-5">
+              <h2 className="z-10 w-[55vw] whitespace-normal break-keep text-2xl leading-[28.64px] md:text-[54px] md:leading-[64.44px] xl:text-[68px] xl:leading-[81.15px]">
+                {activity.title}
+              </h2>
+              <span className="z-10 w-fit text-sm leading-[26px] md:text-xl xl:text-2xl xl:leading-[28.64px]">
+                {currentMonth}월의 인기 경험 BEST 🔥
+              </span>
+            </div>
+          </Link>
+        </section>
+      ))}
+    </div>
   );
 };
 

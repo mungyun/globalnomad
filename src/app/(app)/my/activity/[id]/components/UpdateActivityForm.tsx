@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import DropdownInput from "@/components/dropdown/DropdownInput";
 import LabelInput from "@/components/input/LabelInput";
 import Textarea from "@/components/input/Textarea";
-import { PatchActivites } from "@/types/ActivityType";
+import { PatchActivityType } from "@/types/ActivityType";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import BannerImageForm from "../../create/components/BannerImageForm";
@@ -19,22 +19,22 @@ const UpdateActivityForm = () => {
     setValue,
     reset,
     formState: { isValid },
-  } = useForm<PatchActivites>();
+  } = useForm<PatchActivityType>();
 
-  const onSubmit = (data: PatchActivites) => {
+  const onSubmit = (data: PatchActivityType) => {
     console.log(data);
   };
 
   useEffect(() => {
     const data = mock;
-    const filteredData: PatchActivites = {
+    const filteredData: PatchActivityType = {
       title: data.title,
       category: data.category,
       description: data.description,
       price: data.price,
       address: data.address,
       bannerImageUrl: data.bannerImageUrl,
-      subImageUrlsToAdd: [],
+      subImageUrls: [],
       schedules: data.schedules.map((schedule) => ({
         id: schedule.id,
         date: schedule.date,
@@ -59,8 +59,8 @@ const UpdateActivityForm = () => {
       <LabelInput label="가격" placeholder="가격" type="number" {...register("price")} />
       <LabelInput label="주소" placeholder="주소를 입력해주세요" {...register("address")} />
       <ScheduleList watch={watch} setValue={setValue} />
-      <BannerImageForm register={register} watch={watch} setValue={setValue} />
-      <SubImageForm register={register} watch={watch} setValue={setValue} />
+      <BannerImageForm watch={watch} setValue={setValue} />
+      <SubImageForm watch={watch} setValue={setValue} />
     </div>
   );
 };

@@ -23,7 +23,6 @@ const BestActivities = () => {
   const nextPage = () => {
     if (page < data.length) setPage(page + 1);
   };
-  console.log(data.length);
 
   return (
     <section className="flex flex-col gap-4 pl-4 md:gap-8 md:pl-6 xl:pl-0">

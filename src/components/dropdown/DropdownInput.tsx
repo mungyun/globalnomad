@@ -23,7 +23,6 @@ const DropdownInput = ({ setValue, ...props }: DropdownInputProps) => {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const toggleDropdown = () => {
-    console.log("test");
     setIsOpen((prev) => !prev);
   };
 
