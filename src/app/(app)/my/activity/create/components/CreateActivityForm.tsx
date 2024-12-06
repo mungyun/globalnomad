@@ -35,8 +35,8 @@ const CreateActivityForm = () => {
       return PostActivities(data);
     },
     onSuccess: () => {
-      Toast.success("체험 등록에 성공했습니다.");
       router.push("/my/activity");
+      Toast.success("체험 등록에 성공했습니다.");
     },
     onError: (error) => {
       Toast.error(error.message || "체험 등록에 실패했습니다.");
@@ -48,15 +48,6 @@ const CreateActivityForm = () => {
     data.price = Number(data.price);
     if (!data.subImageUrls || data.subImageUrls.length < 4) return;
     mutation.mutate(data);
-    // try {
-    //   await PostActivities(data);
-    //   router.push("/my/activity");
-    // } catch (error) {
-    //   if (error instanceof Error) {
-    //     // toast로 바꿀 예정
-    //     alert(`${error.message}`);
-    //   }
-    // }
   };
   return (
     <div className="flex w-full flex-col gap-6">
