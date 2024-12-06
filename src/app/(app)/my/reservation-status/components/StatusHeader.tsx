@@ -11,11 +11,8 @@ const StatusHeader = async ({ cursorId = null, size = 10 }: { cursorId?: number 
 
   // 요청 URL 설정
   const url = cursorId ? `/my-reservations?cursorId=${cursorId}&size=${size}` : `/my-reservations?size=${size}`;
-  console.log("Request URL:", url);
-
   // API 요청 보내기
   const response = await axiosInstance.get(url, { headers });
-  console.log(response.data);
 
   // 응답 데이터 처리
   const activityTitles = response.data.reservations.map(
