@@ -1,5 +1,6 @@
 "use client";
 
+import DateInput from "@/components/input/DateInput";
 import TimeInput from "@/components/input/TimeInput";
 import { ActiviteForm, Schedule } from "@/types/ActivityType";
 import { useState } from "react";
@@ -16,6 +17,8 @@ const defaultSchedule = { date: "", startTime: "00:00", endTime: "00:00" };
 
 const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
   const [schedule, setSchedule] = useState<Schedule>(defaultSchedule);
+  const [timeReset, setTimeReset] = useState<boolean>(false);
+
   const schedules = watch("schedules", []);
 
   const addSchedule = () => {
@@ -24,6 +27,7 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
       setValue("schedules", [schedule, ...schedules]);
       // 스케줄 추가 시 input value 초기화
       setSchedule(defaultSchedule);
+      setTimeReset((prev) => !prev);
     } else {
       console.log("실패");
     }
@@ -40,7 +44,7 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
     <>
       <label className="text-xl font-bold leading-8 text-black03 md:text-2xl">예약 가능한 시간대</label>
       <div className="flex w-full items-end gap-1 border-b border-gray03 pb-5 md:gap-[5px] xl:gap-5">
-        <label className="flex w-full flex-col">
+        {/* <label className="flex w-full flex-col">
           <span className="mb-2 text-base font-medium leading-[26px] md:text-xl md:leading-8">날짜</span>
           <input
             className="h-11 w-full rounded border border-gray08 px-3 text-sm font-normal leading-[26px] outline-green02 placeholder:text-gray06 md:h-14 md:px-4 md:text-base"
@@ -49,15 +53,22 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
             placeholder="YY/MM/DD"
             onChange={(e) => handleChange("date", e.target.value)}
           />
-        </label>
+        </label> */}
+        <DateInput onChange={(date: string) => handleChange("date", date)} value={schedule.date} />
         <div className="flex items-end gap-1 md:gap-[5px] xl:w-auto xl:gap-3">
           <TimeInput
             label="시작 시간"
+            timeReset={timeReset}
             value={schedule.startTime}
             onChange={(value) => handleChange("startTime", value)}
           />
           <span className="hidden h-[56px] items-center text-xl xl:flex">~</span>
-          <TimeInput label="종료 시간" value={schedule.endTime} onChange={(value) => handleChange("endTime", value)} />
+          <TimeInput
+            label="종료 시간"
+            timeReset={timeReset}
+            value={schedule.endTime}
+            onChange={(value) => handleChange("endTime", value)}
+          />
         </div>
         <button
           onClick={addSchedule}
