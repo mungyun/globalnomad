@@ -3,6 +3,7 @@ import { PostActivityType } from "@/types/ActivityType";
 import { isAxiosError } from "axios";
 import axiosInstance, { proxy } from "./axiosInstanceApi";
 
+// 체험 상세 조회
 export const getActivityDetail = async (id: number) => {
   try {
     const response = await axiosInstance.get(`/activities/${id}`);
@@ -85,5 +86,42 @@ export const PostActivitiesImage = async (file: File) => {
 
     // Axios 외의 예외 처리
     throw new Error("알 수 없는 오류가 발생했습니다.");
+  }
+};
+
+// 체험 리스트 조회
+export const getActivities = async ({
+  method = "cursor",
+  cursorId,
+  category,
+  keyword,
+  sort = "latest",
+  page,
+  size,
+}: {
+  method?: string;
+  cursorId?: number;
+  category?: string;
+  keyword?: string;
+  sort?: string;
+  page?: number;
+  size?: number;
+}) => {
+  try {
+    const response = await axiosInstance.get("/activities", {
+      params: {
+        ...(method && { method }),
+        ...(cursorId && { cursorId }),
+        ...(category && { category }),
+        ...(keyword && { keyword }),
+        ...(sort && { sort }),
+        ...(page && { page }),
+        ...(size && { size }),
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("체험 리스트 조회 오류: ", error);
   }
 };
