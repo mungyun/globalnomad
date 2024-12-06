@@ -1,7 +1,8 @@
 import { useToast } from "@/components/toast/ToastProvider";
+import { deleteMyActivities } from "@/lib/api/MyActivities";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
-import { TestAuth } from "./qwe";
 
 interface ModalProps {
   setIsModalOpen: (isOpen: boolean) => void;
@@ -11,20 +12,21 @@ interface ModalProps {
 export default function ActivityModal({ setIsModalOpen, activityId }: ModalProps): JSX.Element {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const closeModal = () => setIsModalOpen(false);
-  const { success } = useToast();
+  const { success, error } = useToast();
 
-  // 삭제하기 api
-  const handleDeleteClick = async () => {
-    const response = await fetch(`https://sp-globalnomad-api.vercel.app/9-1/my-activities/${activityId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${TestAuth}`,
-      },
-    });
-    const data = await response.json();
-    console.log(data);
-    success("삭제완료");
-  };
+  const queryClient = useQueryClient();
+  const { mutate: deleteActivity } = useMutation({
+    mutationFn: () => deleteMyActivities(activityId),
+    onSuccess: () => {
+      success("체험 삭제완료");
+      closeModal();
+      queryClient.invalidateQueries({ queryKey: ["myActivities"] });
+    },
+    onError: (err) => {
+      error(err.message);
+      closeModal();
+    },
+  });
 
   const handleClickOutside = (e: MouseEvent) => {
     if (!dropdownRef.current?.contains(e.target as Node)) {
@@ -46,7 +48,7 @@ export default function ActivityModal({ setIsModalOpen, activityId }: ModalProps
         <div className="flex gap-3 text-sm">
           <button
             className="w-[80px] rounded-lg border border-black02 px-3 py-[10px] hover:bg-black02 hover:text-white"
-            onClick={handleDeleteClick}
+            onClick={() => deleteActivity()}
           >
             삭제하기
           </button>
