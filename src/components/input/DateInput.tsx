@@ -36,10 +36,9 @@ const DateInput = ({ onChange, value }: DateInputProps) => {
     const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 +1
     const day = String(date.getDate()).padStart(2, "0");
     const formattedDate = `${year}-${month}-${day}`;
-    console.log(date);
-    console.log(new Date(Date.now() + 2));
     console.log(formattedDate);
     onChange(formattedDate);
+    toggleDropdown();
   };
 
   return (
@@ -55,7 +54,7 @@ const DateInput = ({ onChange, value }: DateInputProps) => {
         />
       </label>
       {isOpen && (
-        <div className="absolute top-20 z-10 h-[260px] w-[304px] md:top-[100px]">
+        <div className="absolute top-20 z-10 h-auto w-[304px] md:top-[100px]">
           <Calendar
             onClickDay={handleDateClick}
             className="rounded-md border border-gray03"

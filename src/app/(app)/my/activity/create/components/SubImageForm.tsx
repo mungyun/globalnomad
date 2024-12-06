@@ -17,7 +17,6 @@ const SubImageForm = ({ watch, setValue }: FormProps) => {
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    console.log(files);
     if (!files) return;
 
     const imageUrls: string[] = [];
@@ -27,7 +26,7 @@ const SubImageForm = ({ watch, setValue }: FormProps) => {
       imageUrls.push(imageUrl);
     }
 
-    setValue("subImageUrls", [...watchImages, ...imageUrls]);
+    setValue("subImageUrls", [...watchImages, ...imageUrls], { shouldValidate: true });
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";

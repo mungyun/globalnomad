@@ -21,7 +21,7 @@ const BannerImageForm = ({ watch, setValue }: FormProps) => {
     if (!file) return;
 
     const data = await mutation.mutateAsync(file);
-    setValue("bannerImageUrl", data);
+    setValue("bannerImageUrl", data, { shouldValidate: true });
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
