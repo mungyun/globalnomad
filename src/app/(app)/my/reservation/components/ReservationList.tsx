@@ -3,7 +3,6 @@
 import EmptyActivity from "@/components/EmptyActivity";
 import Dropdown from "@/components/dropdown/Dropdown";
 import { useEffect, useState } from "react";
-import { TestAuth } from "../../activity/components/qwe";
 import ReservationItem from "./ReservationItem";
 import { mockReservations } from "./mockData";
 
@@ -44,11 +43,7 @@ export default function ReservationList() {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("https://sp-globalnomad-api.vercel.app/9-1/my-reservations?size=10", {
-        headers: {
-          Authorization: `Bearer ${TestAuth}`,
-        },
-      });
+      const response = await fetch("https://sp-globalnomad-api.vercel.app/9-1/my-reservations?size=10");
       const data: ReservationsResponse = await response.json();
       console.log(data);
       setReservations(data.reservations);
