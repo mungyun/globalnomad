@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 /* eslint-disable @next/next/no-sync-scripts */
 import { ToastProvider } from "@/components/toast/ToastProvider";
@@ -14,7 +13,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const queryclient = new QueryClient();
   return (
     <html lang="ko">
       <body>
