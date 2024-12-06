@@ -1,7 +1,6 @@
 import { useToast } from "@/components/toast/ToastProvider";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
-import { TestAuth } from "../../activity/components/qwe";
 
 interface ModalProps {
   setIsModalOpen: (isOpen: boolean) => void;
@@ -18,7 +17,6 @@ export default function ReservationModal({ setIsModalOpen, reservationId }: Moda
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${TestAuth}`,
       },
       body: JSON.stringify({
         status: "canceled",
