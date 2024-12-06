@@ -1,18 +1,15 @@
-import { TestAuth } from "@/app/(app)/my/activity/components/qwe";
 import { Reservation, ReservationResponse } from "@/types/MyReservationType";
 import axios, { AxiosError } from "axios";
-
-const BASE_URL = "https://sp-globalnomad-api.vercel.app/9-1";
+import { proxy } from "./axiosInstanceApi";
 
 export const getMyReservation = async (): Promise<Reservation[]> => {
   try {
-    const { data } = await axios.get<ReservationResponse>(`${BASE_URL}/my-reservations`, {
+    const { data } = await proxy.get<ReservationResponse>("api/my-reservations", {
       params: { size: 10 },
-      headers: { Authorization: `Bearer ${TestAuth}` },
     });
     return data.reservations;
   } catch (error) {
-    if (error instanceof AxiosError) {
+    if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data?.message || "예약 정보를 가져오는데 실패했습니다.");
     }
     throw error;
@@ -21,11 +18,7 @@ export const getMyReservation = async (): Promise<Reservation[]> => {
 
 export const cancelMyReservation = async (reservationId: number): Promise<void> => {
   try {
-    const { data } = await axios.patch(
-      `${BASE_URL}/my-reservations/${reservationId}`,
-      { status: "canceled" },
-      { headers: { Authorization: `Bearer ${TestAuth}` } }
-    );
+    const { data } = await proxy.patch(`api/my-reservations/${reservationId}`, { status: "canceled" });
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {

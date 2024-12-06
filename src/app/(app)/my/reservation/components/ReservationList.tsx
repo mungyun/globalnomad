@@ -8,43 +8,38 @@ import { useState } from "react";
 import ReservationDropdown from "./ReservationDropdown";
 import ReservationItem from "./ReservationItem";
 
-export default function ReservationList() {
-  const FILTER_OPTIONS = ["전체 보기", "예약 신청", "예약 취소", "예약 승인", "예약 거절", "체험 완료"];
-  const [filter, setFilter] = useState<string>(FILTER_OPTIONS[0]);
+type ReservationStatus = "all" | "pending" | "canceled" | "confirmed" | "declined" | "completed";
 
-  const filterReservations = (data: Reservation[], filter: string) => {
-    switch (filter) {
-      case FILTER_OPTIONS[0]:
-        return data;
-      case FILTER_OPTIONS[1]:
-        return data.filter((reservation) => reservation.status === "pending");
-      case FILTER_OPTIONS[2]:
-        return data.filter((reservation) => reservation.status === "canceled");
-      case FILTER_OPTIONS[3]:
-        return data.filter((reservation) => reservation.status === "confirmed");
-      case FILTER_OPTIONS[4]:
-        return data.filter((reservation) => reservation.status === "declined");
-      case FILTER_OPTIONS[5]:
-        return data.filter((reservation) => reservation.status === "completed");
-      default:
-        return data;
-    }
-  };
+interface FilterOption {
+  value: ReservationStatus;
+  label: string;
+}
+
+const FILTER_OPTIONS: FilterOption[] = [
+  { value: "all", label: "전체 보기" },
+  { value: "pending", label: "예약 신청" },
+  { value: "canceled", label: "예약 취소" },
+  { value: "confirmed", label: "예약 승인" },
+  { value: "declined", label: "예약 거절" },
+  { value: "completed", label: "체험 완료" },
+];
+
+export default function ReservationList() {
+  const [filter, setFilter] = useState<ReservationStatus>("all");
 
   const { data: reservations = [], isLoading } = useQuery<Reservation[]>({
     queryKey: ["reservations"],
     queryFn: getMyReservation,
-    select: (data) => filterReservations(data, filter),
+    select: (data) => (filter === "all" ? data : data.filter((item) => item.status === filter)),
     retry: 1,
   });
-  if (isLoading) return <div>Loading...</div>;
 
-  const handleFilterChange = (value: string) => {
-    setFilter(value);
-    console.log(filter);
+  const handleFilterChange = (selectedLabel: string) => {
+    const selectedOption = FILTER_OPTIONS.find((option) => option.label === selectedLabel);
+    if (selectedOption) setFilter(selectedOption.value);
   };
 
-  const hasReservations = reservations.length > 0;
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <section className="flex w-full max-w-[800px] flex-col bg-gray01">
@@ -54,14 +49,15 @@ export default function ReservationList() {
           <ReservationDropdown
             label="필터"
             size="xl"
-            options={FILTER_OPTIONS}
-            value={filter}
-            onChange={(value: string) => handleFilterChange(value)}
+            options={FILTER_OPTIONS.map((option) => option.label)}
+            value={FILTER_OPTIONS.find((option) => option.value === filter)?.label || ""}
+            onChange={handleFilterChange}
           />
         </span>
       </header>
+
       <div className="flex flex-col gap-4">
-        {hasReservations ? (
+        {reservations.length > 0 ? (
           reservations.map((reservation) => <ReservationItem key={reservation.id} reservation={reservation} />)
         ) : (
           <EmptyActivity />
