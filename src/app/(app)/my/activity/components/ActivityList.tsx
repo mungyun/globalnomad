@@ -1,32 +1,30 @@
 "use client";
 
 import EmptyActivity from "@/components/EmptyActivity";
+import { useToast } from "@/components/toast/ToastProvider";
+import { getMyActivities } from "@/lib/api/MyActivities";
+import { Activity } from "@/types/MyActivitiesType";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import ActivityItem from "./ActivityItem";
-import { TestAuth } from "./qwe";
 
 const ActivityList = () => {
   const router = useRouter();
-  const [activities, setActivities] = useState([]);
-  const hasActivities = Array.isArray(activities) && activities.length > 0;
+  const { success } = useToast();
 
   //  내체험목록 가져오기
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("https://sp-globalnomad-api.vercel.app/9-1/my-activities?size=20", {
-        headers: {
-          Authorization: `Bearer ${TestAuth}`,
-        },
-      });
-      const data = await response.json();
-      console.log(data);
-      setActivities(data.activities);
-    })();
-  }, []);
+  const { data: activities = [], isLoading } = useQuery<Activity[]>({
+    queryKey: ["myActivities"],
+    queryFn: getMyActivities,
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+
+  const hasActivities = activities.length > 0;
 
   const handleCreateActivity = () => {
     router.push("/my/activity/create");
+    success("체험등록 페이지로 이동합니다");
   };
 
   return (
