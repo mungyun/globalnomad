@@ -3,6 +3,7 @@
 import Button from "@/components/Button";
 import DropdownInput from "@/components/dropdown/DropdownInput";
 import LabelInput from "@/components/input/LabelInput";
+import PostInput from "@/components/input/PostInput";
 import Textarea from "@/components/input/Textarea";
 import { useToast } from "@/components/toast/ToastProvider";
 import { PostActivities } from "@/lib/api/Activities";
@@ -95,6 +96,7 @@ const CreateActivityForm = () => {
       <ScheduleList watch={watch} setValue={setValue} />
       <BannerImgForm watch={watch} setValue={setValue} />
       <SubImageForm watch={watch} setValue={setValue} />
+      <PostInput />
     </div>
   );
 };
