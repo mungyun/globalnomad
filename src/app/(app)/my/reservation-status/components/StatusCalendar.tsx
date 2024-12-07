@@ -4,14 +4,12 @@ import { proxy } from "@/lib/api/axiosInstanceApi";
 import useReservationStore from "@/store/my/useReservationStore";
 import "@/styles/ReservationCalender.css";
 import { ReservationData } from "@/types/MyReservationType";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import Skeleton from "react-loading-skeleton";
-// Skeleton UI 라이브러리 임포트
 import "react-loading-skeleton/dist/skeleton.css";
 import StatusModal from "./modal/StatusModal";
-
-// 스타일 임포트
 
 const caseStyle = "text-start text-[14px] font-medium h-[23px] rounded pl-1";
 const roundStyle = "absolute left-1 top-3 h-[8px] w-[8px] rounded-full";
@@ -24,6 +22,7 @@ const StatusCalendar = () => {
   const [reservationData, setReservationData] = useState<ReservationData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { activityId } = useReservationStore();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,6 +38,7 @@ const StatusCalendar = () => {
         setReservationData(response.data);
       } catch (error) {
         console.error("월별 예약 데이터 패칭 실패:", error);
+        router.push("/404");
       } finally {
         setIsLoading(false);
       }

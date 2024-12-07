@@ -37,10 +37,8 @@ const StatusHeader = async ({ cursorId = null, size = 10 }: { cursorId?: number 
       </div>
     );
   } catch (error) {
-    // 에러 로그 출력
-    console.error("Error fetching reservations:", error);
+    console.error(error);
 
-    // 에러 발생 시 반환할 JSX
     return (
       <div className="mb-[30px]">
         <h2 className="mb-6 text-[32px] font-bold md:mb-8">예약현황</h2>
