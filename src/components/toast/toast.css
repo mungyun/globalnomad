@@ -1,8 +1,15 @@
 .Toastify__toast {
-  border-radius: 14px;
+  width: 330px;
+  margin: 0 auto;
+  margin-top: 6px;
+  border-radius: 16px;
+  font-weight: 800;
 }
 
-.Toastify__toast:hover {
-  transform: translateY(-4px);
-  transition: transform 0.2s ease;
+.Toastify__close-button {
+  display: none;
+}
+
+[class*="Toastify__progress-bar"] {
+  background: none !important;
 }
