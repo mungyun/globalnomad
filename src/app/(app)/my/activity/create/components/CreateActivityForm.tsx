@@ -3,6 +3,7 @@
 import Button from "@/components/Button";
 import DropdownInput from "@/components/dropdown/DropdownInput";
 import LabelInput from "@/components/input/LabelInput";
+import PostInput from "@/components/input/PostInput";
 import Textarea from "@/components/input/Textarea";
 import { useToast } from "@/components/toast/ToastProvider";
 import { PostActivities } from "@/lib/api/Activities";
@@ -52,6 +53,7 @@ const CreateActivityForm = () => {
   };
 
   const onSubmit = async (data: PostActivityType) => {
+    console.log(data);
     data.price = Number(data.price);
     if (!data.subImageUrls || data.subImageUrls.length < 4) {
       Toast.error("소개 이미지를 4개 입력해 주세요.");
@@ -93,7 +95,7 @@ const CreateActivityForm = () => {
         }}
         type="text"
       />
-      <LabelInput label="주소" placeholder="주소를 입력해주세요" {...register("address")} />
+      <PostInput label={"주소"} watch={watch} setValue={setValue} placeholder="주소를 입력해주세요" />
       <ScheduleList watch={watch} setValue={setValue} />
       <BannerImgForm watch={watch} setValue={setValue} />
       <SubImageForm watch={watch} setValue={setValue} />

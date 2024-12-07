@@ -10,8 +10,9 @@ interface DateInputProps {
 const DateInput = ({ onChange, value }: DateInputProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  // 스케줄 추가 날짜를 일주일 후 부터 설정 가능하도록 변경
+  const nextWeek = new Date();
+  nextWeek.setDate(nextWeek.getDate() + 7);
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -57,7 +58,7 @@ const DateInput = ({ onChange, value }: DateInputProps) => {
           <Calendar
             onClickDay={handleDateClick}
             className="rounded-md border border-gray03"
-            minDate={tomorrow}
+            minDate={nextWeek}
             locale="en-US"
           />
         </div>
