@@ -4,20 +4,18 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest, { params }: { params: Promise<{ activityId: string }> }) => {
   try {
+    console.log("하이");
     const { activityId } = await params;
-    const year = req.nextUrl.searchParams.get("year");
-    const month = req.nextUrl.searchParams.get("month");
+    const date = req.nextUrl.searchParams.get("date");
 
     const accessToken = req.cookies.get("accessToken")?.value;
-
-    const response = await axiosInstance.get(
-      `/my-activities/${activityId}/reservation-dashboard?year=${year}&month=${month}`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const url = `/my-activities/${activityId}/reserved-schedule?date=${date}`;
+    console.log("url: ", url);
+    const response = await axiosInstance.get(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
     if (response.status >= 200 && response.status < 300) {
       return NextResponse.json(response.data, { status: response.status });

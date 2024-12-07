@@ -1,3 +1,5 @@
+"use client";
+
 import useDeviceType from "@/hooks/useDeviceType";
 import Image from "next/image";
 import React, { useEffect } from "react";
@@ -37,7 +39,7 @@ const StatusModal = ({ isOpen, onClose, date }: StatusModalProps) => {
           <Image src="/icons/X.svg" alt="모달 닫기" width={40} height={40} />
         </button>
       </div>
-      <StatusModalNav date={date} />
+      <StatusModalNav date={date || new Date()} />
     </div>
   );
 };
