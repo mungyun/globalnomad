@@ -7,38 +7,33 @@ export interface Schedule {
 }
 
 // 체험 등록 body 타입
-export interface PostActivities {
+export interface PostActivityType {
   title: string;
   category: string;
   description: string;
   price: number;
   address: string;
-  bannerImageUrl?: string;
-  bannerImageFile?: File;
+  bannerImageUrl: string;
+  subImageUrls: string[];
   schedules: Schedule[];
-  subImageUrls?: File[];
-  subImageFiles?: File[];
 }
 
-export interface PatchActivites {
+export interface PatchActivityType {
   title: string;
   category: string;
   description: string;
   price: number;
   address: string;
-  bannerImageUrl?: string;
-  bannerImageFile?: File;
-
-  subImageFiles?: File[];
+  bannerImageUrl: string;
   subImageIdsToRemove?: number[];
   subImageUrlsToAdd?: string[];
-
+  subImageUrls: string[];
   schedules: Schedule[];
   scheduleIdsToRemove?: number[];
   schedulesToAdd?: string[];
 }
 
-export type ActiviteForm = PostActivities | PatchActivites;
+export type ActiviteForm = PostActivityType | PatchActivityType;
 
 interface SubImage {
   id: number;
@@ -69,7 +64,7 @@ export interface ActivityItem {
   userId: number;
   title: string;
   description: string;
-  category: "문화 · 예술" | "교육 · 학습" | "스포츠" | "식음료" | "투어 · 관광" | "게임 · 취미";
+  category: "문화 · 예술" | "스포츠" | "식음료" | "투어" | "관광" | "웰빙";
   price: number;
   address: string;
   bannerImageUrl: string;
