@@ -1,18 +1,15 @@
 .Toastify__toast {
+  width: 330px;
+  margin: 0 auto;
+  margin-top: 6px;
   border-radius: 16px;
-  color: #0b3b2d;
   font-weight: 800;
-}
-
-@media (max-width: 768px) {
-  .Toastify__toast-container--top-right {
-    top: 20px !important;
-    left: 50% !important;
-    width: 85% !important;
-    transform: translateX(-50%) !important;
-  }
 }
 
 .Toastify__close-button {
   display: none;
+}
+
+[class*="Toastify__progress-bar"] {
+  background: none !important;
 }

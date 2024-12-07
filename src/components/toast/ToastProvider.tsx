@@ -23,7 +23,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={{ success, error, info, warning }}>
       {children}
-      <ToastContainer autoClose={2000} position="top-right" stacked />
+      <ToastContainer autoClose={2000} position="top-center" />
     </ToastContext.Provider>
   );
 }
