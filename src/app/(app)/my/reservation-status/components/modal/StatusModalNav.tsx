@@ -4,7 +4,7 @@ import { getMyReservedSchedule } from "@/lib/api/MyActivities";
 import useReservationStore from "@/store/my/useReservationStore";
 import { Schedule, ScheduleCount } from "@/types/MyActivitiesType";
 import React, { useEffect, useMemo, useState } from "react";
-import StatusDropdown from "../StatusDropdown";
+import StatusModalDropdown from "../StatusModalDropdown";
 import ReservationList from "./ReservationList";
 
 const valueStyle = "text-[20px] cursor-pointer";
@@ -95,9 +95,8 @@ const StatusModalNav = ({ date }: { date: Date }) => {
           ) : datas.length === 0 ? (
             <div className="mt-2 text-gray09">예약 데이터가 없습니다.</div>
           ) : (
-            <StatusDropdown
+            <StatusModalDropdown
               datas={datas.map((data, index) => ({ id: index, title: data.time }))}
-              type="modal"
               onSelect={(selected) => setSelectedTime(selected.title)}
             />
           )}

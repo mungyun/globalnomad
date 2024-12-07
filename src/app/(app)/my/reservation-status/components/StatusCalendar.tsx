@@ -64,7 +64,7 @@ const StatusCalendar = () => {
 
   // 날짜에 예약 상태를 표시할 내용
   const tileContent = ({ date }: { date: Date }) => {
-    const dateString = date.toISOString().split("T")[0]; // yyyy-mm-dd 형식으로 변환
+    const dateString = date.toLocaleDateString("en-CA"); // yyyy-mm-dd 형식으로 변환
     const reservations = reservationMap[dateString];
 
     if (reservations) {
