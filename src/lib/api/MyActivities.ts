@@ -27,7 +27,7 @@ export const getReservationDashboard = async ({
   const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
   try {
     const response = await axiosInstance.get(
-      `/my-activities/${activityId}/reservation-dashboard?year=${year}&month=${month}`,
+      `/api/my-activities/${activityId}/reservation-dashboard?year=${year}&month=${month}`,
       { headers }
     );
     return response.data;
