@@ -17,6 +17,10 @@ const StatusHeader = async ({ cursorId = null, size = 10 }: { cursorId?: number 
 
     // API 요청 보내기
     const response = await axiosInstance.get(url, { headers });
+    // 응답 데이터 처리
+    if (!response.data) {
+      throw new Error("예약 데이터 조회 오류 발생");
+    }
 
     // 응답 데이터 처리
     const activityData = response.data.reservations.map((reservation: { activity: { id: number; title: string } }) => ({

@@ -1,10 +1,17 @@
 "use client";
 
+import { proxy } from "@/lib/api/axiosInstanceApi";
+import useReservationStore from "@/store/my/useReservationStore";
 import "@/styles/ReservationCalender.css";
-import React, { useState } from "react";
+import { ReservationData } from "@/types/MyReservationType";
+import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
-import { ReservationMockData } from "./MockData";
+import Skeleton from "react-loading-skeleton";
+// Skeleton UI 라이브러리 임포트
+import "react-loading-skeleton/dist/skeleton.css";
 import StatusModal from "./modal/StatusModal";
+
+// 스타일 임포트
 
 const caseStyle = "text-start text-[14px] font-medium h-[23px] rounded pl-1";
 const roundStyle = "absolute left-1 top-3 h-[8px] w-[8px] rounded-full";
@@ -14,9 +21,33 @@ const StatusCalendar = () => {
   const [activeStartDate, setActiveStartDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [reservationData, setReservationData] = useState<ReservationData[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { activityId } = useReservationStore();
 
-  // 예약 데이터를 날짜별로 매핑
-  const reservationMap = ReservationMockData.reduce(
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!value || !activityId) return;
+
+      const year = String(value.getFullYear());
+      const month = String(value.getMonth() + 1);
+
+      try {
+        const response = await proxy.get(
+          `/api/my-activities/${activityId}/reservation-dashboard?year=${year}&month=${month}`
+        );
+        setReservationData(response.data);
+      } catch (error) {
+        console.error("월별 예약 데이터 패칭 실패:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [value, activityId]);
+
+  const reservationMap = reservationData.reduce(
     (acc, { date, reservations }) => {
       acc[date] = reservations;
       return acc;
@@ -36,7 +67,6 @@ const StatusCalendar = () => {
     const dateString = date.toISOString().split("T")[0]; // yyyy-mm-dd 형식으로 변환
     const reservations = reservationMap[dateString];
 
-    // 예약 상태가 있을 경우 표시
     if (reservations) {
       const { completed, confirmed, pending } = reservations;
 
@@ -58,23 +88,27 @@ const StatusCalendar = () => {
 
   return (
     <div className="custom-calendar relative">
-      <Calendar
-        value={value}
-        onChange={(newValue) => setValue(newValue as Date)} // 타입이 Date | Date[]일 수 있어 'as Date'를 추가
-        activeStartDate={activeStartDate}
-        onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate!)}
-        onClickDay={(date) => {
-          setSelectedDate(date); // 클릭한 날짜 저장
-          setIsModalOpen(true); // 모달 열기
-        }}
-        showNeighboringMonth={false} // 이전, 다음 달 날짜를 숨김
-        locale="en-US" // 기본 locale은 영어로 설정
-        prevLabel="<<" // 이전 버튼
-        nextLabel=">>" // 다음 버튼
-        navigationLabel={({ date }) => formatHeader(date)} // 네비게이션 커스터마이징
-        tileContent={tileContent} // 날짜별 예약 상태를 표시하는 함수 적용
-      />
-      <StatusModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} date={selectedDate} />
+      {isLoading ? (
+        <Skeleton height={770} />
+      ) : (
+        <Calendar
+          value={value}
+          onChange={(newValue) => setValue(newValue as Date)} // newValue는 Date[]일 수도 있으므로 타입 단언 필요
+          activeStartDate={activeStartDate}
+          onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate!)} // activeStartDate가 null 가능성이 있음
+          onClickDay={(date) => {
+            setSelectedDate(date);
+            setIsModalOpen(true);
+          }}
+          showNeighboringMonth={false}
+          locale="en-US"
+          prevLabel="<<"
+          nextLabel=">>"
+          navigationLabel={({ date }) => formatHeader(date)}
+          tileContent={tileContent}
+        />
+      )}
+      {isModalOpen && <StatusModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} date={selectedDate} />}
     </div>
   );
 };

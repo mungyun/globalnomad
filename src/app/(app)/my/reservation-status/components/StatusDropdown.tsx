@@ -19,6 +19,10 @@ const StatusDropdown = ({
 
   const setActivityId = useReservationStore((state) => state.setActivityId);
 
+  useEffect(() => {
+    setActivityId(datas[0].id);
+  }, []);
+
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
   };

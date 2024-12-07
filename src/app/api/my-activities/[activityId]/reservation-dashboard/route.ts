@@ -22,7 +22,7 @@ export const GET = async (req: NextRequest, { params }: { params: Promise<{ acti
     );
 
     if (response.status >= 200 && response.status < 300) {
-      return response.data;
+      return NextResponse.json(response.data, { status: response.status });
     } else {
       return NextResponse.json({ message: "조회 실패" }, { status: 400 });
     }
