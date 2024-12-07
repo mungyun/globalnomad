@@ -65,7 +65,7 @@ export interface User {
 }
 
 // 예약내역 데이터를 정의하는 타입
-export type ReservationStatus = "pending" | "cancelled" | "confirmed" | "refused" | "completed";
+export type ReservationStatus = "pending" | "canceled" | "confirmed" | "refused" | "completed";
 
 export interface ReservationList {
   id: number;
