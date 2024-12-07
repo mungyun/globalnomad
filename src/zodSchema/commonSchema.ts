@@ -27,7 +27,7 @@ export const NicknameSchema = z
 export const QuerySchema = z.string().min(1);
 
 // 개발 환경: 간소화된 비밀번호 정규 표현식 (regex)
-const simplifyPasswordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-z\d]{8,}$/;
+const simplifyPasswordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]{8,}$/;
 
 // 개발 환경: 간소화된 비밀번호 스키마
 export const SimplifyPasswordSchema = z
