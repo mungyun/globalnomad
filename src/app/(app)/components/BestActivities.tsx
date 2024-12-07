@@ -1,28 +1,49 @@
 "use client";
 
-import useResponsiveData from "@/hooks/useResponsiveData";
+import { useCarousel } from "@/hooks/useCarousel";
+import useDeviceType from "@/hooks/useDeviceType";
+import { getActivities } from "@/lib/api/Activities";
+import { GetActivities } from "@/types/ActivityType";
 import formatPrice from "@/utils/formatPrice";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
-const sort = "mostReviewed";
-const ITEMS_PER_PAGE = {
-  mobile: 9,
-  tablet: 9,
-  desktop: 9,
-};
-
 const BestActivities = () => {
-  const { data, deviceType, page, setPage } = useResponsiveData({ ITEMS_PER_PAGE, sort });
+  const {
+    data: bestData,
+    isLoading,
+    error,
+  } = useQuery<GetActivities, Error>({
+    queryKey: ["bestData"],
+    queryFn: () => getActivities({ sort: "most_reviewed", size: 9 }),
+    staleTime: 60 * 1000 * 60, // 1시간
+    gcTime: 60 * 1000 * 60 * 24, // 24시간 동안 캐시 유지
+  });
+
+  const { carouselRef, scrollToFirst, scrollToNext } = useCarousel({});
+  const deviceType = useDeviceType();
 
   const prevPage = () => {
-    if (page > 1) setPage(page - 1);
+    scrollToFirst();
   };
 
   const nextPage = () => {
-    if (page < data.length) setPage(page + 1);
+    scrollToNext();
   };
+
+  if (isLoading) {
+    return <div className="h-60 w-full md:h-[550px]">로딩중...</div>;
+  }
+  if (error) {
+    return <div className="h-60 w-full md:h-[550px]">Error: {error.message}</div>;
+  }
+  if (!bestData) {
+    return <div className="h-60 w-full md:h-[550px]">배너 데이터가 없습니다.</div>;
+  }
+
+  const { activities } = bestData;
 
   return (
     <section className="flex flex-col gap-4 pl-4 md:gap-8 md:pl-6 xl:pl-0">
@@ -33,7 +54,7 @@ const BestActivities = () => {
         {deviceType === "desktop" ? (
           <div className="flex gap-3">
             <button
-              disabled={page === 1}
+              // disabled={page === 1}
               onClick={prevPage}
               className="flex size-11 items-center justify-center disabled:text-gray07"
               aria-label="이전 페이지"
@@ -41,7 +62,7 @@ const BestActivities = () => {
               <SlArrowLeft className="size-[22px]" />
             </button>
             <button
-              disabled={page === data.length}
+              // disabled={page === data.length}
               onClick={nextPage}
               className="flex size-11 items-center justify-center disabled:text-gray07"
               aria-label="다음 페이지"
@@ -53,8 +74,11 @@ const BestActivities = () => {
           ""
         )}
       </div>
-      <div className="flex w-full gap-4 overflow-x-auto md:gap-8 xl:gap-6 xl:transition-transform xl:duration-500 xl:ease-in-out">
-        {data.map((activity) => (
+      <div
+        ref={carouselRef}
+        className="flex w-full gap-4 overflow-x-auto md:gap-8 xl:gap-6 xl:transition-transform xl:duration-500 xl:ease-in-out"
+      >
+        {activities.map((activity) => (
           <Link key={activity.id} href={`/activities/${activity.id}`} className="rounded-3xl bg-gray09">
             <div className="flex size-[186px] flex-col gap-[6px] px-5 pt-12 text-white md:size-[384px] md:gap-5 md:pt-[174px]">
               <div className="flex items-center gap-[5px]">
