@@ -3,13 +3,13 @@ import { FiX } from "react-icons/fi";
 
 interface ImageProps {
   clearImage: () => void;
-  imageFile: Blob | MediaSource;
+  imageFile: string | undefined;
 }
 
 const PrevImage = ({ imageFile, clearImage }: ImageProps) => {
   return (
     <div className="relative aspect-square w-auto">
-      <Image fill src={URL.createObjectURL(imageFile)} alt="Preview" className="rounded-xl object-cover" />
+      <Image fill src={imageFile || ""} alt="Preview" className="rounded-xl object-cover" />
       <button
         type="button"
         onClick={clearImage}

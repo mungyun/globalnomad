@@ -43,7 +43,7 @@ const SignupForm = () => {
       />
       <AuthInput
         label="닉네임"
-        type="string"
+        type="text"
         {...register("nickname")}
         errors={errors.nickname?.message}
         placeholder="닉네임을 입력해 주세요"
