@@ -5,6 +5,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "full" | "lg" | "md" | "sm"; // 사이즈 지정
   color?: "green" | "white"; // 색상 지정
   additionalClass?: string; // 추가 class 속성
+  isLoading?: boolean;
 }
 
 const baseClass =
@@ -22,13 +23,24 @@ const colorClass = {
   white: "border border-green02 bg-white text-green02 ",
 };
 
-const Button = ({ children, size = "full", color = "green", additionalClass, ...props }: ButtonProps) => {
+const Button = ({
+  children,
+  size = "full",
+  color = "green",
+  additionalClass,
+  isLoading = false,
+  ...props
+}: ButtonProps) => {
   return (
     <button
       className={`${baseClass} ${sizeClass[size]} ${colorClass[color]} ${additionalClass} disabled:cursor-not-allowed`}
       {...props}
     >
-      {children}
+      {isLoading ? (
+        <div className="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent" />
+      ) : (
+        children
+      )}
     </button>
   );
 };

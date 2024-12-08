@@ -2,6 +2,7 @@
 
 import DateInput from "@/components/input/DateInput";
 import TimeInput from "@/components/input/TimeInput";
+import { useToast } from "@/components/toast/ToastProvider";
 import { ActiviteForm, Schedule } from "@/types/ActivityType";
 import { useState } from "react";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
@@ -18,8 +19,8 @@ const defaultSchedule = { date: "", startTime: "00:00", endTime: "00:00" };
 const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
   const [schedule, setSchedule] = useState<Schedule>(defaultSchedule);
   const [timeReset, setTimeReset] = useState<boolean>(false);
-
   const schedules = watch("schedules", []);
+  const Toast = useToast();
 
   const addSchedule = () => {
     // 시작 시간이 종료 시간보다 작을 경우 스케줄 추가 안됨
@@ -29,7 +30,7 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
       setSchedule(defaultSchedule);
       setTimeReset((prev) => !prev);
     } else {
-      console.log("실패");
+      Toast.error("시작 시간이 종료 시간보다 작습니다.");
     }
   };
 

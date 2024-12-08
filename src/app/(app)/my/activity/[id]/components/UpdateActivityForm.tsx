@@ -34,7 +34,7 @@ const UpdateActivityForm = () => {
       price: data.price,
       address: data.address,
       bannerImageUrl: data.bannerImageUrl,
-      subImageUrlsToAdd: [],
+      subImageUrls: [],
       schedules: data.schedules.map((schedule) => ({
         id: schedule.id,
         date: schedule.date,

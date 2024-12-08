@@ -81,7 +81,7 @@ export const PostActivitiesImage = async (file: File) => {
     if (isAxiosError(error)) {
       const status = error.response?.status || 500;
       const message = error.response?.data?.message || "서버 오류가 발생했습니다.";
-      throw new Error(`${message} (${status})`);
+      throw new Error(`${message}(${status})`);
     }
 
     // Axios 외의 예외 처리

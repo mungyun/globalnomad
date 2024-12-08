@@ -51,7 +51,7 @@ export default function SideNavigation({ img, onClick }: SideNavigationProps) {
   // 유저데이터 바인딩
   const [user] = useState(true);
   return (
-    <div className="fixed bottom-0 z-10 flex w-screen flex-col gap-5 overflow-visible rounded-xl border border-gray03 bg-white py-3 md:relative md:h-[432px] md:w-[251px] md:min-w-[251px] md:p-6 xl:w-[384px]">
+    <div className="fixed bottom-0 z-10 flex w-screen flex-col gap-5 overflow-visible rounded-xl border border-gray03 bg-white py-3 shadow-md md:sticky md:top-10 md:h-[432px] md:w-[251px] md:min-w-[251px] md:p-6 xl:w-[384px]">
       <div className="hidden md:block">
         <div className="relative m-auto flex h-[160px] w-[160px] items-center justify-center overflow-hidden rounded-full bg-gray03">
           {user && img ? (
