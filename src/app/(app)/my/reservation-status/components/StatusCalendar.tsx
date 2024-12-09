@@ -107,6 +107,7 @@ const StatusCalendar = () => {
           nextLabel=">>"
           navigationLabel={({ date }) => formatHeader(date)}
           tileContent={tileContent}
+          tileDisabled={() => isModalOpen}
         />
       )}
       {isModalOpen && (
