@@ -9,7 +9,7 @@ interface AuthStore {
   clearUser: () => void;
 }
 
-const authStore = create(
+const useAuthStore = create(
   persist<AuthStore>(
     (set) => ({
       user: null,
@@ -23,4 +23,4 @@ const authStore = create(
   )
 );
 
-export default authStore;
+export default useAuthStore;

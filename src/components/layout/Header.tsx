@@ -1,6 +1,6 @@
 "use client";
 
-import authStore from "@/store/authStore";
+import useAuthStore from "@/store/useAuthStore";
 import Image from "next/image";
 import Link from "next/link";
 import { IoPersonCircleOutline } from "react-icons/io5";
@@ -8,7 +8,7 @@ import HeaderDropdown from "../dropdown/HeaderDropdown";
 import Notification from "./Notification";
 
 const Header = () => {
-  const { user } = authStore();
+  const { user } = useAuthStore();
 
   return (
     <div className="h-[70px] w-full border-b border-gray03 p-5">

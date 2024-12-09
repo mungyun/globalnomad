@@ -3,7 +3,7 @@
 import Button from "@/components/Button";
 import AuthInput from "@/components/input/AuthInput";
 import { postSignUp } from "@/lib/api/Users";
-import authStore from "@/store/authStore";
+import useAuthStore from "@/store/useAuthStore";
 import { Signup, SignupSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -12,7 +12,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 const SignupForm = () => {
   const router = useRouter();
-  const { isLogin } = authStore();
+  const { isLogin } = useAuthStore();
   const {
     register,
     handleSubmit,

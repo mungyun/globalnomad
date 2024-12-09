@@ -1,7 +1,7 @@
 "use client";
 
 import { postLogin } from "@/lib/api/Auth";
-import authStore from "@/store/authStore";
+import useAuthStore from "@/store/useAuthStore";
 import { Login, LoginSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -12,7 +12,7 @@ import AuthInput from "../../../components/input/AuthInput";
 
 const LoginForm = () => {
   const router = useRouter();
-  const { isLogin, setUser } = authStore();
+  const { isLogin, setUser } = useAuthStore();
   const {
     register,
     handleSubmit,
