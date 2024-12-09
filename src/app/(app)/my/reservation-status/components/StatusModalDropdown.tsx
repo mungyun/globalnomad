@@ -7,11 +7,11 @@ const StatusModalDropdown = ({
   datas,
   onSelect,
 }: {
-  datas: { id: number; title: string }[];
-  onSelect?: (selected: { id: number; title: string }) => void;
+  datas: { id: number; time: string }[];
+  onSelect?: (selected: { id: number; time: string }) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<{ id: number; title: string } | null>(null); // 초기값 null로 설정
+  const [selectedItem, setSelectedItem] = useState<{ id: number; time: string } | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // 초기값 설정
@@ -32,7 +32,7 @@ const StatusModalDropdown = ({
   };
 
   // 항목 선택 시 처리
-  const handleSelect = (item: { id: number; title: string }) => {
+  const handleSelect = (item: { id: number; time: string }) => {
     setSelectedItem(item); // 선택된 항목 설정
     setIsOpen(false); // 드롭다운 닫기
     if (onSelect) onSelect(item); // 선택된 항목 전달
@@ -52,7 +52,7 @@ const StatusModalDropdown = ({
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
-        <span className="text-[16px]">{selectedItem?.title}</span>
+        <span className="text-[16px]">{selectedItem?.time}</span>
         <Image src="/icons/dropdown2.svg" width={24} height={24} alt="드롭 다운" />
       </button>
 
@@ -66,13 +66,13 @@ const StatusModalDropdown = ({
             const isLast = index === datas.length - 1;
             return (
               <span
-                key={data.id}
+                key={data.time}
                 onClick={() => handleSelect(data)}
                 className={`relative flex h-[56px] cursor-pointer items-center bg-white px-4 text-[16px] text-gray08 hover:bg-gray01 ${
                   isFirst ? "rounded-t-md" : ""
                 } ${isLast ? "rounded-b-md" : ""}`}
               >
-                {data.title}
+                {data.time}
               </span>
             );
           })}

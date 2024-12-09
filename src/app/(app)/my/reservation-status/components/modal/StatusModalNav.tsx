@@ -4,6 +4,7 @@ import { getMyReservedSchedule } from "@/lib/api/MyActivities";
 import useReservationStore from "@/store/my/useReservationStore";
 import { Schedule, ScheduleCount } from "@/types/MyActivitiesType";
 import React, { useEffect, useMemo, useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import StatusModalDropdown from "../StatusModalDropdown";
 import ReservationList from "./ReservationList";
 
@@ -60,12 +61,22 @@ const StatusModalNav = ({ date }: { date: Date }) => {
     거절: "declined",
   };
 
+  useEffect(() => {
+    if (datas.length > 0 && !selectedTime) {
+      setSelectedTime(datas[0].time);
+    }
+  }, [datas, selectedTime]);
+
   // 상태별 숫자 가져오기
   const getStatusCounts = (status: keyof typeof statusMapping) => {
+    if (!selectedTime || datas.length === 0) return 0;
     const mappedStatus = statusMapping[status];
     const selectedSchedule = datas.find((data) => data.time === selectedTime);
     return selectedSchedule ? selectedSchedule.counts[mappedStatus] : 0;
   };
+
+  console.log("datas:", datas);
+  console.log("selectedTime:", selectedTime);
 
   return (
     <div>
@@ -89,15 +100,15 @@ const StatusModalNav = ({ date }: { date: Date }) => {
           <span className="mb-[2px] text-[20px] text-black03">{formatDate(date)}</span>
 
           {isLoading ? (
-            <div className="mt-2 text-gray09">로딩 중...</div>
+            <Skeleton height={56} />
           ) : error ? (
             <div className="mt-2 text-red-500">{error}</div>
           ) : datas.length === 0 ? (
             <div className="mt-2 text-gray09">예약 데이터가 없습니다.</div>
           ) : (
             <StatusModalDropdown
-              datas={datas.map((data, index) => ({ id: index, title: data.time }))}
-              onSelect={(selected) => setSelectedTime(selected.title)}
+              datas={datas.map((data, index) => ({ id: index, time: data.time }))}
+              onSelect={(selected) => setSelectedTime(selected.time)}
             />
           )}
         </div>

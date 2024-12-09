@@ -1,6 +1,7 @@
 import axiosInstance from "@/lib/api/axiosInstanceApi";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
+import Skeleton from "react-loading-skeleton";
 import StatusHeaderDropdown from "./StatusHeaderDropdown";
 
 const StatusHeader = async ({ cursorId = null, size = 10 }: { cursorId?: number | null; size?: number }) => {
@@ -31,7 +32,7 @@ const StatusHeader = async ({ cursorId = null, size = 10 }: { cursorId?: number 
     return (
       <div className="mb-[30px]">
         <h2 className="mb-6 text-[32px] font-bold md:mb-8">예약현황</h2>
-        <Suspense fallback={<div>드롭다운 로딩중</div>}>
+        <Suspense fallback={<Skeleton height={56} />}>
           <StatusHeaderDropdown datas={activityData} />
         </Suspense>
       </div>
