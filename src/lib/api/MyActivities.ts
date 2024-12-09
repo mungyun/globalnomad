@@ -50,3 +50,22 @@ export const getMyReservationByTime = async ({
     console.error("내 예약 시간대별 정보 조회 오류: ", error);
   }
 };
+
+// 내 체험 예약 상태(승인, 거절) 업데이트
+
+export const UpdateMyReservationByTime = async ({
+  activityId,
+  reservationId,
+  status,
+}: {
+  activityId: number;
+  reservationId: number;
+  status: string;
+}) => {
+  try {
+    const response = await proxy.patch(`/api/my-activities/${activityId}/reservations/${reservationId}`, { status });
+    return response;
+  } catch (error) {
+    console.error("내 예약 시간대별 정보 변경 오류: ", error);
+  }
+};

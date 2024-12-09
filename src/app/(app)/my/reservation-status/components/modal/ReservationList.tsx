@@ -46,7 +46,7 @@ const ReservationList = ({ type }: { type: string }) => {
       {reservationData.length === 0 ? (
         <div className="text-gray-500">예약 데이터가 없습니다.</div>
       ) : (
-        reservationData.map((item) => <ReservationItem item={item} key={item.scheduleId} type={type} />)
+        reservationData.map((item) => <ReservationItem item={item} key={item.id} type={type} />)
       )}
     </div>
   );
