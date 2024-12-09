@@ -1,4 +1,4 @@
-import axiosInstance from "@/lib/api/axiosInstanceApi";
+import { proxy } from "@/lib/api/axiosInstanceApi";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -14,10 +14,12 @@ const StatusHeader = async ({ cursorId = null, size = 10 }: { cursorId?: number 
     const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
 
     // 요청 URL 설정
-    const url = cursorId ? `/my-reservations?cursorId=${cursorId}&size=${size}` : `/my-reservations?size=${size}`;
+    const url = cursorId
+      ? `/api/my-reservations?cursorId=${cursorId}&size=${size}`
+      : `/api/my-reservations?size=${size}`;
 
     // API 요청 보내기
-    const response = await axiosInstance.get(url, { headers });
+    const response = await proxy.get(url, { headers });
     // 응답 데이터 처리
     if (!response.data) {
       throw new Error("예약 데이터 조회 오류 발생");
