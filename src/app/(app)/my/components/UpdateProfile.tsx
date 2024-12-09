@@ -1,26 +1,14 @@
 "use client";
 
 import AuthInput from "@/components/input/AuthInput";
+import { useToast } from "@/components/toast/ToastProvider";
+import { Authtoken, getUsersData } from "@/lib/api/MyPage";
+import { InputField, User } from "@/types/MyPageType";
 import { Signup, SignupSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { useForm } from "react-hook-form";
-
-const mockData = {
-  id: 0,
-  email: "asd@naver.com",
-  nickname: "정만철",
-  profileImageUrl: "/images/1.png",
-  createdAt: "2024-11-28T14:25:54.213Z",
-  updatedAt: "2024-11-28T14:25:54.213Z",
-};
-
-type InputField = {
-  label: string;
-  name: keyof Signup;
-  type: string;
-  placeholder: string;
-  readOnly?: boolean;
-};
 
 const INPUT_FIELDS: InputField[] = [
   {
@@ -51,21 +39,61 @@ const INPUT_FIELDS: InputField[] = [
 ];
 
 const UpdateProfile = () => {
+  const queryClient = useQueryClient();
+  const toast = useToast();
+
+  const { data: userProfile } = useQuery({
+    queryKey: ["myPage"],
+    queryFn: getUsersData,
+  });
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<Signup>({
     resolver: zodResolver(SignupSchema),
     mode: "onBlur",
-    defaultValues: {
-      nickname: mockData.nickname,
-      email: mockData.email,
+    values: userProfile && {
+      nickname: userProfile.nickname,
+      email: userProfile.email,
     },
   });
 
-  const onSubmit = (data: Signup) => {
-    alert(JSON.stringify(data));
+  const mutation = useMutation({
+    mutationFn: async (data: Signup) => {
+      const url = "https://sp-globalnomad-api.vercel.app/9-1/users/me";
+      const payload = { nickname: data.nickname, newPassword: data.password };
+      const token = Authtoken;
+      const auth = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      return await axios.patch(url, payload, auth);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["myPage"] });
+    },
+  });
+
+  const onSubmit = async (data: Signup) => {
+    await mutation.mutateAsync(data, {
+      onSuccess: () => {
+        reset({
+          ...data,
+          password: "",
+          confirmPassword: "",
+        });
+        toast.success("내 정보 수정 완료!");
+      },
+      onError: (error) => {
+        alert("실패");
+        toast.error("내 정보 수정 실패");
+        console.error(error);
+      },
+    });
   };
 
   return (
@@ -78,7 +106,7 @@ const UpdateProfile = () => {
           onClick={handleSubmit(onSubmit)}
           disabled={isSubmitting}
         >
-          저장하기
+          {isSubmitting ? "저장 중..." : "저장하기"}
         </button>
       </header>
 
