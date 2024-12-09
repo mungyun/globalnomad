@@ -6,7 +6,7 @@ import React from "react";
 const buttonStyle = "flex h-[38px] w-[82px] items-center justify-center rounded-md text-[14px] font-bold";
 const reservationStyle = "flex h-[44px] w-[82px] items-center justify-center rounded-[26.5px] text-[14px] font-bold";
 
-const ReservationItem = ({ item, type }: { item: Reservation; type: string }) => {
+const ReservationItem = ({ item, status }: { item: Reservation; status: string }) => {
   const { nickname, headCount, id } = item;
   const { activityId } = useReservationStore();
 
@@ -27,7 +27,7 @@ const ReservationItem = ({ item, type }: { item: Reservation; type: string }) =>
         <span className="font-semibold text-gray08">인원</span> {headCount}명
       </p>
       <div className="flex justify-end gap-[6px]">
-        {type === "application" ? (
+        {status === "pending" ? (
           <>
             <button onClick={handleUpdate} className={`${buttonStyle} bg-black02 text-white`}>
               승인하기
@@ -36,7 +36,7 @@ const ReservationItem = ({ item, type }: { item: Reservation; type: string }) =>
               거절하기
             </button>
           </>
-        ) : type === "approval" ? (
+        ) : status === "confirmed" ? (
           <div className={`${reservationStyle} bg-orange01 text-orange02`}>예약승인</div>
         ) : (
           <div className={`${reservationStyle} bg-red01 text-red03`}>예약거절</div>

@@ -5,12 +5,10 @@ import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import ReservationItem from "./ReservationItem";
 
-const ReservationList = ({ type }: { type: string }) => {
+const ReservationList = ({ status }: { status: string }) => {
   const { activityId, scheduleId } = useReservationStore();
   const [reservationData, setReservationData] = useState<Reservation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const status = type === "application" ? "pending" : type === "approval" ? "confirmed" : "declined";
 
   useEffect(() => {
     const fetchReservationData = async () => {
@@ -35,7 +33,7 @@ const ReservationList = ({ type }: { type: string }) => {
     };
 
     fetchReservationData();
-  }, [activityId, scheduleId, type]);
+  }, [activityId, scheduleId, status]);
 
   if (isLoading) {
     return <Skeleton height={116} />;
@@ -46,7 +44,7 @@ const ReservationList = ({ type }: { type: string }) => {
       {reservationData.length === 0 ? (
         <div className="text-gray-500">예약 데이터가 없습니다.</div>
       ) : (
-        reservationData.map((item) => <ReservationItem item={item} key={item.id} type={type} />)
+        reservationData.map((item) => <ReservationItem item={item} key={item.id} status={status} />)
       )}
     </div>
   );

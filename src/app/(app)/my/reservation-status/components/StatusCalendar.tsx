@@ -22,6 +22,7 @@ const StatusCalendar = () => {
   const [reservationData, setReservationData] = useState<ReservationData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { activityId } = useReservationStore();
+  const setSchduleId = useReservationStore((state) => state.setScheduleId);
   const router = useRouter();
 
   useEffect(() => {
@@ -108,7 +109,16 @@ const StatusCalendar = () => {
           tileContent={tileContent}
         />
       )}
-      {isModalOpen && <StatusModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} date={selectedDate} />}
+      {isModalOpen && (
+        <StatusModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSchduleId(0);
+          }}
+          date={selectedDate}
+        />
+      )}
     </div>
   );
 };

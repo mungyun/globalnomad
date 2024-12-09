@@ -25,8 +25,8 @@ const StatusModalNav = ({ date }: { date: Date }) => {
   const [selectedData, setSelectedData] = useState<selectedDataProps | null>(null);
   const [scheduleData, setScheduleData] = useState<Schedule[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const { activityId, scheduleId } = useReservationStore();
+
+  const { activityId } = useReservationStore();
   const setSchduleId = useReservationStore((state) => state.setScheduleId);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const StatusModalNav = ({ date }: { date: Date }) => {
     const fetchSchedules = async () => {
       if (!date || !activityId) return;
       setIsLoading(true);
-      setError(null);
+
       try {
         const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(
           date.getDate()
@@ -43,7 +43,6 @@ const StatusModalNav = ({ date }: { date: Date }) => {
         setScheduleData(response || []);
       } catch (err) {
         console.error(err);
-        setError("예약 데이터를 불러오는 데 실패했습니다.");
       } finally {
         setIsLoading(false);
       }
@@ -83,8 +82,6 @@ const StatusModalNav = ({ date }: { date: Date }) => {
     return selectedSchedule ? selectedSchedule.counts[mappedStatus] : 0;
   };
 
-  console.log("scheduleId: ", scheduleId);
-
   return (
     <div>
       {/* 상태 탭 */}
@@ -108,8 +105,6 @@ const StatusModalNav = ({ date }: { date: Date }) => {
 
           {isLoading ? (
             <Skeleton height={56} />
-          ) : error ? (
-            <div className="mt-2 text-red-500">{error}</div>
           ) : datas.length === 0 ? (
             <div className="mt-2 text-gray09">예약 데이터가 없습니다.</div>
           ) : (
@@ -127,11 +122,11 @@ const StatusModalNav = ({ date }: { date: Date }) => {
         <div className="mt-6">
           <h3 className={titleStyle}>예약 내역</h3>
           {value === "신청" ? (
-            <ReservationList type="application" />
+            <ReservationList status="pending" />
           ) : value === "승인" ? (
-            <ReservationList type="approval" />
+            <ReservationList status="confirmed" />
           ) : (
-            <ReservationList type="refusal" />
+            <ReservationList status="declined" />
           )}
         </div>
       </div>
