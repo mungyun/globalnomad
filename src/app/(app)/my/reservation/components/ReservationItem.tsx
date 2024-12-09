@@ -24,7 +24,7 @@ const RESERVATION_STATUS: Record<ReservationStatus, ReservationStatusType> = {
     text: "예약 승인",
     buttonColor: "border border-black02",
     buttonText: "예약 취소",
-    showButton: true,
+    showButton: false,
   },
   declined: {
     color: "text-red03",
@@ -42,7 +42,8 @@ const RESERVATION_STATUS: Record<ReservationStatus, ReservationStatusType> = {
 
 const ReservationItem = ({ reservation }: { reservation: Reservation }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const status = RESERVATION_STATUS[reservation.status];
+  const status =
+    RESERVATION_STATUS[reservation.status.toLowerCase() as ReservationStatus] || RESERVATION_STATUS.pending;
 
   return (
     <section className="group relative flex rounded-3xl shadow-md">
