@@ -1,7 +1,7 @@
 "use client";
 
-import Modal from "@/components/modal/Modal";
-import { ReservationList, ReservationStatus } from "@/types/types";
+import ReservationModal from "@/app/(app)/my/reservation/components/ReservationModal";
+import { ReservationStatus } from "@/types/types";
 import formatPrice from "@/utils/formatPrice";
 import Image from "next/image";
 import { useState } from "react";
@@ -22,7 +22,7 @@ const RESERVATION_STATUS: Record<ReservationStatus, ReservationStatusType> = {
     buttonText: "예약 취소",
     showButton: true,
   },
-  cancelled: {
+  canceled: {
     color: "text-gray08",
     text: "예약 취소",
     showButton: false,
@@ -32,7 +32,7 @@ const RESERVATION_STATUS: Record<ReservationStatus, ReservationStatusType> = {
     text: "예약 승인",
     buttonColor: "border border-black02",
     buttonText: "예약 취소",
-    showButton: true,
+    showButton: false,
   },
   refused: {
     color: "text-red03",
@@ -48,9 +48,36 @@ const RESERVATION_STATUS: Record<ReservationStatus, ReservationStatusType> = {
   },
 } as const;
 
-const ReservationItem = ({ reservation }: { reservation: ReservationList }) => {
+// Activity 데이터 인터페이스
+interface Activity {
+  id: number;
+  title: string;
+  bannerImageUrl: string;
+  createdAt: string;
+}
+
+// Reservation 데이터 인터페이스
+interface Reservation {
+  id: number;
+  activity: Activity;
+  scheduleId: number;
+  teamId: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  status: string; // 예: "confirmed"
+  headCount: number;
+  totalPrice: number;
+  reviewSubmitted: boolean;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+const ReservationItem = ({ reservation }: { reservation: Reservation }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const status = RESERVATION_STATUS[reservation.status];
+  const status =
+    RESERVATION_STATUS[reservation.status.toLowerCase() as ReservationStatus] || RESERVATION_STATUS.pending;
 
   return (
     <section className="group relative flex rounded-3xl shadow-md">
@@ -92,7 +119,7 @@ const ReservationItem = ({ reservation }: { reservation: ReservationList }) => {
         </div>
       </div>
 
-      {isModalOpen && <Modal setIsModalOpen={setIsModalOpen} />}
+      {isModalOpen && <ReservationModal setIsModalOpen={setIsModalOpen} reservationId={reservation.id} />}
     </section>
   );
 };
