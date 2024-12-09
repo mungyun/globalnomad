@@ -1,18 +1,10 @@
 "use client";
 
 import ReservationModal from "@/app/(app)/my/reservation/components/ReservationModal";
-import { ReservationStatus } from "@/types/types";
+import { Reservation, ReservationStatus, ReservationStatusType } from "@/types/MyReservationType";
 import formatPrice from "@/utils/formatPrice";
 import Image from "next/image";
 import { useState } from "react";
-
-interface ReservationStatusType {
-  color: string;
-  text: string;
-  buttonColor?: string;
-  buttonText?: string;
-  showButton: boolean;
-}
 
 const RESERVATION_STATUS: Record<ReservationStatus, ReservationStatusType> = {
   pending: {
@@ -34,7 +26,7 @@ const RESERVATION_STATUS: Record<ReservationStatus, ReservationStatusType> = {
     buttonText: "예약 취소",
     showButton: false,
   },
-  refused: {
+  declined: {
     color: "text-red03",
     text: "예약 거절",
     showButton: false,
@@ -47,32 +39,6 @@ const RESERVATION_STATUS: Record<ReservationStatus, ReservationStatusType> = {
     showButton: true,
   },
 } as const;
-
-// Activity 데이터 인터페이스
-interface Activity {
-  id: number;
-  title: string;
-  bannerImageUrl: string;
-  createdAt: string;
-}
-
-// Reservation 데이터 인터페이스
-interface Reservation {
-  id: number;
-  activity: Activity;
-  scheduleId: number;
-  teamId: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  status: string; // 예: "confirmed"
-  headCount: number;
-  totalPrice: number;
-  reviewSubmitted: boolean;
-  userId: number;
-  createdAt: string;
-  updatedAt: string;
-}
 
 const ReservationItem = ({ reservation }: { reservation: Reservation }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -94,9 +60,7 @@ const ReservationItem = ({ reservation }: { reservation: Reservation }) => {
       <div className="flex min-h-[128px] flex-1 flex-col justify-between rounded-r-3xl p-3 md:p-4 xl:p-5">
         <div className="flex flex-col gap-2">
           <p className={`text-sm font-bold ${status.color} xl:text-base`}>{status.text}</p>
-
           <h3 className="text-sm font-bold md:text-lg xl:text-xl">{reservation.activity.title}</h3>
-
           <div className="flex gap-1 whitespace-nowrap text-xs font-normal md:text-sm xl:text-lg">
             <span>{reservation.date}</span>
             <span>·</span>
@@ -110,7 +74,9 @@ const ReservationItem = ({ reservation }: { reservation: Reservation }) => {
           <span>₩ {formatPrice(reservation.totalPrice)}</span>
           {status.showButton && (
             <button
-              className={`${status.buttonColor} absolute right-5 hidden rounded-md px-4 py-2 text-sm font-bold transition-all group-hover:block md:px-6 md:py-3 md:text-base`}
+              type="button"
+              aria-label={status.buttonText}
+              className={`${status.buttonColor} absolute right-5 hidden rounded-md px-4 py-2 text-sm font-bold transition-all hover:opacity-90 group-hover:block md:px-6 md:py-3 md:text-base`}
               onClick={() => setIsModalOpen(true)}
             >
               {status.buttonText}

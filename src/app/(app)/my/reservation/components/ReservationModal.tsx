@@ -1,4 +1,7 @@
 import { useToast } from "@/components/toast/ToastProvider";
+import { cancelMyReservation } from "@/lib/api/MyReservation";
+import { useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
 
@@ -9,27 +12,29 @@ interface ModalProps {
 
 export default function ReservationModal({ setIsModalOpen, reservationId }: ModalProps): JSX.Element {
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const closeModal = () => setIsModalOpen(false);
-  const { success } = useToast();
+  const handleCloseModal = () => setIsModalOpen(false);
+  const { success, error } = useToast();
+  const queryClient = useQueryClient();
 
-  const handleCancleClick = async () => {
-    const response = await fetch(`https://sp-globalnomad-api.vercel.app/9-1/my-reservations/${reservationId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        status: "canceled",
-      }),
-    });
-    const data = await response.json();
-    console.log(data);
-    success("취소 완료");
+  const handleReservationCancel = async () => {
+    try {
+      await cancelMyReservation(reservationId);
+      success("취소 완료");
+      queryClient.invalidateQueries({ queryKey: ["reservations"] });
+      handleCloseModal();
+    } catch (err) {
+      console.error("예약 취소 실패:", err);
+      if (err instanceof AxiosError) {
+        error(err.response?.data?.message || "예약 취소에 실패했습니다");
+      } else {
+        error("예약 취소에 실패했습니다");
+      }
+    }
   };
 
   const handleClickOutside = (e: MouseEvent) => {
     if (!dropdownRef.current?.contains(e.target as Node)) {
-      closeModal();
+      handleCloseModal();
     }
   };
   useEffect(() => {
@@ -47,13 +52,13 @@ export default function ReservationModal({ setIsModalOpen, reservationId }: Moda
         <div className="flex gap-3 text-sm">
           <button
             className="w-[80px] rounded-lg border border-black02 px-3 py-[10px] hover:bg-black02 hover:text-white"
-            onClick={handleCancleClick}
+            onClick={handleReservationCancel}
           >
             취소하기
           </button>
           <button
             className="w-[80px] rounded-lg border border-black02 px-3 py-[8px] hover:bg-black02 hover:text-white"
-            onClick={closeModal}
+            onClick={handleCloseModal}
           >
             아니오
           </button>

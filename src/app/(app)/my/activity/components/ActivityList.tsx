@@ -29,7 +29,7 @@ const ActivityList = () => {
 
   return (
     <section className="flex w-full max-w-[800px] flex-col bg-gray01">
-      <header className="mb-5 flex justify-between">
+      <header className="mb-5 flex justify-between xl:h-[53px]">
         <h2 className="text-[32px] font-bold"> 내 체험관리</h2>
         <button
           className="flex h-[48px] w-[120px] items-center justify-center rounded bg-black02 font-semibold text-white"
