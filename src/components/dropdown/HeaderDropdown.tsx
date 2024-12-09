@@ -1,5 +1,6 @@
 "use client";
 
+import authStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect, useRef, useState } from "react";
 
@@ -7,6 +8,7 @@ const HeaderDropdown = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
+  const { clearUser } = authStore();
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -17,7 +19,7 @@ const HeaderDropdown = ({ children }: { children: ReactNode }) => {
     if (value === "mypage") {
       router.push("/my");
     } else {
-      console.log("로그아웃");
+      clearUser();
     }
   };
 

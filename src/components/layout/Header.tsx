@@ -1,4 +1,6 @@
-import { User } from "@/types/types";
+"use client";
+
+import authStore from "@/store/authStore";
 import Image from "next/image";
 import Link from "next/link";
 import { IoPersonCircleOutline } from "react-icons/io5";
@@ -6,15 +8,7 @@ import HeaderDropdown from "../dropdown/HeaderDropdown";
 import Notification from "./Notification";
 
 const Header = () => {
-  const user: User = {
-    id: 1279,
-    email: "sprint91@codeit.kr",
-    nickname: "나나문",
-    profileImageUrl:
-      "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/profile_image/9-1_1279_1732338379593.jpeg",
-    createdAt: "2024-11-18T19:46:59.369Z",
-    updatedAt: "2024-11-23T14:19:30.749Z",
-  };
+  const { user } = authStore();
 
   return (
     <div className="h-[70px] w-full border-b border-gray03 p-5">

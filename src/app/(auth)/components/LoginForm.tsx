@@ -1,6 +1,7 @@
 "use client";
 
 import { postLogin } from "@/lib/api/Auth";
+import authStore from "@/store/authStore";
 import { Login, LoginSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -10,6 +11,7 @@ import AuthInput from "../../../components/input/AuthInput";
 
 const LoginForm = () => {
   const router = useRouter();
+  const { setUser } = authStore();
   const {
     register,
     handleSubmit,
@@ -22,7 +24,10 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<Login> = async (data) => {
     try {
-      await postLogin(data); // 로그인 요청
+      const res = await postLogin(data); // 로그인 요청
+      if (res.user) {
+        setUser(res.user);
+      }
       router.push("/"); // 로그인 성공 시 로그인 페이지로 리다이렉트
     } catch (error) {
       console.error("로그인 중 오류 발생", error);
