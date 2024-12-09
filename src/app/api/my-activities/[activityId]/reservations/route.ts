@@ -5,10 +5,17 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = async (req: NextRequest, { params }: { params: Promise<{ activityId: string }> }) => {
   try {
     const { activityId } = await params;
-    const date = req.nextUrl.searchParams.get("date");
+    const size = req.nextUrl.searchParams.get("size");
+    const scheduleId = req.nextUrl.searchParams.get("scheduleId");
+    const status = req.nextUrl.searchParams.get("status");
+    const cursorId = req.nextUrl.searchParams.get("cursorId");
 
     const accessToken = req.cookies.get("accessToken")?.value;
-    const url = `/my-activities/${activityId}/reserved-schedule?date=${date}`;
+    let url = `/my-activities/${activityId}/reservations?size=${size}&scheduleId=${scheduleId}&status=${status}`;
+    if (cursorId) {
+      url += `&cursorId=${cursorId}`;
+    }
+    console.log("url: ", url);
 
     const response = await axiosInstance.get(url, {
       headers: {

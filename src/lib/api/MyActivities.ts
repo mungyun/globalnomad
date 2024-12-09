@@ -21,3 +21,32 @@ export const getMyReservedSchedule = async ({ activityId, date }: { activityId: 
     console.error("내 예약 정보 조회 오류: ", error);
   }
 };
+
+// 내 체험 예약 시간대별 예약 내역 조회
+
+export const getMyReservationByTime = async ({
+  activityId,
+  cursorId,
+  size = 10,
+  scheduleId,
+  status = "pending",
+}: {
+  activityId: number;
+  cursorId?: number;
+  size?: number;
+  scheduleId: number;
+  status: string;
+}) => {
+  try {
+    let url = `/api/my-activities/${activityId}/reservations?size=${size}&scheduleId=${scheduleId}&status=${status}`;
+
+    if (cursorId) {
+      url += `&cursorId=${cursorId}`;
+    }
+
+    const response = await proxy.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("내 예약 시간대별 정보 조회 오류: ", error);
+  }
+};

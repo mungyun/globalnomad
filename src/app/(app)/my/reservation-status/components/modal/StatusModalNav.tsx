@@ -26,7 +26,8 @@ const StatusModalNav = ({ date }: { date: Date }) => {
   const [scheduleData, setScheduleData] = useState<Schedule[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const { activityId } = useReservationStore();
+  const { activityId, scheduleId } = useReservationStore();
+  const setSchduleId = useReservationStore((state) => state.setScheduleId);
 
   useEffect(() => {
     // 모달이 열릴 때만 데이터 로드
@@ -70,6 +71,7 @@ const StatusModalNav = ({ date }: { date: Date }) => {
   useEffect(() => {
     if (datas.length > 0 && !selectedData) {
       setSelectedData({ id: datas[0].scheduleId, time: datas[0].time });
+      setSchduleId(datas[0].scheduleId);
     }
   }, [datas]);
 
@@ -80,6 +82,8 @@ const StatusModalNav = ({ date }: { date: Date }) => {
     const selectedSchedule = datas.find((data) => data.time === selectedData.time);
     return selectedSchedule ? selectedSchedule.counts[mappedStatus] : 0;
   };
+
+  console.log("scheduleId: ", scheduleId);
 
   return (
     <div>
@@ -111,7 +115,10 @@ const StatusModalNav = ({ date }: { date: Date }) => {
           ) : (
             <StatusModalDropdown
               datas={datas.map((data) => ({ id: data.scheduleId, time: data.time }))}
-              onSelect={(selected) => setSelectedData(selected)}
+              onSelect={(selected) => {
+                setSelectedData(selected);
+                setSchduleId(selected.id);
+              }}
             />
           )}
         </div>
