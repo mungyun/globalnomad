@@ -20,7 +20,7 @@ const BestActivities = () => {
     gcTime: 60 * 1000 * 60 * 24, // 24시간 동안 캐시 유지
   });
 
-  const { carouselRef, scrollToPrevious, scrollToNext, isFirst, isLast } = useCarousel({});
+  const { carouselRef, scrollToPrevious, scrollToNext, isFirst, isLast } = useCarousel();
   const deviceType = useDeviceType();
 
   if (isLoading) {
