@@ -4,7 +4,7 @@ import Link from "next/link";
 const SocialSignup = () => {
   return (
     <div className="relative mt-7 w-full border-t border-gray03 md:mt-10">
-      <p className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white px-[23.5px] text-gray08 md:-top-4 md:px-[37.5px] md:text-xl md:leading-8">
+      <p className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-gray01 px-[23.5px] text-gray08 md:-top-4 md:px-[37.5px] md:text-xl md:leading-8">
         SNS 계정으로 회원가입하기
       </p>
       <div className="mx-auto flex w-fit gap-4 pt-9 md:pt-14">

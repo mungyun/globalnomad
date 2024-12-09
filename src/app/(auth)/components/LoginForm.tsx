@@ -5,13 +5,14 @@ import authStore from "@/store/authStore";
 import { Login, LoginSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../../../components/Button";
 import AuthInput from "../../../components/input/AuthInput";
 
 const LoginForm = () => {
   const router = useRouter();
-  const { setUser } = authStore();
+  const { isLogin, setUser } = authStore();
   const {
     register,
     handleSubmit,
@@ -21,6 +22,13 @@ const LoginForm = () => {
     resolver: zodResolver(LoginSchema),
     mode: "onChange",
   });
+
+  // 로그인 상태라면 메인 화면으로 리다이렉트
+  useEffect(() => {
+    if (isLogin) {
+      router.push("/");
+    }
+  }, [isLogin, router]);
 
   const onSubmit: SubmitHandler<Login> = async (data) => {
     try {
