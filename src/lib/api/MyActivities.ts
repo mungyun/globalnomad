@@ -16,11 +16,9 @@ export const deleteMyReservation = async (activityId: number) => {
 };
 
 // 내 체험 목록 조회
-export const getMyActivities = async () => {
+export const getMyActivities = async ({ size = 20 }: { size: number }) => {
   try {
-    const { data } = await proxy.get("/api/my-activities", {
-      params: { size: 20 },
-    });
+    const { data } = await proxy.get(`/api/my-activities/size=${size}`);
     return data.activities;
   } catch (error) {
     console.error("내 체험 목록 불러오기 오류: ", error);

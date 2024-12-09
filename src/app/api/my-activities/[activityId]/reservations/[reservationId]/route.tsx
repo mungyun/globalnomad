@@ -11,7 +11,6 @@ export const PATCH = async (
 
     const { status } = await req.json();
 
-    console.log("API 요청 데이터:", { activityId, reservationId, status });
     if (!status) {
       return NextResponse.json({ message: "status 값이 필요합니다." }, { status: 400 });
     }
