@@ -2,10 +2,9 @@ import axios from "axios";
 import { proxy } from "./axiosInstanceApi";
 
 // 내 체험 삭제
-export const deleteMyReservation = async (activityId: number) => {
+export const deleteMyActivities = async (activityId: number) => {
   try {
-    const response = await proxy.delete(`/api/my/${activityId}`);
-    return response.data;
+    await proxy.delete(`/api/my-activities/${activityId}`);
   } catch (error) {
     console.error("내 체험 삭제 오류: ", error);
     if (axios.isAxiosError(error)) {
