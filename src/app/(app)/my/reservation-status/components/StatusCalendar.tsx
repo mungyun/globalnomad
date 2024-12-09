@@ -99,7 +99,6 @@ const StatusCalendar = () => {
           onClickDay={(date) => {
             setSelectedDate(date);
             setIsModalOpen(true);
-            console.log("activityId", activityId);
           }}
           showNeighboringMonth={false}
           locale="en-US"

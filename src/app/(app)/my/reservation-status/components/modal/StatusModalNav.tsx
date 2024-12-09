@@ -15,9 +15,14 @@ const titleStyle = "mb-4 text-[20px] font-semibold text-[black03]";
 const formatDate = (date: Date | undefined | null) =>
   date ? `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일` : "날짜 없음";
 
+interface selectedDataProps {
+  time: string;
+  id: number;
+}
+
 const StatusModalNav = ({ date }: { date: Date }) => {
   const [value, setValue] = useState<string>("신청");
-  const [selectedTime, setSelectedTime] = useState<string>("");
+  const [selectedData, setSelectedData] = useState<selectedDataProps | null>(null);
   const [scheduleData, setScheduleData] = useState<Schedule[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -51,6 +56,7 @@ const StatusModalNav = ({ date }: { date: Date }) => {
     return scheduleData.map((schedule) => ({
       time: `${schedule.startTime || "시간 없음"} ~ ${schedule.endTime || "시간 없음"}`,
       counts: schedule.count,
+      scheduleId: schedule.scheduleId,
     }));
   }, [scheduleData]);
 
@@ -62,21 +68,18 @@ const StatusModalNav = ({ date }: { date: Date }) => {
   };
 
   useEffect(() => {
-    if (datas.length > 0 && !selectedTime) {
-      setSelectedTime(datas[0].time);
+    if (datas.length > 0 && !selectedData) {
+      setSelectedData({ id: datas[0].scheduleId, time: datas[0].time });
     }
-  }, [datas, selectedTime]);
+  }, [datas]);
 
   // 상태별 숫자 가져오기
   const getStatusCounts = (status: keyof typeof statusMapping) => {
-    if (!selectedTime || datas.length === 0) return 0;
+    if (!selectedData || datas.length === 0) return 0;
     const mappedStatus = statusMapping[status];
-    const selectedSchedule = datas.find((data) => data.time === selectedTime);
+    const selectedSchedule = datas.find((data) => data.time === selectedData.time);
     return selectedSchedule ? selectedSchedule.counts[mappedStatus] : 0;
   };
-
-  console.log("datas:", datas);
-  console.log("selectedTime:", selectedTime);
 
   return (
     <div>
@@ -107,8 +110,8 @@ const StatusModalNav = ({ date }: { date: Date }) => {
             <div className="mt-2 text-gray09">예약 데이터가 없습니다.</div>
           ) : (
             <StatusModalDropdown
-              datas={datas.map((data, index) => ({ id: index, time: data.time }))}
-              onSelect={(selected) => setSelectedTime(selected.time)}
+              datas={datas.map((data) => ({ id: data.scheduleId, time: data.time }))}
+              onSelect={(selected) => setSelectedData(selected)}
             />
           )}
         </div>
