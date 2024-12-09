@@ -8,7 +8,7 @@ export const GET = async (req: NextRequest) => {
 
     const accessToken = req.cookies.get("accessToken")?.value;
 
-    const response = await axiosInstance.get(`/my-activities/?size=${size}`, {
+    const response = await axiosInstance.get(`/my-activities?size=${size}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
