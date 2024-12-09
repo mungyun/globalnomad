@@ -8,14 +8,16 @@ const reservationStyle = "flex h-[44px] w-[82px] items-center justify-center rou
 
 const ReservationItem = ({ item, status }: { item: Reservation; status: string }) => {
   const { nickname, headCount, id } = item;
-  const { activityId } = useReservationStore();
+  const { activityId, setStatusModalOpen } = useReservationStore();
 
   const handleUpdate = () => {
     UpdateMyReservationByTime({ activityId, reservationId: id, status: "confirmed" });
+    setStatusModalOpen(false);
   };
 
   const handleDelete = () => {
     UpdateMyReservationByTime({ activityId, reservationId: id, status: "declined" });
+    setStatusModalOpen(false);
   };
 
   return (

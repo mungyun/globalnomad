@@ -18,11 +18,12 @@ const StatusCalendar = () => {
   const [value, setValue] = useState<Date | null>(new Date());
   const [activeStartDate, setActiveStartDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   const [reservationData, setReservationData] = useState<ReservationData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { activityId } = useReservationStore();
+  const { activityId, statusModalOpen, setStatusModalOpen } = useReservationStore();
   const setSchduleId = useReservationStore((state) => state.setScheduleId);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -99,7 +100,7 @@ const StatusCalendar = () => {
           onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate!)} // activeStartDate가 null 가능성이 있음
           onClickDay={(date) => {
             setSelectedDate(date);
-            setIsModalOpen(true);
+            setStatusModalOpen(true);
           }}
           showNeighboringMonth={false}
           locale="en-US"
@@ -107,14 +108,14 @@ const StatusCalendar = () => {
           nextLabel=">>"
           navigationLabel={({ date }) => formatHeader(date)}
           tileContent={tileContent}
-          tileDisabled={() => isModalOpen}
+          tileDisabled={() => statusModalOpen}
         />
       )}
-      {isModalOpen && (
+      {statusModalOpen && (
         <StatusModal
-          isOpen={isModalOpen}
+          isOpen={statusModalOpen}
           onClose={() => {
-            setIsModalOpen(false);
+            setStatusModalOpen(false);
             setSchduleId(0);
           }}
           date={selectedDate}
