@@ -66,15 +66,15 @@ const Banner = ({ id }: { id: number }) => {
       {deviceType === "mobile" ? (
         <Carousel images={images} />
       ) : (
-        <div className="flex w-full justify-center gap-1 md:rounded-xl xl:gap-2">
+        <div className="relative flex h-full w-full justify-center gap-1 md:rounded-xl xl:gap-2">
           <Image
             src={bannerImageUrl}
             alt="배너 이미지"
             width={375}
             height={310}
-            className="h-full w-full object-cover md:max-h-[534px] md:rounded-l-xl"
+            className="w-full object-cover md:max-h-[534px] md:rounded-l-xl"
           />
-          <div className="h-full w-full rounded-r-xl sm:max-h-[310px] md:grid md:max-h-[534px] md:grid-cols-2 md:grid-rows-2 md:gap-1 xl:gap-2">
+          <div className="h-full w-full overflow-hidden rounded-r-xl sm:max-h-[310px] md:grid md:max-h-[534px] md:grid-cols-2 md:grid-rows-2 md:gap-1 xl:gap-2">
             {subImages.map((item) => (
               <Image
                 src={item.imageUrl}
@@ -82,7 +82,7 @@ const Banner = ({ id }: { id: number }) => {
                 width={375}
                 height={310}
                 key={item.id}
-                className="h-full w-full overflow-hidden object-cover md:max-h-[263px]"
+                className="h-full w-full object-cover md:max-h-[263px]"
               />
             ))}
           </div>
