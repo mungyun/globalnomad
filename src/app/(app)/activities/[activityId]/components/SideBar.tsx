@@ -4,6 +4,7 @@ import { useToast } from "@/components/toast/ToastProvider";
 import useDeviceType from "@/hooks/useDeviceType";
 import { getActivityDetail, postReservation } from "@/lib/api/Activities";
 import SideBarSkeleton from "@/skeleton/activities/SideBarSkeleton";
+import useActivityStore from "@/store/useActivityStore";
 import { Schedule } from "@/types/types";
 import formatPrice from "@/utils/formatPrice";
 import { useQuery } from "@tanstack/react-query";
@@ -64,6 +65,7 @@ const SideBar = ({ id }: { id: number }) => {
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { success, warning } = useToast();
+  const { setSelectedTime } = useActivityStore();
 
   const {
     data: activityDetailData,
@@ -94,6 +96,7 @@ const SideBar = ({ id }: { id: number }) => {
       success("예약 성공하셨습니다!");
       setPartyNum(0);
       setSelectedId(undefined);
+      setSelectedTime("");
     } catch (error) {
       if (isAxiosError(error)) {
         const errorMessage = error.response?.data?.message || "서버 오류";
