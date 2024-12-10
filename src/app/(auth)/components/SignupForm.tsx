@@ -3,13 +3,16 @@
 import Button from "@/components/Button";
 import AuthInput from "@/components/input/AuthInput";
 import { postSignUp } from "@/lib/api/Users";
+import useAuthStore from "@/store/useAuthStore";
 import { Signup, SignupSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 const SignupForm = () => {
   const router = useRouter();
+  const { user } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -19,6 +22,13 @@ const SignupForm = () => {
     resolver: zodResolver(SignupSchema),
     mode: "onChange",
   });
+
+  // 로그인 상태라면 메인 화면으로 리다이렉트
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user, router]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit: SubmitHandler<Signup> = async ({ confirmPassword, ...submitData }) => {

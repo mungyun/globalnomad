@@ -15,7 +15,7 @@ export const POST = async (req: NextRequest) => {
 
     if (accessToken && refreshToken) {
       // accessToken을 쿠키에 저장
-      const res = NextResponse.json({ message: "로그인 성공" }, { status: 200 });
+      const res = NextResponse.json({ message: "로그인 성공", user: response.data.user }, { status: 200 });
 
       res.cookies.set("accessToken", accessToken, {
         httpOnly: true,
