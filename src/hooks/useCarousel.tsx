@@ -1,12 +1,10 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 
-interface UseCarouselOptions {
-  autoScroll?: boolean;
-  intervalTime?: number;
-}
-
-export const useCarousel = ({ autoScroll = false, intervalTime = 7000 }: UseCarouselOptions) => {
+export const useCarousel = () => {
   const carouselRef = useRef<HTMLDivElement | null>(null);
+  const [isFirst, setIsFirst] = useState(true);
+  const [isLast, setIsLast] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
 
   // 특정 위치로 스크롤 이동
   const scrollTo = useCallback((toPosition: number) => {
@@ -15,39 +13,47 @@ export const useCarousel = ({ autoScroll = false, intervalTime = 7000 }: UseCaro
     }
   }, []);
 
-  // 첫 번째로 스크롤
-  const scrollToFirst = useCallback(() => {
-    scrollTo(0);
-  }, [scrollTo]);
+  const handleScrollEnd = useCallback(() => {
+    setIsScrolling(false); // 스크롤 완료 후 진행 중 상태를 해제
+  }, []);
 
   // 다음으로 스크롤
   const scrollToNext = useCallback(() => {
-    if (carouselRef.current) {
+    if (!isScrolling && carouselRef.current) {
+      setIsScrolling(true);
+
       const carousel = carouselRef.current;
-      const nextPosition = carousel.scrollLeft + carousel.offsetWidth;
+      const itemWidth = carousel.offsetWidth;
+      const gap = parseFloat(getComputedStyle(carousel).gap || "0");
+
+      const nextPosition = carousel.scrollLeft + itemWidth + gap;
+      const isAtEnd = nextPosition + carousel.offsetWidth + gap >= carousel.scrollWidth;
+
+      if (isAtEnd) setIsLast(true);
+      setIsFirst(false);
       scrollTo(nextPosition);
+      setTimeout(handleScrollEnd, 600);
     }
-  }, [scrollTo]);
+  }, [isScrolling, scrollTo, handleScrollEnd]);
 
-  // 자동 스크롤 효과
-  useEffect(() => {
-    if (!autoScroll) return;
+  // 이전으로 스크롤
+  const scrollToPrevious = useCallback(() => {
+    if (!isScrolling && carouselRef.current) {
+      setIsScrolling(true);
 
-    const interval = setInterval(() => {
-      if (carouselRef.current) {
-        const carousel = carouselRef.current;
-        const isAtEnd = carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth;
+      const carousel = carouselRef.current;
+      const itemWidth = carousel.offsetWidth;
+      const gap = parseFloat(getComputedStyle(carousel).gap || "0");
 
-        if (isAtEnd) {
-          scrollToFirst();
-        } else {
-          scrollToNext();
-        }
-      }
-    }, intervalTime);
+      const previousPosition = carousel.scrollLeft - (itemWidth + gap);
+      const isAtStart = previousPosition <= 0;
 
-    return () => clearInterval(interval); // 언마운트 시 정리
-  }, [autoScroll, intervalTime, scrollToFirst, scrollToNext]);
+      if (isAtStart) setIsFirst(true);
+      setIsLast(false);
+      scrollTo(previousPosition);
+      setTimeout(handleScrollEnd, 600);
+    }
+  }, [isScrolling, scrollTo, handleScrollEnd]);
 
-  return { carouselRef, scrollToFirst, scrollToNext };
+  return { carouselRef, scrollToNext, scrollToPrevious, isFirst, isLast };
 };
