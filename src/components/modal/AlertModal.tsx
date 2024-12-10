@@ -1,11 +1,25 @@
+"use client";
+
 import useDeviceType from "@/hooks/useDeviceType";
+import { getMyNotifications } from "@/lib/api/MyNotifications";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import { AlertMockData } from "../layout/MockData";
+import Skeleton from "react-loading-skeleton";
 import AlertItem from "./AlertItem";
 
 const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const { totalCount, notifications } = AlertMockData;
+  const {
+    data: alertData,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ["myNotifications", { size: 10, cursorId: undefined }], // queryKey에 매개변수 포함
+    queryFn: getMyNotifications, // queryFn에 함수 전달
+    staleTime: 1000 * 60, // 1분 동안 데이터 캐싱
+    enabled: isOpen,
+  });
+
   const deviceType = useDeviceType();
 
   useEffect(() => {
@@ -18,6 +32,25 @@ const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
   }, [deviceType, isOpen]);
 
   if (!isOpen) return null;
+
+  if (isLoading) {
+    return (
+      <div className="z-[9999] flex flex-col items-center justify-center gap-2 bg-green01 px-5 py-6 shadow-md">
+        <Skeleton height={126} width={328} />
+        <Skeleton height={126} width={328} />
+      </div>
+    );
+  }
+
+  if (isError || !alertData) {
+    return (
+      <div className="z-[9999] bg-green01 px-5 py-6 shadow-md">
+        <p>알림 데이터를 불러오는 데 실패했습니다.</p>
+      </div>
+    );
+  }
+
+  const { totalCount, notifications } = alertData;
 
   return (
     <div
