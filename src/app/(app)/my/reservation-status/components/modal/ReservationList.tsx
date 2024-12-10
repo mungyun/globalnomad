@@ -1,14 +1,51 @@
-import React from "react";
-import { ReservationListMockData } from "../MockData";
+import { getMyReservationByTime } from "@/lib/api/MyActivities";
+import useReservationStore from "@/store/useReservationStore";
+import { Reservation } from "@/types/MyActivitiesType";
+import React, { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import ReservationItem from "./ReservationItem";
 
-const ReservationList = ({ type }: { type: string }) => {
-  const { reservations } = ReservationListMockData;
+const ReservationList = ({ status }: { status: string }) => {
+  const { activityId, scheduleId } = useReservationStore();
+  const [reservationData, setReservationData] = useState<Reservation[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchReservationData = async () => {
+      if (!activityId || !scheduleId) return;
+
+      setIsLoading(true);
+      try {
+        const response = await getMyReservationByTime({
+          activityId,
+          scheduleId,
+          status,
+          size: 10,
+        });
+
+        const reservations = Array.isArray(response.reservations) ? response.reservations : [];
+        setReservationData(reservations);
+      } catch (err) {
+        console.error("내 예약 시간대별 정보 조회 오류: ", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchReservationData();
+  }, [activityId, scheduleId, status]);
+
+  if (isLoading) {
+    return <Skeleton height={116} />;
+  }
+
   return (
     <div>
-      {reservations.map((item) => (
-        <ReservationItem item={item} key={item.id} type={type} />
-      ))}
+      {reservationData.length === 0 ? (
+        <div className="text-gray-500">예약 데이터가 없습니다.</div>
+      ) : (
+        reservationData.map((item) => <ReservationItem item={item} key={item.id} status={status} />)
+      )}
     </div>
   );
 };

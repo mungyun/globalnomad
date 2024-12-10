@@ -25,7 +25,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         // 토큰 갱신 요청
-        const response = await axiosInstance.post("/auth/token/refresh", undefined);
+        const response = await axiosInstance.post("/auth/tokens", undefined);
 
         // 새로 갱신된 액세스 토큰을 쿠키에 저장
         const newAccessToken = response.data.accessToken;

@@ -13,7 +13,7 @@ const ActivityItem = ({ activity }: ActivityItemProps) => {
 
   const router = useRouter();
   const handlePushActivity = () => {
-    router.push(`/my/activities/${activity.id}`);
+    router.push(`/activities/${activity.id}`);
   };
 
   return (

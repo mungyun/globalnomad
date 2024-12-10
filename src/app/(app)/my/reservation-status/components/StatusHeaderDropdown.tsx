@@ -4,19 +4,16 @@ import useReservationStore from "@/store/useReservationStore";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
-const StatusDropdown = ({
+const StatusHeaderDropdown = ({
   datas,
-  type = "header",
   onSelect,
 }: {
   datas: { id: number; title: string }[];
-  type: string;
   onSelect?: (selected: { id: number; title: string }) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{ id: number; title: string } | null>(null); // 초기값 null로 설정
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { activityId } = useReservationStore();
   const setActivityId = useReservationStore((state) => state.setActivityId);
 
   // 초기값 설정
@@ -26,7 +23,7 @@ const StatusDropdown = ({
       setSelectedItem(firstItem);
       setActivityId(firstItem.id);
     }
-  }, []);
+  }, [datas, selectedItem, setActivityId]);
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
@@ -53,16 +50,13 @@ const StatusDropdown = ({
 
   return (
     <div ref={dropdownRef} className="relative w-full rounded-md border border-gray-300">
-      <div>{activityId}</div>
       <button
         onClick={toggleDropdown}
         className="relative flex h-[56px] w-full items-center justify-between rounded-[4px] border border-gray08 bg-white px-4"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
-        {type === "header" && (
-          <div className="absolute bottom-10 left-3 h-[24px] w-[45px] bg-white text-[14px]">체험명</div>
-        )}
+        <div className="absolute bottom-10 left-3 h-[24px] w-[45px] bg-white text-[14px]">체험명</div>
         <span className="text-[16px]">{selectedItem?.title}</span>
         <Image src="/icons/dropdown2.svg" width={24} height={24} alt="드롭 다운" />
       </button>
@@ -93,4 +87,4 @@ const StatusDropdown = ({
   );
 };
 
-export default StatusDropdown;
+export default StatusHeaderDropdown;

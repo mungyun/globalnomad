@@ -52,7 +52,7 @@ export interface Reservation {
   updatedAt: string;
 }
 
-export interface ReservationList {
+export interface ReservationListData {
   cursorId: number;
   totalCount: number;
   reservations: Reservation[];
