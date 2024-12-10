@@ -12,7 +12,7 @@ import AuthInput from "../../../components/input/AuthInput";
 
 const LoginForm = () => {
   const router = useRouter();
-  const { isLogin, setUser } = useAuthStore();
+  const { user, setUser } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -25,10 +25,10 @@ const LoginForm = () => {
 
   // 로그인 상태라면 메인 화면으로 리다이렉트
   useEffect(() => {
-    if (isLogin) {
+    if (user) {
       router.push("/");
     }
-  }, [isLogin, router]);
+  }, [user, router]);
 
   const onSubmit: SubmitHandler<Login> = async (data) => {
     try {
