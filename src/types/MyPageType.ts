@@ -22,3 +22,9 @@ export type InputField = {
   placeholder: string;
   readOnly?: boolean;
 };
+
+export type ProfileUpdateData = {
+  nickname: string;
+  profileImageUrl: string;
+  newPassword: string;
+};
