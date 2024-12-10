@@ -1,5 +1,5 @@
 import { UpdateMyReservationByTime } from "@/lib/api/MyActivities";
-import useReservationStore from "@/store/my/useReservationStore";
+import useReservationStore from "@/store/useReservationStore";
 import { Reservation } from "@/types/MyActivitiesType";
 import React from "react";
 

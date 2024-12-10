@@ -1,6 +1,6 @@
 "use client";
 
-import useReservationStore from "@/store/my/useReservationStore";
+import useReservationStore from "@/store/useReservationStore";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 

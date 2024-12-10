@@ -2,7 +2,7 @@
 
 import useDeviceType from "@/hooks/useDeviceType";
 import { getMyReservedSchedule } from "@/lib/api/MyActivities";
-import useReservationStore from "@/store/my/useReservationStore";
+import useReservationStore from "@/store/useReservationStore";
 import { Schedule, ScheduleCount } from "@/types/MyActivitiesType";
 import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";

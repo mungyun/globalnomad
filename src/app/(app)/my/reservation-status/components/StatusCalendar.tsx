@@ -1,7 +1,7 @@
 "use client";
 
 import { proxy } from "@/lib/api/axiosInstanceApi";
-import useReservationStore from "@/store/my/useReservationStore";
+import useReservationStore from "@/store/useReservationStore";
 import "@/styles/ReservationCalender.css";
 import { ReservationData } from "@/types/MyReservationType";
 import { useRouter } from "next/navigation";
