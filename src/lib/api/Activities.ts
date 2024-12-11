@@ -27,7 +27,9 @@ export const postReservation = async ({
     const response = await proxy.post(`/api/activities/reservations`, { activityId, scheduleId, headCount });
     return response.data;
   } catch (error) {
-    console.error("체험 예약 신청 오류: ", error);
+    if (isAxiosError(error)) {
+      throw error;
+    }
   }
 };
 
