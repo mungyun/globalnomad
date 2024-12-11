@@ -2,7 +2,7 @@ import UpdateActivityForm from "./components/UpdateActivityForm";
 
 interface PageProps {
   params: {
-    activityId: string;
+    activityId: number;
   };
 }
 

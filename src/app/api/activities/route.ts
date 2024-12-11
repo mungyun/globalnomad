@@ -3,6 +3,7 @@ import { PostActivityType } from "@/types/ActivityType";
 import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
+// 체험 등록
 export const POST = async (req: NextRequest) => {
   const accessToken = req.cookies.get("accessToken")?.value;
   const body: PostActivityType = await req.json();

@@ -5,9 +5,12 @@ import DropdownInput from "@/components/dropdown/DropdownInput";
 import LabelInput from "@/components/input/LabelInput";
 import PostInput from "@/components/input/PostInput";
 import Textarea from "@/components/input/Textarea";
+import { useToast } from "@/components/toast/ToastProvider";
 import { getActivityDetail } from "@/lib/api/Activities";
+import { PatchActivities } from "@/lib/api/MyActivities";
 import { ActivityDetail, PatchActivityType } from "@/types/ActivityType";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import BannerImageForm from "../../create/components/BannerImageForm";
@@ -19,6 +22,9 @@ interface formProps {
 }
 
 const UpdateActivityForm = ({ id }: formProps) => {
+  const router = useRouter();
+  const Toast = useToast();
+
   const {
     register,
     handleSubmit,
@@ -27,23 +33,41 @@ const UpdateActivityForm = ({ id }: formProps) => {
     reset,
     formState: { isValid },
   } = useForm<PatchActivityType>();
+
   const {
     data: activityDetailData,
     isPending,
     isError,
+    error,
   } = useQuery<ActivityDetail, Error>({
     queryKey: ["activityDetailData", id],
     queryFn: () => getActivityDetail(id),
     enabled: !!id,
-    staleTime: 60 * 5 * 1000, // 5분에 한 번씩 데이터 교체
   });
 
-  const onSubmit = (data: PatchActivityType) => {
+  const mutation = useMutation({
+    mutationFn: (data: PatchActivityType) => {
+      return PatchActivities(id, data);
+    },
+    onSuccess: () => {
+      router.push("/my/activity");
+      Toast.success("체험 수정에 성공했습니다.");
+    },
+    onError: (error) => {
+      Toast.error(error.message || "체험 수정에 실패했습니다.");
+    },
+  });
+
+  const onSubmit = async (data: PatchActivityType) => {
     console.log(data);
+    mutation.mutate(data);
   };
 
   useEffect(() => {
     if (isPending) return;
+    if (isError) {
+      Toast.error(error.message);
+    }
     const data = activityDetailData;
     const filteredData: PatchActivityType = {
       title: data.title,
@@ -61,7 +85,7 @@ const UpdateActivityForm = ({ id }: formProps) => {
       })),
     };
     reset(filteredData);
-  }, [reset, isPending]);
+  }, [reset, isPending, activityDetailData]);
 
   return (
     <div className="flex w-full flex-col gap-6">

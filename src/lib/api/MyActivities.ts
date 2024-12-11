@@ -1,3 +1,4 @@
+import { PatchActivityType } from "@/types/ActivityType";
 import axios from "axios";
 import { proxy } from "./axiosInstanceApi";
 
@@ -93,5 +94,21 @@ export const UpdateMyReservationByTime = async ({
       throw new Error(error.response?.data.message || "예약 상태 변경에 실패했습니다");
     }
     throw error;
+  }
+};
+
+export const PatchActivities = async (activityId: number, data: PatchActivityType) => {
+  try {
+    const res = await proxy.patch(`/api/my-activities/${activityId}`, data);
+    return res.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status || 500;
+      const message = error.response?.data?.message || "서버 오류가 발생했습니다.";
+      throw new Error(`${message} (${status})`);
+    }
+
+    // Axios 외의 예외 처리
+    throw new Error("알 수 없는 오류가 발생했습니다.");
   }
 };
