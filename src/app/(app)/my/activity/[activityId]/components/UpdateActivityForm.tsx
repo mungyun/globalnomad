@@ -14,8 +14,8 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import BannerImageForm from "../../create/components/BannerImageForm";
-import SubImageForm from "../../create/components/SubImageForm";
 import ScheduleList from "./ScheduleList";
+import SubImageForm from "./SubImageForm";
 
 interface formProps {
   id: number;

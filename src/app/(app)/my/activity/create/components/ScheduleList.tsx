@@ -3,15 +3,15 @@
 import DateInput from "@/components/input/DateInput";
 import TimeInput from "@/components/input/TimeInput";
 import { useToast } from "@/components/toast/ToastProvider";
-import { ActiviteForm, Schedule } from "@/types/ActivityType";
+import { ActivityForm, Schedule } from "@/types/ActivityType";
 import { useState } from "react";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { FiPlus } from "react-icons/fi";
 import ScheduleItem from "./ScheduleItem";
 
 interface ScheduleListProps {
-  watch: UseFormWatch<ActiviteForm>;
-  setValue: UseFormSetValue<ActiviteForm>;
+  watch: UseFormWatch<ActivityForm>;
+  setValue: UseFormSetValue<ActivityForm>;
 }
 
 const defaultSchedule = { date: "", startTime: "00:00", endTime: "00:00" };

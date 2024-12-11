@@ -1,13 +1,13 @@
 import ImageInput from "@/components/input/ImageInput";
 import useUploadImage from "@/hooks/useUploadImage";
-import { ActiviteForm } from "@/types/ActivityType";
+import { ActivityForm } from "@/types/ActivityType";
 import { useRef } from "react";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import PrevImage from "./PrevImage";
 
 interface FormProps {
-  watch: UseFormWatch<ActiviteForm>;
-  setValue: UseFormSetValue<ActiviteForm>;
+  watch: UseFormWatch<ActivityForm>;
+  setValue: UseFormSetValue<ActivityForm>;
 }
 
 const BannerImageForm = ({ watch, setValue }: FormProps) => {

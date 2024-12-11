@@ -3,7 +3,7 @@ import useUploadImage from "@/hooks/useUploadImage";
 import { ActivityForm } from "@/types/ActivityType";
 import { useRef } from "react";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
-import PrevImage from "./PrevImage";
+import PrevImage from "../../create/components/PrevImage";
 
 interface FormProps {
   watch: UseFormWatch<ActivityForm>;

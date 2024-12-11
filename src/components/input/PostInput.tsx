@@ -1,4 +1,4 @@
-import { ActiviteForm } from "@/types/ActivityType";
+import { ActivityForm } from "@/types/ActivityType";
 import React, { InputHTMLAttributes, useEffect, useState } from "react";
 import DaumPostcodeEmbed, { Address } from "react-daum-postcode";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
@@ -6,8 +6,8 @@ import { FiX } from "react-icons/fi";
 
 interface PostInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  watch: UseFormWatch<ActiviteForm>;
-  setValue: UseFormSetValue<ActiviteForm>;
+  watch: UseFormWatch<ActivityForm>;
+  setValue: UseFormSetValue<ActivityForm>;
 }
 
 const PostInput = ({ label, watch, setValue, ...props }: PostInputProps) => {
