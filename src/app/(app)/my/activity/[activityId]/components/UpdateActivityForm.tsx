@@ -14,8 +14,8 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import BannerImageForm from "../../create/components/BannerImageForm";
-import ScheduleList from "../../create/components/ScheduleList";
 import SubImageForm from "../../create/components/SubImageForm";
+import ScheduleList from "./ScheduleList";
 
 interface formProps {
   id: number;
@@ -32,7 +32,9 @@ const UpdateActivityForm = ({ id }: formProps) => {
     setValue,
     reset,
     formState: { isValid },
-  } = useForm<PatchActivityType>();
+  } = useForm<PatchActivityType>({
+    defaultValues: { title: "", category: "", description: "", price: 0, address: "", schedules: [] },
+  });
 
   const {
     data: activityDetailData,
@@ -68,31 +70,21 @@ const UpdateActivityForm = ({ id }: formProps) => {
     if (isError) {
       Toast.error(error.message);
     }
-    const data = activityDetailData;
-    const filteredData: PatchActivityType = {
-      title: data.title,
-      category: data.category,
-      description: data.description,
-      price: data.price,
-      address: data.address,
-      bannerImageUrl: data.bannerImageUrl,
-      subImageUrls: [],
-      schedules: data.schedules.map((schedule) => ({
-        id: schedule.id,
-        date: schedule.date,
-        startTime: schedule.startTime,
-        endTime: schedule.endTime,
-      })),
-    };
-    reset(filteredData);
+    reset(activityDetailData);
   }, [reset, isPending, activityDetailData]);
 
   return (
     <div className="flex w-full flex-col gap-6">
       <div className="flex justify-between">
         <h2 className="text-[32px] font-bold leading-[42px]">내 체험 수정</h2>
-        <Button type="submit" disabled={!isValid} size="md" onClick={handleSubmit(onSubmit)}>
-          수정하기
+        <Button
+          type="submit"
+          disabled={!isValid || mutation.isPending}
+          isLoading={mutation.isPending}
+          size="md"
+          onClick={handleSubmit(onSubmit)}
+        >
+          등록하기
         </Button>
       </div>
       <LabelInput placeholder="제목" {...register("title")} />
@@ -102,7 +94,7 @@ const UpdateActivityForm = ({ id }: formProps) => {
       <PostInput label={"주소"} watch={watch} setValue={setValue} placeholder="주소를 입력해주세요" />
       <ScheduleList watch={watch} setValue={setValue} />
       <BannerImageForm watch={watch} setValue={setValue} />
-      {/* <SubImageForm watch={watch} setValue={setValue} /> */}
+      <SubImageForm watch={watch} setValue={setValue} />
     </div>
   );
 };

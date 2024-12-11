@@ -27,6 +27,7 @@ const CreateActivityForm = () => {
     setValue,
     formState: { isValid },
   } = useForm<PostActivityType>({
+    defaultValues: { title: "", category: "", description: "", price: 0, address: "", schedules: [] },
     resolver: zodResolver(PostActivitySchema),
     mode: "onBlur",
   });

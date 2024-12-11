@@ -12,7 +12,7 @@ interface PostInputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const PostInput = ({ label, watch, setValue, ...props }: PostInputProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const address = watch("address", "");
+  const address = watch("address");
 
   const handleComplete = (data: Address) => {
     setValue("address", data.address);
@@ -42,9 +42,9 @@ const PostInput = ({ label, watch, setValue, ...props }: PostInputProps) => {
         {label}
         <input
           className={`h-[56px] w-full rounded border border-gray08 px-5 py-4 text-base font-normal leading-[26px] outline-green02 placeholder:text-gray06`}
-          value={address}
           readOnly
           onClick={toggleModal}
+          value={address}
           {...props}
         />
       </label>
