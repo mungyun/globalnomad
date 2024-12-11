@@ -64,7 +64,7 @@ const SideBar = ({ id }: { id: number }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { success, warning } = useToast();
+  const Toast = useToast();
   const { setSelectedTime } = useActivityStore();
 
   const {
@@ -93,14 +93,14 @@ const SideBar = ({ id }: { id: number }) => {
       setIsLoading(true);
       if (!selectedId) return;
       await postReservation({ activityId: id, scheduleId: selectedId, headCount: partyNum });
-      success("예약 성공하셨습니다!");
+      Toast.success("예약 성공하셨습니다!");
       setPartyNum(0);
       setSelectedId(undefined);
       setSelectedTime("");
     } catch (error) {
       if (isAxiosError(error)) {
         const errorMessage = error.response?.data?.message || "서버 오류";
-        warning(errorMessage);
+        Toast.error(errorMessage);
       }
     } finally {
       setIsLoading(false);
