@@ -3,7 +3,7 @@
 import AuthInput from "@/components/input/AuthInput";
 import { useToast } from "@/components/toast/ToastProvider";
 import { getUsersProfile, updateUserProfile } from "@/lib/api/MyPage";
-import { InputField, ProfileUpdateData } from "@/types/MyPageType";
+import { InputField, ProfileUpdateData, User } from "@/types/MyPageType";
 import { Signup, SignupSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -42,15 +42,18 @@ const UpdateProfile = () => {
   const toast = useToast();
 
   // 내 정보 조회 쿼리
-  const { data: userProfile } = useQuery({
+  const {
+    data: userProfile,
+    error,
+    isError,
+  } = useQuery<User, Error>({
     queryKey: ["myPage"],
     queryFn: getUsersProfile,
     retry: 1,
-    // onError: (error) => {
-    //   toast.error(error);
-    // },
   });
-
+  if (isError) {
+    toast.error(error.message);
+  }
   // 내 정보 수정 뮤테이션
   const mutation = useMutation({
     mutationFn: updateUserProfile,
@@ -90,6 +93,8 @@ const UpdateProfile = () => {
     values: userProfile && {
       nickname: userProfile.nickname,
       email: userProfile.email,
+      password: "",
+      confirmPassword: "",
     },
   });
 

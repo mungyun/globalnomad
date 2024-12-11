@@ -4,7 +4,7 @@ import { proxy } from "./axiosInstanceApi";
 
 export const getUsersProfile = async () => {
   try {
-    const response = await proxy.get("api/my");
+    const response = await proxy.get("/api/my");
     return response.data;
   } catch (error) {
     if (isAxiosError(error)) {
@@ -19,7 +19,7 @@ export const getUsersProfile = async () => {
 
 export const updateUserProfile = async (data: UpdateUser) => {
   try {
-    const response = await proxy.patch("api/my", {
+    const response = await proxy.patch("/api/my", {
       nickname: data.nickname,
       // profileImageUrl: data.profileImageUrl,
       newPassword: data.newPassword,
