@@ -1,9 +1,8 @@
-import { useToast } from "@/components/toast/ToastProvider";
 import { cancelMyReservation } from "@/lib/api/MyReservation";
-import { useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
+import { toast } from "react-toastify";
 
 interface ModalProps {
   setIsModalOpen: (isOpen: boolean) => void;
@@ -13,23 +12,22 @@ interface ModalProps {
 export default function ReservationModal({ setIsModalOpen, reservationId }: ModalProps): JSX.Element {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const handleCloseModal = () => setIsModalOpen(false);
-  const { success, error } = useToast();
   const queryClient = useQueryClient();
 
-  const handleReservationCancel = async () => {
-    try {
-      await cancelMyReservation(reservationId);
-      success("취소 완료");
+  const mutation = useMutation({
+    mutationFn: () => cancelMyReservation(reservationId),
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reservations"] });
+      toast.success("예약 취소 완료");
       handleCloseModal();
-    } catch (err) {
-      console.error("예약 취소 실패:", err);
-      if (err instanceof AxiosError) {
-        error(err.response?.data?.message || "예약 취소에 실패했습니다");
-      } else {
-        error("예약 취소에 실패했습니다");
-      }
-    }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const handleReservationCancel = async () => {
+    await mutation.mutate();
   };
 
   const handleClickOutside = (e: MouseEvent) => {
