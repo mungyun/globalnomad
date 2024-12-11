@@ -4,7 +4,7 @@ import { proxy } from "./axiosInstanceApi";
 // 내 예약 정보 요청
 export const getMyReservation = async () => {
   try {
-    const response = await proxy.get("api/my/reservation");
+    const response = await proxy.get("/api/my/reservation");
     return response.data.reservations;
   } catch (error) {
     if (isAxiosError(error)) {
@@ -20,7 +20,7 @@ export const getMyReservation = async () => {
 // 내 예약 취소 요청
 export const cancelMyReservation = async (reservationId: number) => {
   try {
-    const response = await proxy.patch("api/my/reservation", {
+    const response = await proxy.patch("/api/my/reservation", {
       reservationId,
       status: "canceled",
     });
