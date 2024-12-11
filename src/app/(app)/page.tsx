@@ -16,7 +16,7 @@ const Home = async ({ searchParams }: { searchParams: Promise<QueryType> }) => {
   const { keyword, category, sort } = await searchParams;
 
   return (
-    <div className="bg-gray01">
+    <div>
       <Banner />
       <div className="relative mx-auto max-w-[1200px] pb-[120px] pt-[93px] md:pt-[142px] xl:pt-[158px]">
         <SearchBar />

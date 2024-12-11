@@ -1,4 +1,5 @@
 import axiosInstance from "@/lib/api/axiosInstanceApi";
+import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
@@ -15,7 +16,7 @@ export const POST = async (req: NextRequest) => {
 
     if (accessToken && refreshToken) {
       // accessToken을 쿠키에 저장
-      const res = NextResponse.json({ message: "로그인 성공" }, { status: 200 });
+      const res = NextResponse.json({ message: "로그인 성공", user: response.data.user }, { status: 200 });
 
       res.cookies.set("accessToken", accessToken, {
         httpOnly: true,
@@ -34,9 +35,14 @@ export const POST = async (req: NextRequest) => {
 
       return res;
     } else {
-      return NextResponse.json({ message: "권한 없음" }, { status: 401 });
+      return NextResponse.json({ message: "조회 실패" }, { status: 400 });
     }
-  } catch (error) {
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || "서버 오류";
+      return NextResponse.json({ message: errorMessage }, { status: error.response?.status || 500 });
+    }
+
     console.error(error);
     return NextResponse.json({ message: "서버 오류" }, { status: 500 });
   }
