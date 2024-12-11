@@ -41,6 +41,11 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
     }));
   };
 
+  const deleteSchedule = (schedule: Schedule) => {
+    const updatedSchedules = schedules.filter((item) => item !== schedule);
+    setValue("schedules", updatedSchedules);
+  };
+
   return (
     <>
       <label className="text-xl font-bold leading-8 text-black03 md:text-2xl">예약 가능한 시간대</label>
@@ -71,7 +76,13 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
       </div>
       <div className="flex flex-col gap-5">
         {schedules.map((schedule, index) => (
-          <ScheduleItem key={index} schedule={schedule} schedules={schedules} setValue={setValue} />
+          <ScheduleItem
+            key={index}
+            schedule={schedule}
+            onDelete={() => {
+              deleteSchedule(schedule);
+            }}
+          />
         ))}
       </div>
     </>

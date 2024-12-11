@@ -54,7 +54,6 @@ const CreateActivityForm = () => {
   };
 
   const onSubmit = async (data: PostActivityType) => {
-    console.log(data);
     data.price = Number(data.price);
     if (!data.subImageUrls || data.subImageUrls.length < 4) {
       Toast.error("소개 이미지를 4개 입력해 주세요.");

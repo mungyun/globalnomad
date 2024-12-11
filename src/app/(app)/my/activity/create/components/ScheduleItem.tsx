@@ -1,18 +1,12 @@
-import { ActivityForm, Schedule } from "@/types/ActivityType";
-import { UseFormSetValue } from "react-hook-form";
+import { Schedule } from "@/types/ActivityType";
 import { FiMinus } from "react-icons/fi";
 
 interface ScheduleItemProps {
   schedule: Schedule;
-  schedules: Schedule[];
-  setValue: UseFormSetValue<ActivityForm>;
+  onDelete: () => void;
 }
 
-const ScheduleItem = ({ schedule, schedules, setValue }: ScheduleItemProps) => {
-  const deleteSchedule = () => {
-    const updatedSchedules = schedules.filter((item) => item !== schedule);
-    setValue("schedules", updatedSchedules);
-  };
+const ScheduleItem = ({ schedule, onDelete }: ScheduleItemProps) => {
   return (
     <div className="flex gap-1 md:gap-[5px] xl:gap-5">
       <input
@@ -34,7 +28,7 @@ const ScheduleItem = ({ schedule, schedules, setValue }: ScheduleItemProps) => {
         />
       </div>
       <button
-        onClick={deleteSchedule}
+        onClick={onDelete}
         className="flex size-11 shrink-0 items-center justify-center rounded-lg border border-gray03 md:size-14"
       >
         <FiMinus className="size-10 text-gray08" />

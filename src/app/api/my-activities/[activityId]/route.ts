@@ -31,8 +31,8 @@ export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ a
 };
 
 // 내 체험 수정
-export const PATCH = async (req: NextRequest, { params }: { params: { activityId: string } }) => {
-  const { activityId } = params;
+export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ activityId: string }> }) => {
+  const { activityId } = await params;
   const accessToken = req.cookies.get("accessToken")?.value;
   const body: PatchActivityType = await req.json();
   try {

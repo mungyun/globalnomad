@@ -19,14 +19,14 @@ const defaultSchedule = { date: "", startTime: "00:00", endTime: "00:00" };
 const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
   const [schedule, setSchedule] = useState<Schedule>(defaultSchedule);
   const [timeReset, setTimeReset] = useState<boolean>(false);
-
   const schedules = watch("schedules");
+  const addSchedules = watch("schedulesToAdd", []) as Schedule[];
   const Toast = useToast();
 
   const addSchedule = () => {
     // 시작 시간이 종료 시간보다 작을 경우 스케줄 추가 안됨
     if (schedule.startTime < schedule.endTime) {
-      setValue("schedules", [schedule, ...schedules]);
+      setValue("schedulesToAdd", [schedule, ...addSchedules]);
       // 스케줄 추가 시 input value 초기화
       setSchedule(defaultSchedule);
       setTimeReset((prev) => !prev);
@@ -40,6 +40,15 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
       ...prevState,
       [field]: value,
     }));
+  };
+
+  const deleteSchedule = (schedule: Schedule) => {
+    const toRemove = watch("scheduleIdsToRemove", []) as number[];
+    if (schedule.id) {
+      setValue("scheduleIdsToRemove", [...toRemove, schedule.id]);
+    }
+    const updatedSchedules = schedules.filter((item) => item !== schedule);
+    setValue("schedules", updatedSchedules);
   };
 
   return (
@@ -71,8 +80,14 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
         </button>
       </div>
       <div className="flex flex-col gap-5">
-        {schedules.map((schedule, index) => (
-          <ScheduleItem key={index} schedule={schedule} schedules={schedules} setValue={setValue} />
+        {[...schedules, ...addSchedules].map((schedule, index) => (
+          <ScheduleItem
+            key={index}
+            schedule={schedule}
+            onDelete={() => {
+              deleteSchedule(schedule);
+            }}
+          />
         ))}
       </div>
     </>
