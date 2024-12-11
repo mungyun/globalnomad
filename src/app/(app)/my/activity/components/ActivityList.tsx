@@ -1,7 +1,6 @@
 "use client";
 
 import EmptyActivity from "@/components/EmptyActivity";
-import { useToast } from "@/components/toast/ToastProvider";
 import { getMyActivities } from "@/lib/api/MyActivities";
 import { Activity } from "@/types/MyActivitiesType";
 import { useQuery } from "@tanstack/react-query";
@@ -10,7 +9,6 @@ import ActivityItem from "./ActivityItem";
 
 const ActivityList = () => {
   const router = useRouter();
-  const { success } = useToast();
 
   // 내 체험 목록 가져오기
   const {
@@ -31,7 +29,6 @@ const ActivityList = () => {
 
   const handleCreateActivity = () => {
     router.push("/my/activity/create");
-    success("체험 등록 페이지로 이동합니다");
   };
 
   return (

@@ -3,7 +3,6 @@
 import { ActivityList } from "@/types/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useToast } from "../../../../../components/toast/ToastProvider";
 import ActivityModal from "./ActivityModal";
 
 interface IconDropdownProps {
@@ -12,7 +11,6 @@ interface IconDropdownProps {
 
 const IconDropdown = ({ activity }: IconDropdownProps) => {
   const router = useRouter();
-  const { success } = useToast();
   const toggleDropdown = () => setIsOpen((prev) => !prev);
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setModalIsOpen] = useState(false);
@@ -20,7 +18,6 @@ const IconDropdown = ({ activity }: IconDropdownProps) => {
 
   const handleEditClick = () => {
     router.push(`/my/activity/${activity.id}`);
-    success("수정하기 페이지로 이동합니다");
   };
 
   const handleDeleteClick = () => {
