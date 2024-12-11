@@ -1,6 +1,5 @@
 import useDeviceType from "@/hooks/useDeviceType";
-import { DeleteMyNotification, getMyNotifications } from "@/lib/api/MyNotifications";
-// DeleteMyNotification API 함수 임포트
+import { deleteMyNotification, getMyNotifications } from "@/lib/api/MyNotifications";
 import { AlertData } from "@/types/MyNotificationsType";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
@@ -26,9 +25,9 @@ const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
   const queryClient = useQueryClient();
 
   // 알림 삭제 뮤테이션 정의
-  const { mutate: deleteNotification } = useMutation({
+  const mutation = useMutation({
     mutationFn: async (notificationId: number) => {
-      await DeleteMyNotification({ notificationId });
+      await deleteMyNotification({ notificationId });
     },
     // 삭제 성공 시 알림 목록 캐시 무효화
     onSuccess: () => {
@@ -92,11 +91,7 @@ const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
       </div>
       <ul className="flex h-full flex-col gap-2 overflow-y-auto md:h-[260px]">
         {notifications.map((item) => (
-          <AlertItem
-            key={item.id}
-            item={item}
-            onDelete={(id) => deleteNotification(id)} // 알림 삭제 함수 전달
-          />
+          <AlertItem key={item.id} item={item} onDelete={(id) => mutation.mutate(id)} />
         ))}
       </ul>
     </div>

@@ -22,7 +22,7 @@ export const getMyNotifications = async ({
   }
 };
 
-export const DeleteMyNotification = async ({ notificationId }: { notificationId: number }) => {
+export const deleteMyNotification = async ({ notificationId }: { notificationId: number }) => {
   try {
     const response = await proxy.delete(`/api/my-notifications/${notificationId}`);
     return response.data;
