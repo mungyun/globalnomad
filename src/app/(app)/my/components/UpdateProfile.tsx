@@ -1,26 +1,13 @@
 "use client";
 
 import AuthInput from "@/components/input/AuthInput";
+import { useToast } from "@/components/toast/ToastProvider";
+import { getUsersProfile, updateUserProfile } from "@/lib/api/MyPage";
+import { InputField, ProfileUpdateData, User } from "@/types/MyPageType";
 import { Signup, SignupSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-
-const mockData = {
-  id: 0,
-  email: "asd@naver.com",
-  nickname: "정만철",
-  profileImageUrl: "/images/1.png",
-  createdAt: "2024-11-28T14:25:54.213Z",
-  updatedAt: "2024-11-28T14:25:54.213Z",
-};
-
-type InputField = {
-  label: string;
-  name: keyof Signup;
-  type: string;
-  placeholder: string;
-  readOnly?: boolean;
-};
 
 const INPUT_FIELDS: InputField[] = [
   {
@@ -51,22 +38,65 @@ const INPUT_FIELDS: InputField[] = [
 ];
 
 const UpdateProfile = () => {
+  const queryClient = useQueryClient();
+  const toast = useToast();
+
+  // 내 정보 조회 쿼리
+  const {
+    data: userProfile,
+    error,
+    isError,
+  } = useQuery<User, Error>({
+    queryKey: ["myPage"],
+    queryFn: getUsersProfile,
+    retry: 1,
+  });
+  if (isError) {
+    toast.error(error.message);
+  }
+  // 내 정보 수정 뮤테이션
+  const mutation = useMutation({
+    mutationFn: updateUserProfile,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["myPage"] });
+      toast.success("내 정보 수정 완료!");
+      reset((current) => ({
+        ...current,
+        password: "",
+        confirmPassword: "",
+      }));
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  // 제출 함수
+  const handleProfileUpdate = async (data: Signup) => {
+    const updateData: ProfileUpdateData = {
+      nickname: data.nickname,
+      profileImageUrl: "",
+      newPassword: data.password,
+    };
+    await mutation.mutateAsync(updateData);
+  };
+
+  // 리액트 hookForm
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<Signup>({
     resolver: zodResolver(SignupSchema),
     mode: "onBlur",
-    defaultValues: {
-      nickname: mockData.nickname,
-      email: mockData.email,
+    values: userProfile && {
+      nickname: userProfile.nickname,
+      email: userProfile.email,
+      password: "",
+      confirmPassword: "",
     },
   });
-
-  const onSubmit = (data: Signup) => {
-    alert(JSON.stringify(data));
-  };
 
   return (
     <section className="flex h-screen w-full max-w-[800px] flex-col">
@@ -74,11 +104,12 @@ const UpdateProfile = () => {
         <h2 className="text-[32px] font-bold"> 내 정보</h2>
         <button
           className="flex h-[48px] w-[120px] items-center justify-center rounded bg-black02 font-semibold text-white"
+          type="button"
           aria-label="체험 등록하기"
-          onClick={handleSubmit(onSubmit)}
+          onClick={handleSubmit(handleProfileUpdate)}
           disabled={isSubmitting}
         >
-          저장하기
+          {isSubmitting ? "저장 중..." : "저장하기"}
         </button>
       </header>
 
