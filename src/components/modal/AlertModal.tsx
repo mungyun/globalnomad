@@ -2,6 +2,7 @@
 
 import useDeviceType from "@/hooks/useDeviceType";
 import { getMyNotifications } from "@/lib/api/MyNotifications";
+import { AlertData } from "@/types/MyNotificationsType";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useEffect } from "react";
@@ -35,7 +36,13 @@ const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 
   if (isLoading) {
     return (
-      <div className="z-[9999] flex flex-col items-center justify-center gap-2 bg-green01 px-5 py-6 shadow-md">
+      <div
+        className={`z-[9999] bg-green01 px-5 py-6 shadow-md ${
+          deviceType === "mobile"
+            ? "fixed left-0 top-0 h-screen w-screen"
+            : "absolute top-[57px] h-[356px] rounded-[10px] md:right-0 md:w-[368px]"
+        }`}
+      >
         <Skeleton height={126} width={328} />
         <Skeleton height={126} width={328} />
       </div>
@@ -50,7 +57,7 @@ const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
     );
   }
 
-  const { totalCount, notifications } = alertData;
+  const { totalCount, notifications }: AlertData = alertData;
 
   return (
     <div
