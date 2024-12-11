@@ -21,3 +21,15 @@ export const getMyNotifications = async ({
     throw new Error("알림 데이터를 가져오는 중 알 수 없는 오류 발생");
   }
 };
+
+export const DeleteMyNotification = async ({ notificationId }: { notificationId: number }) => {
+  try {
+    const response = await proxy.delete(`/api/my-notifications/${notificationId}`);
+    return response.data;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};

@@ -1,24 +1,43 @@
-"use client";
-
 import useDeviceType from "@/hooks/useDeviceType";
-import { getMyNotifications } from "@/lib/api/MyNotifications";
+import { DeleteMyNotification, getMyNotifications } from "@/lib/api/MyNotifications";
+// DeleteMyNotification API 함수 임포트
 import { AlertData } from "@/types/MyNotificationsType";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
+import { useToast } from "../toast/ToastProvider";
 import AlertItem from "./AlertItem";
 
 const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  const Toast = useToast();
   const {
     data: alertData,
     isError,
     isLoading,
   } = useQuery({
-    queryKey: ["myNotifications", { size: 10, cursorId: undefined }], // queryKey에 매개변수 포함
-    queryFn: getMyNotifications, // queryFn에 함수 전달
-    staleTime: 1000 * 60, // 1분 동안 데이터 캐싱
+    queryKey: ["myNotifications", { size: 10, cursorId: undefined }],
+    queryFn: getMyNotifications,
+    staleTime: 1000 * 60,
     enabled: isOpen,
+  });
+
+  const queryClient = useQueryClient();
+
+  // 알림 삭제 뮤테이션 정의
+  const { mutate: deleteNotification } = useMutation({
+    mutationFn: async (notificationId: number) => {
+      await DeleteMyNotification({ notificationId });
+    },
+    // 삭제 성공 시 알림 목록 캐시 무효화
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["myNotifications"] });
+      Toast.success("알림을 삭제했습니다.");
+    },
+    onError: (error) => {
+      Toast.error(error?.message || "삭제에 실패했습니다");
+    },
   });
 
   const deviceType = useDeviceType();
@@ -73,7 +92,11 @@ const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
       </div>
       <ul className="flex h-full flex-col gap-2 overflow-y-auto md:h-[260px]">
         {notifications.map((item) => (
-          <AlertItem key={item.id} item={item} />
+          <AlertItem
+            key={item.id}
+            item={item}
+            onDelete={(id) => deleteNotification(id)} // 알림 삭제 함수 전달
+          />
         ))}
       </ul>
     </div>
