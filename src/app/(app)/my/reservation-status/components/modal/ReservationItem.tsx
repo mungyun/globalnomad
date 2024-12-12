@@ -2,6 +2,7 @@ import { useToast } from "@/components/toast/ToastProvider";
 import { UpdateMyReservationByTime } from "@/lib/api/MyActivities";
 import useReservationStore from "@/store/useReservationStore";
 import { Reservation } from "@/types/MyActivitiesType";
+import { QueryClient, useMutation } from "@tanstack/react-query";
 import React from "react";
 
 const buttonStyle = "flex h-[38px] w-[82px] items-center justify-center rounded-md text-[14px] font-bold";
@@ -12,18 +13,35 @@ const ReservationItem = ({ item, status }: { item: Reservation; status: string }
   const { activityId, setStatusModalOpen } = useReservationStore();
   const Toast = useToast();
 
+  const queryClient = new QueryClient();
+
+  const mutation = useMutation({
+    mutationFn: ({ reservationId, status }: { reservationId: number; status: string }) =>
+      UpdateMyReservationByTime({ activityId, reservationId, status }),
+
+    onSuccess: (variables) => {
+      const { status } = variables;
+      if (status === "confirmed") {
+        Toast.success("예약을 승인했습니다!");
+      } else if (status === "declined") {
+        Toast.success("예약을 거절했습니다!");
+      }
+      queryClient.invalidateQueries({ queryKey: ["ReservationDataByMonth"] });
+      setStatusModalOpen(false);
+    },
+
+    onError: (error) => {
+      Toast.error("예약 상태를 변경하는 중 오류가 발생했습니다.");
+      console.error("Mutation Error:", error);
+    },
+  });
+
   const handleUpdate = () => {
-    console.log("activityId", activityId);
-    console.log("reservationId", id);
-    UpdateMyReservationByTime({ activityId, reservationId: id, status: "confirmed" });
-    Toast.success("예약을 승인했습니다!");
-    setStatusModalOpen(false);
+    mutation.mutate({ reservationId: id, status: "confirmed" });
   };
 
   const handleDelete = () => {
-    UpdateMyReservationByTime({ activityId, reservationId: id, status: "declined" });
-    Toast.success("예약을 거절했습니다!");
-    setStatusModalOpen(false);
+    mutation.mutate({ reservationId: id, status: "declined" });
   };
 
   return (
@@ -44,10 +62,14 @@ const ReservationItem = ({ item, status }: { item: Reservation; status: string }
               거절하기
             </button>
           </>
-        ) : status === "confirmed" ? (
-          <div className={`${reservationStyle} bg-orange01 text-orange02`}>예약승인</div>
         ) : (
-          <div className={`${reservationStyle} bg-red01 text-red03`}>예약거절</div>
+          <div
+            className={`${reservationStyle} ${
+              status === "confirmed" ? "bg-orange01 text-orange02" : "bg-red01 text-red03"
+            }`}
+          >
+            {status === "confirmed" ? "예약승인" : "예약거절"}
+          </div>
         )}
       </div>
     </div>

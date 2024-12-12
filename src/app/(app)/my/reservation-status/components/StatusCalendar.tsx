@@ -29,7 +29,7 @@ const StatusCalendar = () => {
   const month = String(value.getMonth() + 1);
 
   const { data: reservationData = [], isLoading } = useQuery<ReservationData[], Error>({
-    queryKey: ["reservations", year, month, activityId],
+    queryKey: ["ReservationDataByMonth", year, month, activityId],
     queryFn: () => getMyActivitiesByMonth({ year, month, activityId }),
     enabled: !!activityId && !!value,
     onError: (error: unknown) => {
