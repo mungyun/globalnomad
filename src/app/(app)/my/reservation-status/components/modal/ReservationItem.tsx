@@ -1,3 +1,4 @@
+import { useToast } from "@/components/toast/ToastProvider";
 import { UpdateMyReservationByTime } from "@/lib/api/MyActivities";
 import useReservationStore from "@/store/useReservationStore";
 import { Reservation } from "@/types/MyActivitiesType";
@@ -9,14 +10,19 @@ const reservationStyle = "flex h-[44px] w-[82px] items-center justify-center rou
 const ReservationItem = ({ item, status }: { item: Reservation; status: string }) => {
   const { nickname, headCount, id } = item;
   const { activityId, setStatusModalOpen } = useReservationStore();
+  const Toast = useToast();
 
   const handleUpdate = () => {
+    console.log("activityId", activityId);
+    console.log("reservationId", id);
     UpdateMyReservationByTime({ activityId, reservationId: id, status: "confirmed" });
+    Toast.success("예약을 승인했습니다!");
     setStatusModalOpen(false);
   };
 
   const handleDelete = () => {
     UpdateMyReservationByTime({ activityId, reservationId: id, status: "declined" });
+    Toast.success("예약을 거절했습니다!");
     setStatusModalOpen(false);
   };
 

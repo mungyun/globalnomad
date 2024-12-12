@@ -91,9 +91,8 @@ export const UpdateMyReservationByTime = async ({
     const response = await proxy.patch(`/api/my-activities/${activityId}/reservations/${reservationId}`, { status });
     return response.data;
   } catch (error) {
-    console.error("내 예약 시간대별 정보 변경 오류: ", error);
     if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data.message || "예약 상태 변경에 실패했습니다");
+      throw error;
     }
     throw error;
   }
