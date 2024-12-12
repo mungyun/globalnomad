@@ -2,6 +2,7 @@
 
 import EmptyActivity from "@/components/EmptyActivity";
 import { getMyReservation } from "@/lib/api/MyReservation";
+import ReservationSkeleton from "@/skeleton/reservation/ReservationSkeleton";
 import { Reservation } from "@/types/MyReservationType";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -39,7 +40,7 @@ export default function ReservationList() {
     if (selectedOption) setFilter(selectedOption.value);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <ReservationSkeleton />;
 
   return (
     <section className="flex w-full max-w-[800px] flex-col bg-gray01">
