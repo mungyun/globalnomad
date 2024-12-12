@@ -33,7 +33,7 @@ const UpdateActivityForm = ({ id }: formProps) => {
     reset,
     formState: { isValid },
   } = useForm<PatchActivityType>({
-    defaultValues: { title: "", category: "", description: "", price: 0, address: "", schedules: [] },
+    defaultValues: { title: "", category: "", description: "", price: 0, address: "", schedules: [], subImages: [] },
   });
 
   const {
@@ -62,6 +62,10 @@ const UpdateActivityForm = ({ id }: formProps) => {
 
   const onSubmit = async (data: PatchActivityType) => {
     console.log(data);
+    if (data.subImageUrlsToAdd?.length !== data.subImageIdsToRemove?.length) {
+      Toast.error("소개 이미지를 4개 입력해 주세요");
+      return;
+    }
     mutation.mutate(data);
   };
 
@@ -84,7 +88,7 @@ const UpdateActivityForm = ({ id }: formProps) => {
           size="md"
           onClick={handleSubmit(onSubmit)}
         >
-          등록하기
+          수정하기
         </Button>
       </div>
       <LabelInput placeholder="제목" {...register("title")} />
