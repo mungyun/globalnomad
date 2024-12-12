@@ -61,7 +61,6 @@ const UpdateActivityForm = ({ id }: formProps) => {
   });
 
   const onSubmit = async (data: PatchActivityType) => {
-    console.log(data);
     if (data.subImageUrlsToAdd?.length !== data.subImageIdsToRemove?.length) {
       Toast.error("소개 이미지를 4개 입력해 주세요");
       return;
