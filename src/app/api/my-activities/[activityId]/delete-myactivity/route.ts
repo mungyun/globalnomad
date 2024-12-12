@@ -2,6 +2,7 @@ import axiosInstance from "@/lib/api/axiosInstanceApi";
 import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
+// 내 체험 삭제 요청
 export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ activityId: string }> }) => {
   const accessToken = req.cookies.get("accessToken")?.value;
   const { activityId } = await params;

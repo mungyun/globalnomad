@@ -2,6 +2,7 @@ import axiosInstance from "@/lib/api/axiosInstanceApi";
 import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
+// 내 체험 가져오기 요청
 export const GET = async (req: NextRequest) => {
   try {
     const size = req.nextUrl.searchParams.get("size");
@@ -23,28 +24,6 @@ export const GET = async (req: NextRequest) => {
     if (isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || "서버 오류";
       return NextResponse.json({ message: errorMessage }, { status: error.response?.status || 500 });
-    }
-
-    console.error(error);
-    return NextResponse.json({ message: "서버 오류" }, { status: 500 });
-  }
-};
-
-export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ activityId: string }> }) => {
-  const accessToken = req.cookies.get("accessToken")?.value;
-  const { activityId } = await params;
-
-  try {
-    const response = await axiosInstance.delete(`/my-activities/${activityId}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return NextResponse.json(response.data, { status: 200 });
-  } catch (error: unknown) {
-    if (isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message;
-      return NextResponse.json({ message: errorMessage }, { status: error.response?.status });
     }
 
     console.error(error);
