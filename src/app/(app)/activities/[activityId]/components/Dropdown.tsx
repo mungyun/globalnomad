@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteMyReservation } from "@/lib/api/MyActivities";
+import { deleteMyActivities } from "@/lib/api/MyActivities";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -30,7 +30,7 @@ const Dropdown = ({ id }: { id: number }) => {
           >
             수정하기
           </div>
-          <div onClick={() => deleteMyReservation(id)} className={`${linkStyle} rounded-b-md`}>
+          <div onClick={() => deleteMyActivities(id)} className={`${linkStyle} rounded-b-md`}>
             삭제하기
           </div>
         </div>

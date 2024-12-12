@@ -1,5 +1,6 @@
 "use client";
 
+import useActivityStore from "@/store/useActivityStore";
 import "@/styles/ActivityCalender.css";
 import { Schedule } from "@/types/types";
 import { formatToLocalDateString, isDateAvailable } from "@/utils/calendarUtils";
@@ -24,7 +25,7 @@ const TimeSlot = ({ time, isSelected, onClick }: { time: string; isSelected: boo
 
 const ActivityCalendar = ({ schedules, onChange }: ActivityCalendarProps) => {
   const [timeList, setTimeList] = useState<string[]>([]);
-  const [selectedTime, setSelectedTime] = useState<string>("null");
+  const { selectedTime, setSelectedTime } = useActivityStore();
 
   const handleDateClick = (date: Date): void => {
     const localFormattedDate = formatToLocalDateString(date);

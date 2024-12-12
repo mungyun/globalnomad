@@ -1,11 +1,14 @@
 "use client";
 
+import { useToast } from "@/components/toast/ToastProvider";
 import useDeviceType from "@/hooks/useDeviceType";
 import { getActivityDetail, postReservation } from "@/lib/api/Activities";
 import SideBarSkeleton from "@/skeleton/activities/SideBarSkeleton";
+import useActivityStore from "@/store/useActivityStore";
 import { Schedule } from "@/types/types";
 import formatPrice from "@/utils/formatPrice";
 import { useQuery } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -61,6 +64,8 @@ const SideBar = ({ id }: { id: number }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const Toast = useToast();
+  const { setSelectedTime } = useActivityStore();
 
   const {
     data: activityDetailData,
@@ -88,8 +93,15 @@ const SideBar = ({ id }: { id: number }) => {
       setIsLoading(true);
       if (!selectedId) return;
       await postReservation({ activityId: id, scheduleId: selectedId, headCount: partyNum });
+      Toast.success("예약 성공하셨습니다!");
+      setPartyNum(0);
+      setSelectedId(undefined);
+      setSelectedTime("");
     } catch (error) {
-      console.error(error);
+      if (isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || "서버 오류";
+        Toast.error(errorMessage);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -129,8 +141,8 @@ const SideBar = ({ id }: { id: number }) => {
           <PartyNumberSelector partyNum={partyNum} setPartyNum={setPartyNum} />
           <button
             onClick={handleSubmit}
-            className="h-[56px] w-full rounded bg-black02 text-[16px] font-bold text-white md:mt-8 xl:mt-6"
-            disabled={isLoading}
+            className="h-[56px] w-full rounded bg-black02 text-[16px] font-bold text-white disabled:opacity-80 md:mt-8 xl:mt-6"
+            disabled={isLoading || partyNum === 0 || selectedId === undefined}
           >
             예약하기
           </button>

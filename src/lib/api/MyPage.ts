@@ -1,11 +1,11 @@
+import { UpdateUser } from "@/types/MyPageType";
 import { isAxiosError } from "axios";
 import { proxy } from "./axiosInstanceApi";
 
-// 내 예약 정보 요청
-export const getMyReservation = async () => {
+export const getUsersProfile = async () => {
   try {
-    const response = await proxy.get("/api/my/reservation");
-    return response.data.reservations;
+    const response = await proxy.get("/api/my");
+    return response.data;
   } catch (error) {
     if (isAxiosError(error)) {
       const message = error.response?.data?.message || "서버 오류가 발생했습니다.";
@@ -17,12 +17,12 @@ export const getMyReservation = async () => {
   }
 };
 
-// 내 예약 취소 요청
-export const cancelMyReservation = async (reservationId: number) => {
+export const updateUserProfile = async (data: UpdateUser) => {
   try {
-    const response = await proxy.patch("/api/my/reservation", {
-      reservationId,
-      status: "canceled",
+    const response = await proxy.patch("/api/my", {
+      nickname: data.nickname,
+      // profileImageUrl: data.profileImageUrl,
+      newPassword: data.newPassword,
     });
     return response.data;
   } catch (error) {

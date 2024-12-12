@@ -1,32 +1,26 @@
 "use client";
 
-import useReservationStore from "@/store/useReservationStore";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
-const StatusDropdown = ({
+const StatusModalDropdown = ({
   datas,
-  type = "header",
   onSelect,
 }: {
-  datas: { id: number; title: string }[];
-  type: string;
-  onSelect?: (selected: { id: number; title: string }) => void;
+  datas: { id: number; time: string }[];
+  onSelect?: (selected: { id: number; time: string }) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<{ id: number; title: string } | null>(null); // 초기값 null로 설정
+  const [selectedItem, setSelectedItem] = useState<{ id: number; time: string } | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { activityId } = useReservationStore();
-  const setActivityId = useReservationStore((state) => state.setActivityId);
 
   // 초기값 설정
   useEffect(() => {
     if (datas.length > 0 && !selectedItem) {
       const firstItem = datas[0];
       setSelectedItem(firstItem);
-      setActivityId(firstItem.id);
     }
-  }, []);
+  }, [datas, selectedItem]);
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
@@ -38,9 +32,8 @@ const StatusDropdown = ({
   };
 
   // 항목 선택 시 처리
-  const handleSelect = (item: { id: number; title: string }) => {
+  const handleSelect = (item: { id: number; time: string }) => {
     setSelectedItem(item); // 선택된 항목 설정
-    setActivityId(item.id); // 전역 상태 업데이트
     setIsOpen(false); // 드롭다운 닫기
     if (onSelect) onSelect(item); // 선택된 항목 전달
   };
@@ -53,17 +46,13 @@ const StatusDropdown = ({
 
   return (
     <div ref={dropdownRef} className="relative w-full rounded-md border border-gray-300">
-      <div>{activityId}</div>
       <button
         onClick={toggleDropdown}
         className="relative flex h-[56px] w-full items-center justify-between rounded-[4px] border border-gray08 bg-white px-4"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
-        {type === "header" && (
-          <div className="absolute bottom-10 left-3 h-[24px] w-[45px] bg-white text-[14px]">체험명</div>
-        )}
-        <span className="text-[16px]">{selectedItem?.title}</span>
+        <span className="text-[16px]">{selectedItem?.time}</span>
         <Image src="/icons/dropdown2.svg" width={24} height={24} alt="드롭 다운" />
       </button>
 
@@ -77,13 +66,13 @@ const StatusDropdown = ({
             const isLast = index === datas.length - 1;
             return (
               <span
-                key={data.id}
+                key={data.time}
                 onClick={() => handleSelect(data)}
                 className={`relative flex h-[56px] cursor-pointer items-center bg-white px-4 text-[16px] text-gray08 hover:bg-gray01 ${
                   isFirst ? "rounded-t-md" : ""
                 } ${isLast ? "rounded-b-md" : ""}`}
               >
-                {data.title}
+                {data.time}
               </span>
             );
           })}
@@ -93,4 +82,4 @@ const StatusDropdown = ({
   );
 };
 
-export default StatusDropdown;
+export default StatusModalDropdown;
