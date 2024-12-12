@@ -50,7 +50,10 @@ const AllActivityList = ({ sort, category, keyword, page, size }: AllActivityLis
     return (
       <div className="flex h-[397.5px] w-full flex-col items-center justify-center gap-3 md:h-[403px] xl:h-[414px] xl:gap-5">
         <MdErrorOutline className="size-[150px] text-red03 xl:size-[180px]" />
-        <span className="text-2xl font-medium text-gray08">Error: {error.message}</span>
+        <span className="text-center text-2xl font-medium">
+          서버에 오류가 발생했습니다. <br />
+          잠시 후 다시 시도해주세요.
+        </span>
       </div>
     );
   }
