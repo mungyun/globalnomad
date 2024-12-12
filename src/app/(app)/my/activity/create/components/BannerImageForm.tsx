@@ -29,7 +29,7 @@ const BannerImageForm = ({ watch, setValue }: FormProps) => {
   };
 
   const clearImage = () => {
-    setValue("bannerImageUrl", "");
+    setValue("bannerImageUrl", "", { shouldValidate: true });
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }

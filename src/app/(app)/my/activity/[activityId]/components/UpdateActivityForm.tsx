@@ -10,6 +10,8 @@ import { getActivityDetail } from "@/lib/api/Activities";
 import { PatchActivities } from "@/lib/api/MyActivities";
 import { ActivityDetail, PatchActivityType } from "@/types/ActivityType";
 import { formatWithCommas, removeCommas } from "@/utils/numberFormat";
+import { PatchActivitySchema } from "@/zodSchema/activitySchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -35,6 +37,8 @@ const UpdateActivityForm = ({ id }: formProps) => {
     formState: { isValid },
   } = useForm<PatchActivityType>({
     defaultValues: { title: "", category: "", description: "", price: 0, address: "", schedules: [], subImages: [] },
+    resolver: zodResolver(PatchActivitySchema),
+    mode: "onBlur",
   });
 
   const {
@@ -62,11 +66,12 @@ const UpdateActivityForm = ({ id }: formProps) => {
   });
 
   const onSubmit = async (data: PatchActivityType) => {
+    console.log(data);
     if (data.subImageUrlsToAdd?.length !== data.subImageIdsToRemove?.length) {
       Toast.error("소개 이미지를 4개 입력해 주세요");
       return;
     }
-    mutation.mutate(data);
+    // mutation.mutate(data);
   };
 
   useEffect(() => {
