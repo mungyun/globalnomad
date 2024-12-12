@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { proxy } from "./axiosInstanceApi";
 
 // 내 체험 삭제
@@ -92,6 +92,30 @@ export const UpdateMyReservationByTime = async ({
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
+
+// 내 체험 월별 예약 현황 조회
+
+export const getMyActivitiesByMonth = async ({
+  year,
+  month,
+  activityId,
+}: {
+  year: string;
+  month: string;
+  activityId: number;
+}) => {
+  try {
+    const response = await proxy.get(
+      `/api/my-activities/${activityId}/reservation-dashboard?year=${year}&month=${month}`
+    );
+    return response.data;
+  } catch (error) {
+    if (isAxiosError(error)) {
       throw error;
     }
     throw error;
