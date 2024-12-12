@@ -91,7 +91,7 @@ export const PostActivitiesImage = async (file: File) => {
 
 // 체험 리스트 조회
 export const getActivities = async ({
-  method = "cursor",
+  method = "offset",
   cursorId,
   category,
   keyword,
@@ -100,7 +100,7 @@ export const getActivities = async ({
   size,
 }: {
   method?: string;
-  cursorId?: number;
+  cursorId?: number | null;
   category?: string;
   keyword?: string;
   sort?: string;
