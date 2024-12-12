@@ -8,6 +8,7 @@ import Textarea from "@/components/input/Textarea";
 import { useToast } from "@/components/toast/ToastProvider";
 import { PostActivities } from "@/lib/api/Activities";
 import { PostActivityType } from "@/types/ActivityType";
+import { formatWithCommas, removeCommas } from "@/utils/numberFormat";
 import { PostActivitySchema } from "@/zodSchema/activitySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -44,14 +45,6 @@ const CreateActivityForm = () => {
       Toast.error(error.message || "체험 등록에 실패했습니다.");
     },
   });
-
-  const formatWithCommas = (value: string) => {
-    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-
-  const removeCommas = (value: string) => {
-    return value.replace(/,/g, "");
-  };
 
   const onSubmit = async (data: PostActivityType) => {
     data.price = Number(data.price);

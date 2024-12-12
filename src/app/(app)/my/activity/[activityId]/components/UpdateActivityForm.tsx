@@ -9,6 +9,7 @@ import { useToast } from "@/components/toast/ToastProvider";
 import { getActivityDetail } from "@/lib/api/Activities";
 import { PatchActivities } from "@/lib/api/MyActivities";
 import { ActivityDetail, PatchActivityType } from "@/types/ActivityType";
+import { formatWithCommas, removeCommas } from "@/utils/numberFormat";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -92,8 +93,19 @@ const UpdateActivityForm = ({ id }: formProps) => {
       </div>
       <LabelInput placeholder="제목" {...register("title")} />
       <DropdownInput setValue={(value) => setValue("category", value)} {...register("category")} />
-      <Textarea placeholder="설명" {...register("description")} />
-      <LabelInput label="가격" placeholder="가격" type="number" {...register("price")} />
+      <Textarea placeholder="설명" {...register("description")} />{" "}
+      <LabelInput
+        label="가격"
+        placeholder="가격"
+        value={formatWithCommas(watch("price")?.toString() || "")}
+        onChange={(e) => {
+          const price = removeCommas(e.target.value);
+          if (!isNaN(Number(price))) {
+            setValue("price", Number(price));
+          }
+        }}
+        type="text"
+      />
       <PostInput label={"주소"} watch={watch} setValue={setValue} placeholder="주소를 입력해주세요" />
       <ScheduleList watch={watch} setValue={setValue} />
       <BannerImageForm watch={watch} setValue={setValue} />
