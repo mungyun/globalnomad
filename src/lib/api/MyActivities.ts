@@ -4,7 +4,7 @@ import { proxy } from "./axiosInstanceApi";
 // 내 체험 삭제
 export const deleteMyActivities = async (activityId: number) => {
   try {
-    const response = await proxy.delete(`/api/my-activities/${activityId}`);
+    const response = await proxy.delete(`/api/my-activities/${activityId}/delete-myactivity`);
     return response.data;
   } catch (error) {
     console.error("내 체험 삭제 오류: ", error);
