@@ -43,12 +43,16 @@ const ScheduleList = ({ watch, setValue }: ScheduleListProps) => {
   };
 
   const deleteSchedule = (schedule: Schedule) => {
+    console.log(schedule);
     const toRemove = watch("scheduleIdsToRemove", []) as number[];
     if (schedule.id) {
       setValue("scheduleIdsToRemove", [...toRemove, schedule.id]);
+      const updatedSchedules = schedules.filter((item) => item !== schedule);
+      setValue("schedules", updatedSchedules);
+    } else {
+      const updatedaddSchedules = addSchedules.filter((item) => item !== schedule);
+      setValue("schedulesToAdd", updatedaddSchedules);
     }
-    const updatedSchedules = schedules.filter((item) => item !== schedule);
-    setValue("schedules", updatedSchedules);
   };
 
   return (

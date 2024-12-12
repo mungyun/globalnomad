@@ -6,20 +6,24 @@ export interface Schedule {
   endTime: string;
 }
 
-// 체험 등록 body 타입
-export type PostActivityType = {
+interface ActivityBase {
   title: string;
   category: string;
   description: string;
   price: number;
   address: string;
   bannerImageUrl: string;
-  subImageUrls: string[];
   schedules: Schedule[];
-};
+}
+
+// 체험 등록 body 타입
+export interface PostActivityType extends ActivityBase {
+  subImageUrls?: string[];
+}
 
 // 체험 수정 body 타입
-export interface PatchActivityType extends PostActivityType {
+export interface PatchActivityType extends ActivityBase {
+  subImages?: SubImage[];
   subImageIdsToRemove?: number[]; // 삭제할 서브 이미지 ID 목록
   subImageUrlsToAdd?: string[]; // 추가할 서브 이미지 URL 목록
   scheduleIdsToRemove?: number[]; // 삭제할 스케줄 ID 목록
@@ -29,7 +33,7 @@ export interface PatchActivityType extends PostActivityType {
 // 공통 ActivityForm 타입
 export type ActivityForm = PostActivityType | PatchActivityType;
 
-interface SubImage {
+export interface SubImage {
   id: number;
   imageUrl: string;
 }
