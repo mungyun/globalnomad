@@ -15,14 +15,17 @@ export const deleteMyActivities = async (activityId: number) => {
 };
 
 // 내 체험 목록 조회
-export const getMyActivities = async ({ size = 20 }: { size: number }) => {
+export const getMyActivities = async ({ cursorId = null, size = 10 }: { cursorId?: number | null; size?: number }) => {
   try {
-    const { data } = await proxy.get(`/api/my-activities?size=${size}`);
-    return data.activities;
+    let url = `/api/my-activities?size=${size}`;
+
+    if (cursorId) url += `&cursorId=${cursorId}`;
+    const response = await proxy.get(url);
+    return response.data.activities;
   } catch (error) {
     console.error("내 체험 목록 불러오기 오류: ", error);
     if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data.message || "체험 불러오기에 실패했습니다");
+      throw error;
     }
     throw error;
   }

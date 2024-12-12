@@ -4,7 +4,7 @@ import { proxy } from "./axiosInstanceApi";
 
 export const getMyReservation = async (): Promise<Reservation[]> => {
   try {
-    const { data } = await proxy.get<ReservationResponse>("api/my-reservations", {
+    const { data } = await proxy.get<ReservationResponse>("/api/my-reservations", {
       params: { size: 10 },
     });
     return data.reservations;
