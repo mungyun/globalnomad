@@ -2,7 +2,7 @@ import { Notification } from "@/types/MyNotificationsType";
 import getTimeAgo from "@/utils/getTimeAgo";
 import Image from "next/image";
 
-const AlertItem = ({ item }: { item: Notification }) => {
+const AlertItem = ({ item, onDelete }: { item: Notification; onDelete: (id: number) => void }) => {
   const { id, content, createdAt } = item;
 
   // "승인" 또는 "거절"에 따른 스타일 적용
@@ -16,7 +16,7 @@ const AlertItem = ({ item }: { item: Notification }) => {
 
   // 삭제 API 연결 예정
   const handleDelete = () => {
-    console.log(id);
+    onDelete(id);
   };
 
   return (

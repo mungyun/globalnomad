@@ -1,29 +1,40 @@
-import { Reservation, ReservationResponse } from "@/types/MyReservationType";
-import axios, { AxiosError } from "axios";
+import { ReservationResponse } from "@/types/MyReservationType";
+import { isAxiosError } from "axios";
 import { proxy } from "./axiosInstanceApi";
 
-export const getMyReservation = async (): Promise<Reservation[]> => {
+// 내 예약 정보 요청
+export const getMyReservation = async () => {
   try {
     const { data } = await proxy.get<ReservationResponse>("/api/my-reservations", {
       params: { size: 10 },
     });
     return data.reservations;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data?.message || "예약 정보를 가져오는데 실패했습니다.");
+    if (isAxiosError(error)) {
+      const message = error.response?.data?.message || "서버 오류가 발생했습니다.";
+      throw new Error(message);
     }
-    throw error;
+
+    // Axios 외의 예외 처리
+    throw new Error("알 수 없는 오류가 발생했습니다.");
   }
 };
 
-export const cancelMyReservation = async (reservationId: number): Promise<void> => {
+// 내 예약 취소 요청
+export const cancelMyReservation = async (reservationId: number) => {
   try {
-    const { data } = await proxy.patch(`api/my-reservations/${reservationId}`, { status: "canceled" });
-    return data;
+    const response = await proxy.patch("/api/my/reservation", {
+      reservationId,
+      status: "canceled",
+    });
+    return response.data;
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw new Error(error.response?.data?.message || "예약 삭제에 실패했습니다.");
+    if (isAxiosError(error)) {
+      const message = error.response?.data?.message || "서버 오류가 발생했습니다.";
+      throw new Error(message);
     }
-    throw error;
+
+    // Axios 외의 예외 처리
+    throw new Error("알 수 없는 오류가 발생했습니다.");
   }
 };

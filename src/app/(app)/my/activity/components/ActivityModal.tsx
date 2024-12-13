@@ -1,8 +1,8 @@
-import { useToast } from "@/components/toast/ToastProvider";
 import { deleteMyActivities } from "@/lib/api/MyActivities";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
+import { toast } from "react-toastify";
 
 interface ModalProps {
   setIsModalOpen: (isOpen: boolean) => void;
@@ -12,21 +12,25 @@ interface ModalProps {
 export default function ActivityModal({ setIsModalOpen, activityId }: ModalProps): JSX.Element {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const closeModal = () => setIsModalOpen(false);
-  const { success, error } = useToast();
 
   const queryClient = useQueryClient();
-  const { mutate: deleteActivity } = useMutation({
+  const mutation = useMutation({
     mutationFn: () => deleteMyActivities(activityId),
     onSuccess: () => {
-      success("체험 삭제완료");
-      closeModal();
       queryClient.invalidateQueries({ queryKey: ["myActivities"] });
+      toast.success("체험 삭제완료");
+      closeModal();
     },
     onError: (err) => {
-      error(err.message);
+      queryClient.invalidateQueries({ queryKey: ["myActivities"] });
+      toast.error(err.message);
       closeModal();
     },
   });
+
+  const deleteActivity = () => {
+    mutation.mutateAsync();
+  };
 
   const handleClickOutside = (e: MouseEvent) => {
     if (!dropdownRef.current?.contains(e.target as Node)) {
