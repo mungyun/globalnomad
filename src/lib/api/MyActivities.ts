@@ -1,4 +1,4 @@
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { proxy } from "./axiosInstanceApi";
 
 // 내 체험 삭제
@@ -7,12 +7,8 @@ export const deleteMyActivities = async (activityId: number) => {
     const response = await proxy.delete(`/api/my-activities/${activityId}/delete-myactivity`);
     return response.data;
   } catch (error) {
-    console.error("내 체험 삭제 오류: ", error);
-    if (axios.isAxiosError(error)) {
-      if (error.response?.status === 500) {
-        return;
-      }
-      throw new Error(error.response?.data.message || "체험 삭제에 실패했습니다");
+    if (isAxiosError(error)) {
+      throw error;
     }
     throw error;
   }
@@ -28,7 +24,7 @@ export const getMyActivities = async ({ cursorId = null, size = 10 }: { cursorId
     return response.data.activities;
   } catch (error) {
     console.error("내 체험 목록 불러오기 오류: ", error);
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
       throw error;
     }
     throw error;
@@ -43,7 +39,7 @@ export const getMyReservedSchedule = async ({ activityId, date }: { activityId: 
     return response.data;
   } catch (error) {
     console.error("내 예약 정보 조회 오류: ", error);
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
       throw new Error(error.response?.data.message || "예약 정보 조회에 실패했습니다");
     }
     throw error;
@@ -74,7 +70,7 @@ export const getMyReservationByTime = async ({
     return response.data;
   } catch (error) {
     console.error("내 예약 시간대별 정보 조회 오류: ", error);
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
       throw new Error(error.response?.data.message || "예약 시간대별 정보 조회에 실패했습니다");
     }
     throw error;
@@ -95,7 +91,7 @@ export const UpdateMyReservationByTime = async ({
     const response = await proxy.patch(`/api/my-activities/${activityId}/reservations/${reservationId}`, { status });
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
       throw error;
     }
     throw error;
