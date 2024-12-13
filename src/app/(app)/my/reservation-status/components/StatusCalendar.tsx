@@ -1,11 +1,14 @@
 "use client";
 
-import { proxy } from "@/lib/api/axiosInstanceApi";
+import { useToast } from "@/components/toast/ToastProvider";
+import { getMyActivitiesByMonth } from "@/lib/api/MyActivities";
 import useReservationStore from "@/store/useReservationStore";
 import "@/styles/ReservationCalender.css";
 import { ReservationData } from "@/types/MyReservationType";
+import { UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Calendar from "react-calendar";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -15,39 +18,27 @@ const caseStyle = "text-start text-[14px] font-medium h-[23px] rounded pl-1";
 const roundStyle = "absolute left-1 top-3 h-[8px] w-[8px] rounded-full";
 
 const StatusCalendar = () => {
-  const [value, setValue] = useState<Date | null>(new Date());
+  const [value, setValue] = useState<Date>(new Date());
   const [activeStartDate, setActiveStartDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
-  const [reservationData, setReservationData] = useState<ReservationData[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { activityId, statusModalOpen, setStatusModalOpen } = useReservationStore();
-  const setSchduleId = useReservationStore((state) => state.setScheduleId);
-
+  const { activityId, statusModalOpen, setStatusModalOpen, setScheduleId } = useReservationStore();
+  const Toast = useToast();
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!value || !activityId) return;
+  const year = String(value.getFullYear());
+  const month = String(value.getMonth() + 1);
 
-      const year = String(value.getFullYear());
-      const month = String(value.getMonth() + 1);
-
-      try {
-        const response = await proxy.get(
-          `/api/my-activities/${activityId}/reservation-dashboard?year=${year}&month=${month}`
-        );
-        setReservationData(response.data);
-      } catch (error) {
-        console.error("월별 예약 데이터 패칭 실패:", error);
+  const { data: reservationData = [], isLoading } = useQuery<ReservationData[], Error>({
+    queryKey: ["ReservationDataByMonth", year, month, activityId],
+    queryFn: () => getMyActivitiesByMonth({ year, month, activityId }),
+    enabled: !!activityId && !!value,
+    onError: (error: unknown) => {
+      if (isAxiosError(error)) {
+        Toast.error(error?.message);
         router.push("/404");
-      } finally {
-        setIsLoading(false);
       }
-    };
-
-    fetchData();
-  }, [value, activityId]);
+    },
+  } as UseQueryOptions<ReservationData[], Error>);
 
   const reservationMap = reservationData.reduce(
     (acc, { date, reservations }) => {
@@ -57,16 +48,12 @@ const StatusCalendar = () => {
     {} as Record<string, { completed: number; confirmed: number; pending: number }>
   );
 
-  // 헤더의 날짜를 한국어로 표기
-  const formatHeader = (date: Date) => {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    return `${year}년 ${month}월`;
-  };
+  // 헤더 날짜 형식 설정
+  const formatHeader = (date: Date) => `${date.getFullYear()}년 ${date.getMonth() + 1}월`;
 
-  // 날짜에 예약 상태를 표시할 내용
+  // 날짜 타일에 표시할 콘텐츠
   const tileContent = ({ date }: { date: Date }) => {
-    const dateString = date.toLocaleDateString("en-CA"); // yyyy-mm-dd 형식으로 변환
+    const dateString = date.toLocaleDateString("en-CA"); // yyyy-mm-dd 형식
     const reservations = reservationMap[dateString];
 
     if (reservations) {
@@ -74,11 +61,7 @@ const StatusCalendar = () => {
 
       return (
         <div className="w-full">
-          {completed > 0 ? (
-            <div className={`${roundStyle} bg-gray09`}></div>
-          ) : (
-            <div className={`${roundStyle} bg-blue03`}></div>
-          )}
+          <div className={`${roundStyle} ${completed > 0 ? "bg-gray09" : "bg-blue03"}`}></div>
           {completed > 0 && <div className={`${caseStyle} bg-gray03 text-gray09`}>완료 {completed}</div>}
           {confirmed > 0 && <div className={`${caseStyle} bg-orange01 text-orange02`}>승인 {confirmed}</div>}
           {pending > 0 && <div className={`${caseStyle} bg-blue03 text-white`}>예약 {pending}</div>}
@@ -95,9 +78,9 @@ const StatusCalendar = () => {
       ) : (
         <Calendar
           value={value}
-          onChange={(newValue) => setValue(newValue as Date)} // newValue는 Date[]일 수도 있으므로 타입 단언 필요
+          onChange={(newValue) => setValue(newValue as Date)} // Date[] 가능성에 대비한 타입 단언
           activeStartDate={activeStartDate}
-          onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate!)} // activeStartDate가 null 가능성이 있음
+          onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate!)} // null 방지
           onClickDay={(date) => {
             setSelectedDate(date);
             setStatusModalOpen(true);
@@ -111,12 +94,12 @@ const StatusCalendar = () => {
           tileDisabled={() => statusModalOpen}
         />
       )}
-      {statusModalOpen && (
+      {statusModalOpen && selectedDate && (
         <StatusModal
           isOpen={statusModalOpen}
           onClose={() => {
             setStatusModalOpen(false);
-            setSchduleId(0);
+            setScheduleId(0);
           }}
           date={selectedDate}
         />

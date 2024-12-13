@@ -1,23 +1,90 @@
+import { useToast } from "@/components/toast/ToastProvider";
 import { UpdateMyReservationByTime } from "@/lib/api/MyActivities";
 import useReservationStore from "@/store/useReservationStore";
 import { Reservation } from "@/types/MyActivitiesType";
+import { ReservationData } from "@/types/MyReservationType";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
 const buttonStyle = "flex h-[38px] w-[82px] items-center justify-center rounded-md text-[14px] font-bold";
 const reservationStyle = "flex h-[44px] w-[82px] items-center justify-center rounded-[26.5px] text-[14px] font-bold";
 
 const ReservationItem = ({ item, status }: { item: Reservation; status: string }) => {
-  const { nickname, headCount, id } = item;
+  const { nickname, headCount, id, date } = item;
   const { activityId, setStatusModalOpen } = useReservationStore();
+  const Toast = useToast();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: ({ reservationId, status }: { reservationId: number; status: string }) =>
+      UpdateMyReservationByTime({ activityId, reservationId, status }),
+
+    onMutate: async ({ status }) => {
+      // 1. 진행 중인 쿼리 취소
+      await queryClient.cancelQueries({ queryKey: ["ReservationDataByMonth"] });
+
+      // 2. 캐시된 데이터를 가져옴
+      const previousData = queryClient.getQueryData<ReservationData[]>(["ReservationDataByMonth"]);
+
+      // 3. Optimistic Update를 위해 미리 UI 업데이트
+      queryClient.setQueryData(["ReservationDataByMonth"], (oldData: ReservationData[]) => {
+        if (!oldData) return oldData;
+
+        // 상태 변경된 예약 항목만 수정
+        return oldData.map((reservation) =>
+          reservation.date === date
+            ? {
+                ...reservation,
+                reservations: {
+                  ...reservation.reservations,
+                  // 상태에 맞게 예약 수 업데이트
+                  confirmed:
+                    status === "confirmed"
+                      ? reservation.reservations.confirmed + 1 && reservation.reservations.pending - 1
+                      : reservation.reservations.pending,
+                  pending:
+                    status === "declined" ? reservation.reservations.pending - 1 : reservation.reservations.pending,
+                },
+              }
+            : reservation
+        );
+      });
+
+      // 4. 실패 시 롤백을 위한 이전 데이터 반환
+      return { previousData };
+    },
+
+    onError: (error, _, context) => {
+      // 이전 데이터가 존재하면 캐시 복구
+      if (context?.previousData) {
+        queryClient.setQueryData(["ReservationDataByMonth"], context.previousData);
+      }
+
+      Toast.error(error?.message);
+    },
+
+    onSettled: () => {
+      // 성공/실패 여부에 관계없이 데이터 갱신
+      queryClient.invalidateQueries({ queryKey: ["ReservationDataByMonth"] });
+      setStatusModalOpen(false);
+    },
+
+    onSuccess: (variables) => {
+      const { status } = variables;
+      if (status === "confirmed") {
+        Toast.success("예약을 승인했습니다!");
+      } else if (status === "declined") {
+        Toast.success("예약을 거절했습니다!");
+      }
+    },
+  });
 
   const handleUpdate = () => {
-    UpdateMyReservationByTime({ activityId, reservationId: id, status: "confirmed" });
-    setStatusModalOpen(false);
+    mutation.mutate({ reservationId: id, status: "confirmed" });
   };
 
   const handleDelete = () => {
-    UpdateMyReservationByTime({ activityId, reservationId: id, status: "declined" });
-    setStatusModalOpen(false);
+    mutation.mutate({ reservationId: id, status: "declined" });
   };
 
   return (
@@ -38,10 +105,14 @@ const ReservationItem = ({ item, status }: { item: Reservation; status: string }
               거절하기
             </button>
           </>
-        ) : status === "confirmed" ? (
-          <div className={`${reservationStyle} bg-orange01 text-orange02`}>예약승인</div>
         ) : (
-          <div className={`${reservationStyle} bg-red01 text-red03`}>예약거절</div>
+          <div
+            className={`${reservationStyle} ${
+              status === "confirmed" ? "bg-orange01 text-orange02" : "bg-red01 text-red03"
+            }`}
+          >
+            {status === "confirmed" ? "예약승인" : "예약거절"}
+          </div>
         )}
       </div>
     </div>

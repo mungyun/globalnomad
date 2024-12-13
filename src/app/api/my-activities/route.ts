@@ -6,10 +6,15 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = async (req: NextRequest) => {
   try {
     const size = req.nextUrl.searchParams.get("size");
+    const cursorId = req.nextUrl.searchParams.get("cursorId");
+
+    let url = `/my-activities?size=${size}`;
+
+    if (cursorId) url += `&cursorId=${cursorId}`;
 
     const accessToken = req.cookies.get("accessToken")?.value;
 
-    const response = await axiosInstance.get(`/my-activities?size=${size}`, {
+    const response = await axiosInstance.get(url, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
