@@ -3,7 +3,7 @@ import { UpdateMyReservationByTime } from "@/lib/api/MyActivities";
 import useReservationStore from "@/store/useReservationStore";
 import { Reservation } from "@/types/MyActivitiesType";
 import { ReservationData } from "@/types/MyReservationType";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
 const buttonStyle = "flex h-[38px] w-[82px] items-center justify-center rounded-md text-[14px] font-bold";
@@ -13,8 +13,7 @@ const ReservationItem = ({ item, status }: { item: Reservation; status: string }
   const { nickname, headCount, id, date } = item;
   const { activityId, setStatusModalOpen } = useReservationStore();
   const Toast = useToast();
-
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: ({ reservationId, status }: { reservationId: number; status: string }) =>
@@ -38,8 +37,8 @@ const ReservationItem = ({ item, status }: { item: Reservation; status: string }
                   // 상태에 맞게 예약 수 업데이트
                   confirmed:
                     status === "confirmed"
-                      ? reservation.reservations.completed + 1
-                      : reservation.reservations.completed,
+                      ? reservation.reservations.confirmed + 1 && reservation.reservations.pending - 1
+                      : reservation.reservations.pending,
                   pending:
                     status === "declined" ? reservation.reservations.pending - 1 : reservation.reservations.pending,
                 },
@@ -52,11 +51,13 @@ const ReservationItem = ({ item, status }: { item: Reservation; status: string }
       return { previousData };
     },
 
-    onError: (error, variables, context) => {
-      // 실패한 경우, 이전 데이터로 롤백
-      queryClient.setQueryData(["ReservationDataByMonth"], context?.previousData);
-      Toast.error("예약 상태를 변경하는 중 오류가 발생했습니다.");
-      console.error("Mutation Error:", error);
+    onError: (error, _, context) => {
+      // 이전 데이터가 존재하면 캐시 복구
+      if (context?.previousData) {
+        queryClient.setQueryData(["ReservationDataByMonth"], context.previousData);
+      }
+
+      Toast.error("예약 상태 변경 중 문제가 발생했습니다. 다시 시도해주세요.");
     },
 
     onSettled: () => {
