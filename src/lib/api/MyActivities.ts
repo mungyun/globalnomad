@@ -4,10 +4,14 @@ import { proxy } from "./axiosInstanceApi";
 // 내 체험 삭제
 export const deleteMyActivities = async (activityId: number) => {
   try {
-    await proxy.delete(`/api/my-activities/${activityId}`);
+    const response = await proxy.delete(`/api/my-activities/${activityId}/delete-myactivity`);
+    return response.data;
   } catch (error) {
     console.error("내 체험 삭제 오류: ", error);
     if (axios.isAxiosError(error)) {
+      if (error.response?.status === 500) {
+        return;
+      }
       throw new Error(error.response?.data.message || "체험 삭제에 실패했습니다");
     }
     throw error;
