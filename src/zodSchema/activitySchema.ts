@@ -29,4 +29,8 @@ export const PatchActivitySchema = z.object({
   price: z.number().min(0, "Price must be a positive number"),
   address: z.string().min(1),
   bannerImageUrl: z.string().url(),
+  subImageIdsToRemove: z.array(z.number()).optional(),
+  subImageUrlsToAdd: z.array(z.string().url()).optional(),
+  scheduleIdsToRemove: z.array(z.number()).optional(),
+  schedulesToAdd: z.array(ScheduleSchema).optional(),
 });
