@@ -12,13 +12,13 @@ export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ n
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    return NextResponse.json({ message: "알림이 삭제되었습니다." }, { status: 200 });
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || "서버 오류";
       return NextResponse.json({ message: errorMessage }, { status: error.response?.status || 500 });
     }
 
-    console.error(error);
     return NextResponse.json({ message: "서버 오류" }, { status: 500 });
   }
 };

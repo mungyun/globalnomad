@@ -57,7 +57,7 @@ const ReservationItem = ({ item, status }: { item: Reservation; status: string }
         queryClient.setQueryData(["ReservationDataByMonth"], context.previousData);
       }
 
-      Toast.error("예약 상태 변경 중 문제가 발생했습니다. 다시 시도해주세요.");
+      Toast.error(error?.message);
     },
 
     onSettled: () => {

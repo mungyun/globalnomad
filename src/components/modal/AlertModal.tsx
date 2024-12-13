@@ -24,18 +24,35 @@ const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 
   const queryClient = useQueryClient();
 
-  // 알림 삭제 뮤테이션 정의
   const mutation = useMutation({
     mutationFn: async (notificationId: number) => {
       await deleteMyNotification({ notificationId });
     },
-    // 삭제 성공 시 알림 목록 캐시 무효화
+    onMutate: async (notificationId: number) => {
+      const previousData = queryClient.getQueryData<AlertData>(["myNotifications"]);
+
+      queryClient.setQueryData(["myNotifications"], (oldData: AlertData | undefined) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          notifications: oldData.notifications.filter((item) => item.id !== notificationId),
+          totalCount: oldData.totalCount - 1,
+        };
+      });
+
+      return { previousData };
+    },
+    onError: (error, _, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData(["myNotifications"], context.previousData);
+      }
+      Toast.error(error?.message || "삭제에 실패했습니다.");
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["myNotifications"] });
       Toast.success("알림을 삭제했습니다.");
     },
-    onError: (error) => {
-      Toast.error(error?.message || "삭제에 실패했습니다");
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["myNotifications"] });
     },
   });
 
