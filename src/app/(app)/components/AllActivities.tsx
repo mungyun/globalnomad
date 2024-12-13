@@ -2,7 +2,6 @@
 
 import Pagination from "@/components/Pagination";
 import useDeviceType from "@/hooks/useDeviceType";
-import usePaginationStore from "@/store/usePaginationStore";
 import getJosa from "@/utils/getJosa";
 import { useEffect, useState } from "react";
 import AllActivityList from "./AllActivityList";
@@ -22,8 +21,8 @@ const AllActivities = ({ keyword }: AllactivitiesProps) => {
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("latest");
   const [category, setCategory] = useState("");
+  const [totalCount, setTotalCount] = useState(0);
   const deviceType = useDeviceType();
-  const { totalCount } = usePaginationStore();
 
   useEffect(() => {
     if (category !== "" && sort !== "latest") setSort("latest");
@@ -65,6 +64,7 @@ const AllActivities = ({ keyword }: AllactivitiesProps) => {
           category={category}
           page={page}
           size={ITEMS_PER_PAGE[deviceType]}
+          setTotalCount={setTotalCount}
         />
       </div>
 

@@ -3,7 +3,6 @@
 import useDeviceType from "@/hooks/useDeviceType";
 import { getActivities } from "@/lib/api/Activities";
 import AllActivityListSkeleton from "@/skeleton/main/AllActivityListSkeleton";
-import usePaginationStore from "@/store/usePaginationStore";
 import { GetActivities } from "@/types/ActivityType";
 import formatPrice from "@/utils/formatPrice";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -18,11 +17,12 @@ interface AllActivityListProps {
   keyword?: string;
   page: number;
   size: number;
+  setTotalCount: (count: number) => void;
 }
 
-const AllActivityList = ({ sort, category, keyword, page, size }: AllActivityListProps) => {
+const AllActivityList = ({ sort, category, keyword, page, size, setTotalCount }: AllActivityListProps) => {
   const deviceType = useDeviceType();
-  const { setTotalCount } = usePaginationStore();
+
   const {
     data: allData,
     isLoading,
