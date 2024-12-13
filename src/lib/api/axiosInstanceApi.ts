@@ -8,7 +8,6 @@ const axiosInstance = axios.create({
 });
 
 export const proxy = axios.create({
-  baseURL: "http://localhost:3000",
   headers: {
     "Content-Type": "application/json",
   },
