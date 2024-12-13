@@ -6,63 +6,86 @@ import LabelInput from "@/components/input/LabelInput";
 import PostInput from "@/components/input/PostInput";
 import Textarea from "@/components/input/Textarea";
 import { useToast } from "@/components/toast/ToastProvider";
-import { PostActivities } from "@/lib/api/Activities";
-import { PostActivityType } from "@/types/ActivityType";
+import { getActivityDetail } from "@/lib/api/Activities";
+import { PatchActivities } from "@/lib/api/MyActivities";
+import { ActivityDetail, PatchActivityType } from "@/types/ActivityType";
 import { formatWithCommas, removeCommas } from "@/utils/numberFormat";
-import { PostActivitySchema } from "@/zodSchema/activitySchema";
+import { PatchActivitySchema } from "@/zodSchema/activitySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import BannerImgForm from "./BannerImageForm";
+import BannerImageForm from "../../create/components/BannerImageForm";
 import ScheduleList from "./ScheduleList";
 import SubImageForm from "./SubImageForm";
 
-const CreateActivityForm = () => {
+interface formProps {
+  id: number;
+}
+
+const UpdateActivityForm = ({ id }: formProps) => {
   const router = useRouter();
   const Toast = useToast();
+
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { isValid },
-  } = useForm<PostActivityType>({
-    defaultValues: { title: "", category: "", description: "", price: 0, address: "", schedules: [] },
-    resolver: zodResolver(PostActivitySchema),
+  } = useForm<PatchActivityType>({
+    defaultValues: { title: "", category: "", description: "", price: 0, address: "", schedules: [], subImages: [] },
+    resolver: zodResolver(PatchActivitySchema),
     mode: "onBlur",
   });
 
+  const {
+    data: activityDetailData,
+    isPending,
+    isError,
+    error,
+  } = useQuery<ActivityDetail, Error>({
+    queryKey: ["activityDetailData", id],
+    queryFn: () => getActivityDetail(id),
+    enabled: !!id,
+  });
+
   const mutation = useMutation({
-    mutationFn: (data: PostActivityType) => {
-      return PostActivities(data);
+    mutationFn: (data: PatchActivityType) => {
+      return PatchActivities(id, data);
     },
     onSuccess: () => {
       router.push("/my/activity");
-      Toast.success("체험 등록에 성공했습니다.");
+      Toast.success("체험 수정에 성공했습니다.");
     },
     onError: (error) => {
-      Toast.error(error.message || "체험 등록에 실패했습니다.");
+      Toast.error(error.message || "체험 수정에 실패했습니다.");
     },
   });
 
-  const onSubmit = async (data: PostActivityType) => {
-    data.price = Number(data.price);
-    if (!data.subImageUrls || data.subImageUrls.length < 4) {
-      Toast.error("소개 이미지를 4개 입력해 주세요.");
+  const onSubmit = async (data: PatchActivityType) => {
+    console.log(data);
+    if (data.subImageUrlsToAdd?.length !== data.subImageIdsToRemove?.length) {
+      Toast.error("소개 이미지를 4개 입력해 주세요");
       return;
     }
-    if (data.subImageUrls.length > 4) {
-      Toast.error("소개 이미지는 4개만 입력이 가능합니다.");
-      return;
-    }
-    mutation.mutate(data);
+    // mutation.mutate(data);
   };
+
+  useEffect(() => {
+    if (isPending) return;
+    if (isError) {
+      Toast.error(error.message);
+    }
+    reset(activityDetailData);
+  }, [reset, isPending, activityDetailData]);
 
   return (
     <div className="flex w-full flex-col gap-6">
       <div className="flex justify-between">
-        <h2 className="text-[32px] font-bold leading-[42px]">내 체험 등록</h2>
+        <h2 className="text-[32px] font-bold leading-[42px]">내 체험 수정</h2>
         <Button
           type="submit"
           disabled={!isValid || mutation.isPending}
@@ -70,12 +93,12 @@ const CreateActivityForm = () => {
           size="md"
           onClick={handleSubmit(onSubmit)}
         >
-          등록하기
+          수정하기
         </Button>
       </div>
       <LabelInput placeholder="제목" {...register("title")} />
       <DropdownInput setValue={(value) => setValue("category", value)} {...register("category")} />
-      <Textarea placeholder="설명" {...register("description")} />
+      <Textarea placeholder="설명" {...register("description")} />{" "}
       <LabelInput
         label="가격"
         placeholder="가격"
@@ -90,10 +113,10 @@ const CreateActivityForm = () => {
       />
       <PostInput label={"주소"} watch={watch} setValue={setValue} placeholder="주소를 입력해주세요" />
       <ScheduleList watch={watch} setValue={setValue} />
-      <BannerImgForm watch={watch} setValue={setValue} />
+      <BannerImageForm watch={watch} setValue={setValue} />
       <SubImageForm watch={watch} setValue={setValue} />
     </div>
   );
 };
 
-export default CreateActivityForm;
+export default UpdateActivityForm;
