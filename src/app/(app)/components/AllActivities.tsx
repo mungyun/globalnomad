@@ -26,15 +26,19 @@ const AllActivities = ({ keyword }: AllactivitiesProps) => {
   const { totalCount } = usePaginationStore();
 
   useEffect(() => {
-    if (category !== "" && sort !== "latest") {
-      setSort("latest");
-    }
+    if (category !== "" && sort !== "latest") setSort("latest");
     setPage(1);
   }, [category]);
 
   useEffect(() => {
-    setPage(1);
+    if (page !== 1) setPage(1);
   }, [sort, deviceType]);
+
+  useEffect(() => {
+    if (category !== "") setCategory("");
+    if (sort !== "latest") setSort("latest");
+    if (page !== 1) setPage(1);
+  }, [keyword]);
 
   return (
     <div className="px-4 md:px-6 xl:px-0">
