@@ -20,10 +20,13 @@ const ReservationItem = ({ item, status }: { item: Reservation; status: string }
       UpdateMyReservationByTime({ activityId, reservationId, status }),
 
     onMutate: async ({ status }) => {
-      // 1. 캐시된 데이터를 가져옴
+      // 1. 진행 중인 쿼리 취소
+      await queryClient.cancelQueries({ queryKey: ["ReservationDataByMonth"] });
+
+      // 2. 캐시된 데이터를 가져옴
       const previousData = queryClient.getQueryData<ReservationData[]>(["ReservationDataByMonth"]);
 
-      // 2. Optimistic Update를 위해 미리 UI 업데이트
+      // 3. Optimistic Update를 위해 미리 UI 업데이트
       queryClient.setQueryData(["ReservationDataByMonth"], (oldData: ReservationData[]) => {
         if (!oldData) return oldData;
 
@@ -47,7 +50,7 @@ const ReservationItem = ({ item, status }: { item: Reservation; status: string }
         );
       });
 
-      // 3. 실패 시 롤백을 위한 이전 데이터 반환
+      // 4. 실패 시 롤백을 위한 이전 데이터 반환
       return { previousData };
     },
 
