@@ -2,31 +2,28 @@ import axiosInstance from "@/lib/api/axiosInstanceApi";
 import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
-// 내 체험 가져오기 요청
 export const GET = async (req: NextRequest) => {
   try {
-    const size = req.nextUrl.searchParams.get("size");
+    const size = req.nextUrl.searchParams.get("size") || "10";
+    const cursorId = req.nextUrl.searchParams.get("cursorId");
 
     const accessToken = req.cookies.get("accessToken")?.value;
 
-    const response = await axiosInstance.get(`/my-activities?size=${size}`, {
+    let url = `/my-notifications?size=${size}`;
+    if (cursorId) url += `&cursorId=${cursorId}`;
+
+    const response = await axiosInstance.get(url, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    if (response.status >= 200 && response.status < 300) {
-      return NextResponse.json(response.data, { status: response.status });
-    } else {
-      return NextResponse.json({ message: "조회 실패" }, { status: 400 });
-    }
+    return NextResponse.json(response.data, { status: response.status });
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || "서버 오류";
       return NextResponse.json({ message: errorMessage }, { status: error.response?.status || 500 });
     }
-
-    console.error(error);
-    return NextResponse.json({ message: "서버 오류" }, { status: 500 });
+    return NextResponse.json({ message: "알 수 없는 서버 오류" }, { status: 500 });
   }
 };
