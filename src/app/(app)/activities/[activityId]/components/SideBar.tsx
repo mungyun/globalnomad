@@ -7,6 +7,7 @@ import SideBarSkeleton from "@/skeleton/activities/SideBarSkeleton";
 import useActivityStore from "@/store/useActivityStore";
 import { Schedule } from "@/types/types";
 import formatPrice from "@/utils/formatPrice";
+import { Message } from "@/utils/toastMessage";
 import { useQuery } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import dynamic from "next/dynamic";
@@ -93,13 +94,13 @@ const SideBar = ({ id }: { id: number }) => {
       setIsLoading(true);
       if (!selectedId) return;
       await postReservation({ activityId: id, scheduleId: selectedId, headCount: partyNum });
-      Toast.success("예약 성공하셨습니다!");
+      Toast.success(Message.reservationSuccess);
       setPartyNum(0);
       setSelectedId(undefined);
       setSelectedTime("");
     } catch (error) {
       if (isAxiosError(error)) {
-        const errorMessage = error.response?.data?.message || "서버 오류";
+        const errorMessage = error.response?.data?.message || Message.error;
         Toast.error(errorMessage);
       }
     } finally {
