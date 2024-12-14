@@ -41,7 +41,7 @@ export const PATCH = async (req: NextRequest) => {
       "/users/me",
       {
         nickname: body.nickname,
-        // profileImageUrl: "string",
+        profileImageUrl: body.profileImageUrl,
         newPassword: body.newPassword,
       },
       {

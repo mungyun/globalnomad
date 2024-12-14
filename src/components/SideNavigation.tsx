@@ -50,14 +50,17 @@ export default function SideNavigation() {
   const pathname = usePathname();
 
   const { user } = useAuthStore();
-  const serverUserImg = user?.profileImageUrl ?? "";
-
   const { updateUserImage, setUpdateUserImage } = useUserImageStore();
 
+  // 기존 프로필 이미지
+  const serverUserImg = user?.profileImageUrl ?? "";
+
+  // 이미지 url 받아오는 요청
   const mutation = useMutation({
     mutationFn: (file: File) => PostProfileImage(file),
   });
 
+  // 프로필 이미지 변경 - url
   const handleChangeUserImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
