@@ -53,7 +53,7 @@ const ActivityCalendar = ({ schedules, onChange }: ActivityCalendarProps) => {
 
   return (
     <div>
-      <div className="mb-4 flex h-full justify-center">
+      <div className="activity-calendar mb-4 flex h-full justify-center">
         <Calendar
           onClickDay={handleDateClick}
           tileClassName={({ date }) => (isDateAvailable(date, schedules) ? "text-black02" : "text-gray06")}

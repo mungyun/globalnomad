@@ -1,6 +1,9 @@
 "use client";
 
+import { useToast } from "@/components/toast/ToastProvider";
 import { deleteMyActivities } from "@/lib/api/MyActivities";
+import { Message } from "@/utils/toastMessage";
+import { isAxiosError } from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -10,6 +13,17 @@ const linkStyle = "h-[58px] flex items-center justify-center hover:bg-gray02";
 const Dropdown = ({ id }: { id: number }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const Toast = useToast();
+
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteMyActivities(id);
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        Toast.error(error.response?.data?.message || Message.error);
+      }
+    }
+  };
 
   return (
     <div
@@ -30,7 +44,7 @@ const Dropdown = ({ id }: { id: number }) => {
           >
             수정하기
           </div>
-          <div onClick={() => deleteMyActivities(id)} className={`${linkStyle} rounded-b-md`}>
+          <div onClick={() => handleDelete(id)} className={`${linkStyle} rounded-b-md`}>
             삭제하기
           </div>
         </div>

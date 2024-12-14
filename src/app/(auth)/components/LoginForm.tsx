@@ -1,9 +1,12 @@
 "use client";
 
+import { useToast } from "@/components/toast/ToastProvider";
 import { postLogin } from "@/lib/api/Auth";
 import useAuthStore from "@/store/useAuthStore";
+import { Message } from "@/utils/toastMessage";
 import { Login, LoginSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -12,6 +15,7 @@ import AuthInput from "../../../components/input/AuthInput";
 
 const LoginForm = () => {
   const router = useRouter();
+  const Toast = useToast();
   const { user, setUser } = useAuthStore();
   const {
     register,
@@ -36,9 +40,16 @@ const LoginForm = () => {
       if (res.user) {
         setUser(res.user);
       }
+      Toast.success(Message.loginSuccess);
       router.push("/"); // 로그인 성공 시 로그인 페이지로 리다이렉트
-    } catch (error) {
-      console.error("로그인 중 오류 발생", error);
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        // AxiosError인 경우
+        Toast.error(error.response?.data?.message || Message.loginError);
+      } else {
+        // 다른 오류가 발생한 경우
+        Toast.error(Message.error);
+      }
     } finally {
       reset();
     }

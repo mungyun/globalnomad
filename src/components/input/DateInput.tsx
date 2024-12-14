@@ -54,7 +54,7 @@ const DateInput = ({ onChange, value }: DateInputProps) => {
         />
       </label>
       {isOpen && (
-        <div className="absolute top-20 z-10 h-auto w-[304px] md:top-[100px]">
+        <div className="activity-calendar absolute top-20 z-10 h-auto w-[304px] md:top-[100px]">
           <Calendar
             onClickDay={handleDateClick}
             className="rounded-md border border-gray03"

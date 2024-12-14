@@ -1,11 +1,14 @@
+import { ReservationResponse } from "@/types/MyReservationType";
 import { isAxiosError } from "axios";
 import { proxy } from "./axiosInstanceApi";
 
 // 내 예약 정보 요청
 export const getMyReservation = async () => {
   try {
-    const response = await proxy.get("/api/my/reservation");
-    return response.data.reservations;
+    const { data } = await proxy.get<ReservationResponse>("/api/my-reservations", {
+      params: { size: 10 },
+    });
+    return data.reservations;
   } catch (error) {
     if (isAxiosError(error)) {
       const message = error.response?.data?.message || "서버 오류가 발생했습니다.";

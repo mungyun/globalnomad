@@ -14,16 +14,26 @@ const sizeStyles: Record<DropdownSize, { width: string; height: string; fontSize
   small: { width: "90px", height: "41px", fontSize: "14px" },
 };
 
+interface Option {
+  label: string;
+  value: string;
+}
+
 interface DropdownProps {
   label: string;
   size: DropdownSize;
-  options: string[];
+  optionsArray: Option[];
+  onSelect: (value: string) => void;
+  sort: string;
 }
 
-const Dropdown = ({ label, size, options }: DropdownProps) => {
+const Dropdown = ({ label, size, optionsArray, onSelect, sort }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [title, setTitle] = useState(label);
+  const [title, setTitle] = useState("");
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  const options = optionsArray.map((option) => option.label);
+  const notDefault = optionsArray.some((option) => option.value === sort);
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -31,6 +41,7 @@ const Dropdown = ({ label, size, options }: DropdownProps) => {
 
   const handleSelect = (value: string) => {
     setTitle(value);
+    onSelect(value);
     setIsOpen(false);
   };
 
@@ -55,21 +66,24 @@ const Dropdown = ({ label, size, options }: DropdownProps) => {
     <div ref={dropdownRef} className="dropdown relative text-[18px] font-medium" style={{ width }}>
       <button
         type="button"
-        className="flex w-full items-center justify-between gap-2 rounded-[15px] border border-green02 bg-white px-4 py-2 shadow-sm hover:bg-gray-50 focus:border-2"
+        className="flex w-full items-center justify-between gap-2 rounded-[15px] bg-white px-[5px] py-2 shadow-sm outline outline-1 -outline-offset-2 outline-green02 hover:bg-gray-50 focus:outline-2 md:px-2 xl:px-3"
         style={{ height, fontSize }}
         onClick={toggleDropdown}
       >
-        <span className="truncate">{title}</span>
-        <Image src="/icons/dropdown.svg" alt="드롭다운 버튼" width={22} height={22} />
+        <span className="flex-1 truncate">{notDefault ? title : label}</span>
+        {notDefault ? "" : <Image src="/icons/dropdown.svg" alt="드롭다운 버튼" width={22} height={22} />}
       </button>
 
       {isOpen && (
-        <ul className="absolute left-0 z-10 mt-2 rounded-[6px] border border-gray03 bg-white" style={{ width }}>
+        <ul
+          className="absolute left-0 z-10 mt-2 rounded-[6px] bg-white outline outline-1 outline-gray03"
+          style={{ width }}
+        >
           {options.map((option, index) => (
             <li
               key={index}
               onClick={() => handleSelect(option)}
-              className={`cursor-pointer truncate border-b border-gray03 px-4 py-2 hover:bg-gray-100 ${index === options.length - 1 ? "border-b-0" : ""} ${index === 0 ? "hover:rounded-t-[6px]" : ""} ${index === options.length - 1 ? "hover:rounded-b-[6px]" : ""}`}
+              className={`cursor-pointer truncate border-b border-gray03 px-[5px] py-2 hover:bg-gray-100 md:px-2 xl:px-3 ${index === options.length - 1 ? "border-b-0" : ""} ${index === 0 ? "hover:rounded-t-[6px]" : ""} ${index === options.length - 1 ? "hover:rounded-b-[6px]" : ""}`}
               style={{ fontSize: listFontSize }}
             >
               {option}

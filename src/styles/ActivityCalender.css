@@ -1,4 +1,4 @@
-.react-calendar {
+.activity-calendar .react-calendar {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -13,40 +13,40 @@
   }
 }
 
-.react-calendar--doubleView {
+.activity-calendar .react-calendar--doubleView {
   width: 700px;
 }
 
-.react-calendar--doubleView .react-calendar__viewContainer {
+.activity-calendar .react-calendar--doubleView .react-calendar__viewContainer {
   display: flex;
   margin: -0.5em;
 }
 
-.react-calendar--doubleView .react-calendar__viewContainer > * {
+.activity-calendar .react-calendar--doubleView .react-calendar__viewContainer > * {
   width: 50%;
   margin: 0.5em;
 }
 
-.react-calendar,
-.react-calendar *,
-.react-calendar *:before,
-.react-calendar *:after {
+.activity-calendar .react-calendar,
+.activity-calendar .react-calendar *,
+.activity-calendar .react-calendar *:before,
+.activity-calendar .react-calendar *:after {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-.react-calendar button {
+.activity-calendar .react-calendar button {
   margin: 0;
   border: 0;
   outline: none;
 }
 
-.react-calendar button:enabled:hover {
+.activity-calendar .react-calendar button:enabled:hover {
   cursor: pointer;
 }
 
-.react-calendar__navigation {
+.activity-calendar .react-calendar__navigation {
   display: flex;
   color: #1b1b1b;
   font-weight: 700;
@@ -54,21 +54,21 @@
   margin-top: 10px;
 }
 
-.react-calendar__navigation button {
+.activity-calendar .react-calendar__navigation button {
   min-width: 44px;
   background: none;
 }
 
-.react-calendar__navigation button:disabled {
+.activity-calendar .react-calendar__navigation button:disabled {
   color: #f0f0f0;
 }
 
-.react-calendar__navigation button:enabled:hover,
-.react-calendar__navigation button:enabled:focus {
+.activity-calendar .react-calendar__navigation button:enabled:hover,
+.activity-calendar .react-calendar__navigation button:enabled:focus {
   color: #ced8d5;
 }
 
-.react-calendar__month-view__weekdays {
+.activity-calendar .react-calendar__month-view__weekdays {
   text-align: center;
   text-transform: uppercase;
   font: inherit;
@@ -76,17 +76,17 @@
   font-weight: bold;
 }
 
-.react-calendar__month-view__weekdays__weekday {
+.activity-calendar .react-calendar__month-view__weekdays__weekday {
   padding: 6px 5px;
   font-size: 14px;
   font-weight: 700;
   color: #4b4b4b;
 }
-.react-calendar__month-view__weekdays__weekday abbr[title] {
+.activity-calendar .react-calendar__month-view__weekdays__weekday abbr[title] {
   text-decoration: none; /* 밑줄 및 '...' 없애기 */
 }
 
-.react-calendar__month-view__weekNumbers .react-calendar__tile {
+.activity-calendar .react-calendar__month-view__weekNumbers .react-calendar__tile {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -95,19 +95,19 @@
   font-weight: bold;
 }
 
-.react-calendar__month-view__days__day--neighboringMonth,
-.react-calendar__decade-view__years__year--neighboringDecade,
-.react-calendar__century-view__decades__decade--neighboringCentury {
+.activity-calendar .react-calendar__month-view__days__day--neighboringMonth,
+.activity-calendar .react-calendar__decade-view__years__year--neighboringDecade,
+.activity-calendar .react-calendar__century-view__decades__decade--neighboringCentury {
   color: #757575;
 }
 
-.react-calendar__year-view .react-calendar__tile,
-.react-calendar__decade-view .react-calendar__tile,
-.react-calendar__century-view .react-calendar__tile {
+.activity-calendar .react-calendar__year-view .react-calendar__tile,
+.activity-calendar .react-calendar__decade-view .react-calendar__tile,
+.activity-calendar .react-calendar__century-view .react-calendar__tile {
   padding: 15px 30px;
 }
 
-.react-calendar__tile {
+.activity-calendar .react-calendar__tile {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -123,58 +123,58 @@
   font-weight: 600;
 }
 
-.react-calendar__tile:disabled {
+.activity-calendar .react-calendar__tile:disabled {
   color: #cbc9cf;
 }
 
-.react-calendar__month-view__days__day--neighboringMonth:disabled,
-.react-calendar__decade-view__years__year--neighboringDecade:disabled,
-.react-calendar__century-view__decades__decade--neighboringCentury:disabled {
+.activity-calendar .react-calendar__month-view__days__day--neighboringMonth:disabled,
+.activity-calendar .react-calendar__decade-view__years__year--neighboringDecade:disabled,
+.activity-calendar .react-calendar__century-view__decades__decade--neighboringCentury:disabled {
   color: #cbc9cf;
 }
 
-.react-calendar__tile:enabled:hover,
-.react-calendar__tile:enabled:focus {
+.activity-calendar .react-calendar__tile:enabled:hover,
+.activity-calendar .react-calendar__tile:enabled:focus {
   background-color: #ced8d5;
 }
 
-.react-calendar__tile--now {
+.activity-calendar .react-calendar__tile--now {
   background: #ced8d5;
   color: #0b3b2d;
 }
 
-.react-calendar__tile--now:enabled:hover,
-.react-calendar__tile--now:enabled:focus {
+.activity-calendar .react-calendar__tile--now:enabled:hover,
+.activity-calendar .react-calendar__tile--now:enabled:focus {
   background: #0b3b2d;
   color: #ced8d5;
 }
 
-.react-calendar__tile--hasActive {
+.activity-calendar .react-calendar__tile--hasActive {
   background: #0b3b2d;
   color: #ced8d5;
 }
 
-.react-calendar__tile--hasActive:enabled:hover,
-.react-calendar__tile--hasActive:enabled:focus {
+.activity-calendar .react-calendar__tile--hasActive:enabled:hover,
+.activity-calendar .react-calendar__tile--hasActive:enabled:focus {
   background: #a9d4ff;
 }
 
-.react-calendar__tile--active {
+.activity-calendar .react-calendar__tile--active {
   background: #0b3b2d;
   color: #ced8d5;
 }
 
-.react-calendar__tile--active:enabled:hover,
-.react-calendar__tile--active:enabled:focus {
+.activity-calendar .react-calendar__tile--active:enabled:hover,
+.activity-calendar .react-calendar__tile--active:enabled:focus {
   background: #0b3b2d;
   color: #ced8d5;
 }
 
-.react-calendar--selectRange .react-calendar__tile--hover {
+.activity-calendar .react-calendar--selectRange .react-calendar__tile--hover {
   background-color: #ced8d5;
 }
 
-.react-calendar__navigation__next2-button,
-.react-calendar__navigation__prev2-button {
+.activity-calendar .react-calendar__navigation__next2-button,
+.activity-calendar .react-calendar__navigation__prev2-button {
   display: none;
 }

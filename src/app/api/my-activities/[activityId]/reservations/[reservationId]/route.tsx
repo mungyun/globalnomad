@@ -2,10 +2,12 @@ import axiosInstance from "@/lib/api/axiosInstanceApi";
 import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
-export const PATCH = async (req: NextRequest) => {
+export const PATCH = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ activityId: string; reservationId: string }> }
+) => {
   try {
-    const { activityId, reservationId } =
-      req.nextUrl.pathname.match(/\/my-activities\/([^/]+)\/reservations\/([^/]+)/)?.groups || {};
+    const { activityId, reservationId } = await params;
 
     if (!activityId || !reservationId) {
       return NextResponse.json({ message: "활동 ID와 예약 ID가 필요합니다." }, { status: 400 });
