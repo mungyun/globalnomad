@@ -35,3 +35,15 @@ export const updateUserProfile = async (data: UpdateUser) => {
     throw new Error("알 수 없는 오류가 발생했습니다.");
   }
 };
+
+export const PostProfileImage = async (file: File) => {
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const response = await proxy.post("/api/my", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
