@@ -5,6 +5,7 @@ import { getMyActivitiesByMonth } from "@/lib/api/MyActivities";
 import useReservationStore from "@/store/useReservationStore";
 import "@/styles/ReservationCalender.css";
 import { ReservationData } from "@/types/MyReservationType";
+import { Message } from "@/utils/toastMessage";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
@@ -34,7 +35,7 @@ const StatusCalendar = () => {
     enabled: !!activityId && !!value,
     onError: (error: unknown) => {
       if (isAxiosError(error)) {
-        Toast.error(error?.message);
+        Toast.error(error?.message || Message.error);
         router.push("/404");
       }
     },

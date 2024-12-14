@@ -3,6 +3,7 @@ import { UpdateMyReservationByTime } from "@/lib/api/MyActivities";
 import useReservationStore from "@/store/useReservationStore";
 import { Reservation } from "@/types/MyActivitiesType";
 import { ReservationData } from "@/types/MyReservationType";
+import { Message } from "@/utils/toastMessage";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
@@ -60,7 +61,7 @@ const ReservationItem = ({ item, status }: { item: Reservation; status: string }
         queryClient.setQueryData(["ReservationDataByMonth"], context.previousData);
       }
 
-      Toast.error(error?.message);
+      Toast.error(error?.message || Message.error);
     },
 
     onSettled: () => {
@@ -72,9 +73,9 @@ const ReservationItem = ({ item, status }: { item: Reservation; status: string }
     onSuccess: (variables) => {
       const { status } = variables;
       if (status === "confirmed") {
-        Toast.success("예약을 승인했습니다!");
+        Toast.success(Message.successConfirm);
       } else if (status === "declined") {
-        Toast.success("예약을 거절했습니다!");
+        Toast.success(Message.successDecline);
       }
     },
   });

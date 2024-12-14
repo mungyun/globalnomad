@@ -1,6 +1,7 @@
 import useDeviceType from "@/hooks/useDeviceType";
 import { deleteMyNotification, getMyNotifications } from "@/lib/api/MyNotifications";
 import { AlertData } from "@/types/MyNotificationsType";
+import { Message } from "@/utils/toastMessage";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -46,10 +47,10 @@ const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
       if (context?.previousData) {
         queryClient.setQueryData(["myNotifications"], context.previousData);
       }
-      Toast.error(error?.message || "삭제에 실패했습니다.");
+      Toast.error(error?.message || Message.error);
     },
     onSuccess: () => {
-      Toast.success("알림을 삭제했습니다.");
+      Toast.success(Message.alertSuccess);
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["myNotifications"] });
