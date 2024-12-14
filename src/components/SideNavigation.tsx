@@ -1,16 +1,12 @@
 "use client";
 
-import useUploadProfileImage from "@/hooks/useUploadProfileImage";
 import { PostProfileImage } from "@/lib/api/MyPage";
-// import useUploadImage from "@/hooks/useUploadImage";
 import useAuthStore from "@/store/useAuthStore";
+import useUserImageStore from "@/store/useUserImageStore";
 import { useMutation } from "@tanstack/react-query";
-// import useUserImageStore from "@/store/useUserImageStore";
-// import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-// import { ReactEventHandler, useEffect, useState } from "react";
 import { IoPersonCircleOutline } from "react-icons/io5";
 
 interface ListProps {
@@ -53,36 +49,10 @@ const NavigationItem = ({ iconName, text, link }: ListProps) => {
 export default function SideNavigation() {
   const pathname = usePathname();
 
-  // 유저 이미지 전역관리
-  // const { userImage, uploadUserImage } = useUserImageStore();
-  const { user, setUser } = useAuthStore();
+  const { user } = useAuthStore();
+  const serverUserImg = user?.profileImageUrl ?? "";
 
-  // const mutation = useUploadProfileImage();
-
-  // const handleChangeUserImg1 = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   console.log(file);
-  //   if (!file) return;
-
-  //   try {
-  //     const imageUrl = await mutation.mutateAsync(file);
-  //     console.log("받은 이미지 URL:", imageUrl);
-
-  //     if (!user) return;
-  //     if (!imageUrl) {
-  //       console.error("이미지 URL이 없습니다");
-  //       return;
-  //     }
-
-  //     setUser({
-  //       ...user,
-  //       profileImageUrl: imageUrl,
-  //       updatedAt: new Date().toISOString(),
-  //     });
-  //   } catch (error) {
-  //     console.error("프로필 이미지 업데이트 실패:", error);
-  //   }
-  // };
+  const { updateUserImage, setUpdateUserImage } = useUserImageStore();
 
   const mutation = useMutation({
     mutationFn: (file: File) => PostProfileImage(file),
@@ -92,22 +62,21 @@ export default function SideNavigation() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const img = await mutation.mutateAsync(file);
-    console.log(img);
+    const updateProfileImg = await mutation.mutateAsync(file);
+    setUpdateUserImage(updateProfileImg.profileImageUrl);
   };
 
   return (
     <div className="fixed bottom-0 z-10 flex w-screen flex-col gap-5 overflow-visible rounded-xl border border-gray03 bg-white py-3 shadow-md md:sticky md:top-10 md:h-[432px] md:w-[251px] md:min-w-[251px] md:p-6 xl:w-[384px]">
       <div className="hidden md:block">
         <div className="relative m-auto flex h-[160px] w-[160px] items-center justify-center overflow-hidden rounded-full bg-gray03">
-          {user !== null ? (
-            <Image src={user.profileImageUrl || ""} layout="fill" objectFit="cover" alt="프로필이미지" />
-          ) : (
+          {serverUserImg === "" ? (
             <IoPersonCircleOutline className="h-full w-full scale-[1.3] text-gray07" />
+          ) : (
+            <Image src={updateUserImage || serverUserImg} layout="fill" objectFit="cover" alt="프로필이미지" />
           )}
         </div>
 
-        {/* {pathname === "/my" ? <EditButton onChange={handleChangeUserImg} /> : null} */}
         {pathname === "/my" ? (
           <label className="md absolute left-[195px] top-[145px] h-[44px] w-[44px] cursor-pointer md:left-[150px] xl:left-[215px]">
             <input type="file" className="hidden" onChange={handleChangeUserImg} />
@@ -115,11 +84,18 @@ export default function SideNavigation() {
           </label>
         ) : null}
       </div>
+      <button
+        onClick={() => {
+          console.log("서버:", serverUserImg);
+          console.log("클라:", updateUserImage);
+        }}
+      >
+        123
+      </button>
       <div className="flex justify-between gap-3 bg-white px-10 text-base text-gray07 md:flex-col md:px-0 xl:px-2">
         {NAVIGATION_ITEMS.map((item) => (
           <NavigationItem key={item.link} {...item} />
         ))}
-        {/* <input type="file" /> */}
       </div>
     </div>
   );
