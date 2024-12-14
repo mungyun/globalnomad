@@ -73,7 +73,7 @@ const StatusCalendar = () => {
   };
 
   return (
-    <div className="custom-calendar relative">
+    <div className="status-calendar relative">
       {isLoading ? (
         <Skeleton height={770} />
       ) : (
