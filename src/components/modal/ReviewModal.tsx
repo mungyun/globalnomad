@@ -33,7 +33,6 @@ const ReviewModal = ({ setIsModalOpen, reservation }: ReviewModalProps) => {
   const onSubmit: SubmitHandler<Review> = async (data) => {
     try {
       await postReview({ reservationId: reservation.id, rating: data.rating, content: data.content });
-      console.log(data);
       setIsModalOpen(false);
     } catch (error: unknown) {
       console.error(error);
