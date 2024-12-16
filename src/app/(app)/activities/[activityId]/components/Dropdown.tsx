@@ -2,6 +2,7 @@
 
 import { useToast } from "@/components/toast/ToastProvider";
 import { deleteMyActivities } from "@/lib/api/MyActivities";
+import { Message } from "@/utils/toastMessage";
 import { isAxiosError } from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -19,7 +20,7 @@ const Dropdown = ({ id }: { id: number }) => {
       await deleteMyActivities(id);
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        Toast.error(error.response?.data?.message || "체험 상세 페이지 삭제 중 오류가 발생했습니다!");
+        Toast.error(error.response?.data?.message || Message.error);
       }
     }
   };

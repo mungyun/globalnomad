@@ -3,6 +3,7 @@
 import { useToast } from "@/components/toast/ToastProvider";
 import { postLogin } from "@/lib/api/Auth";
 import useAuthStore from "@/store/useAuthStore";
+import { Message } from "@/utils/toastMessage";
 import { Login, LoginSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isAxiosError } from "axios";
@@ -39,15 +40,15 @@ const LoginForm = () => {
       if (res.user) {
         setUser(res.user);
       }
-      Toast.success("로그인 성공했습니다!");
+      Toast.success(Message.loginSuccess);
       router.push("/"); // 로그인 성공 시 로그인 페이지로 리다이렉트
     } catch (error: unknown) {
       if (isAxiosError(error)) {
         // AxiosError인 경우
-        Toast.error(error.response?.data?.message || "로그인 실패");
+        Toast.error(error.response?.data?.message || Message.loginError);
       } else {
         // 다른 오류가 발생한 경우
-        Toast.error("알 수 없는 오류가 발생했습니다.");
+        Toast.error(Message.error);
       }
     } finally {
       reset();
