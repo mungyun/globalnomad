@@ -77,7 +77,7 @@ const ReservationItem = ({ reservation }: { reservation: Reservation }) => {
             <button
               type="button"
               aria-label={status.buttonText}
-              className={`${status.buttonColor} rounded-md px-4 py-2 text-sm font-bold md:px-6 md:py-3 md:text-base`}
+              className={`${status.buttonColor} rounded-md px-4 py-2 text-sm font-bold md:px-6 md:py-3 md:text-base ${reservation.reviewSubmitted === true ? "hidden" : ""}`}
               onClick={() => setIsModalOpen(true)}
             >
               {status.buttonText}
