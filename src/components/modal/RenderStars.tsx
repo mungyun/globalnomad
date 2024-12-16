@@ -6,7 +6,7 @@ import { useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 
 interface RenderStarsProps {
-  setValue: UseFormSetValue<Review>; // setValue를 rating만 업데이트할 수 있도록 타입 제한
+  setValue: UseFormSetValue<Review>;
 }
 
 const RenderStars = ({ setValue }: RenderStarsProps) => {
