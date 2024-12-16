@@ -23,7 +23,7 @@ const INPUT_FIELDS: InputField[] = [
     name: "email",
     type: "email",
     placeholder: "이메일을 입력해 주세요",
-    readOnly: true,
+    disabled: true,
   },
   {
     label: "비밀번호",
@@ -113,15 +113,7 @@ const UpdateProfile = () => {
 
   return (
     <section className="flex h-screen w-full max-w-[800px] flex-col">
-      <button
-        onClick={() => {
-          console.log("서버:", serverUserImg);
-          console.log("클라:", updateUserImage);
-        }}
-      >
-        123
-      </button>
-      <header className="mb-2 flex justify-between">
+      <header className="mb-3 flex justify-between">
         <h2 className="text-[32px] font-bold"> 내 정보</h2>
         <button
           className="flex h-[48px] w-[120px] items-center justify-center rounded bg-black02 font-semibold text-white"
@@ -143,7 +135,7 @@ const UpdateProfile = () => {
             errors={errors[field.name]?.message}
             placeholder={field.placeholder}
             labelStyle="large"
-            readOnly={field.readOnly}
+            disabled={field.disabled}
           />
         ))}
       </form>
