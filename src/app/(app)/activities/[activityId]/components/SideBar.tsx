@@ -18,7 +18,7 @@ import DateModal from "./DateModal";
 // 동적 import로 Calendar 컴포넌트 불러오기
 const ActivityCalendar = dynamic(() => import("./ActivityCalendar"), { ssr: false });
 
-const titleStyle = "text-[20px] font-bold text-black02";
+const titleStyle = "text-[20px] font-bold text-black02 whitespace-nowrap";
 
 interface PartyNumberSelectorProps {
   partyNum: number;
@@ -164,7 +164,7 @@ const SideBar = ({ id }: { id: number }) => {
         </div>
 
         <button
-          className="w-[77px] text-[14px] font-semibold text-green02 underline"
+          className="w-[77px] whitespace-nowrap text-[14px] font-semibold text-green02 underline"
           onClick={() => setIsModalOpen(true)}
         >
           날짜 선택하기
