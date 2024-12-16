@@ -20,7 +20,7 @@ const ReviewModal = ({ setIsModalOpen, reservation }: ReviewModalProps) => {
     handleSubmit,
     register,
     setValue,
-    // formState: { errors },
+    formState: { isValid, isSubmitting },
   } = useForm<Review>({
     resolver: zodResolver(ReviewSchema),
     mode: "onChange",
@@ -83,7 +83,11 @@ const ReviewModal = ({ setIsModalOpen, reservation }: ReviewModalProps) => {
             placeholder="후기를 작성해주세요"
             {...register("content", { required: "후기를 작성해주세요" })}
           />
-          <button className="mt-4 w-full rounded-md bg-black02 py-[14px] text-white" type="submit">
+          <button
+            className="mt-4 w-full rounded-md bg-black02 py-[14px] text-white"
+            type="submit"
+            disabled={isSubmitting || !isValid}
+          >
             작성하기
           </button>
         </form>
