@@ -1,5 +1,13 @@
 import SideNavigation from "@/components/SideNavigation";
+import { defaultMetadata } from "@/utils/metaTag";
+import { Metadata } from "next";
 import { ReactNode } from "react";
+
+export const metadata: Metadata = {
+  ...defaultMetadata,
+  title: "GlobalNomad - 내 정보",
+  description: "내 정보를 확인하고 수정할 수 있습니다!",
+};
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
