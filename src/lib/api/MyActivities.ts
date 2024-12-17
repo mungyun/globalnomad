@@ -21,7 +21,7 @@ export const getMyActivities = async ({ cursorId = null, size = 10 }: { cursorId
 // 내 체험 삭제
 export const deleteMyActivities = async (activityId: number) => {
   try {
-    const response = await proxy.delete(`/api/my-activities/${activityId}/delete-myactivity`);
+    const response = await proxy.delete(`/api/my-activities/${activityId}`);
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {

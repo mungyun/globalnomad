@@ -9,13 +9,13 @@ export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ a
     const { activityId } = await params;
     const accessToken = req.cookies.get("accessToken")?.value;
 
-    const response = await axiosInstance.delete(`/my-activities/${activityId}`, {
+    await axiosInstance.delete(`/my-activities/${activityId}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    return NextResponse.json({ message: "내 체험 삭제 성공했습니다." }, { status: response.status });
+    return NextResponse.json({ message: "내 체험 삭제 성공했습니다." }, { status: 200 });
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || "서버에서 알 수 없는 오류가 발생했습니다.";
