@@ -25,9 +25,8 @@ export default function NavigationProfile() {
     onSuccess: (data) => {
       setUpdateUserImage(data.profileImageUrl);
     },
-    onError: (error) => {
+    onError: () => {
       toast.error(Message.error);
-      console.error("프로필 이미지 업로드 에러", error);
     },
   });
 
