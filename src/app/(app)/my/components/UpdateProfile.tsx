@@ -9,6 +9,7 @@ import { InputField, ProfileUpdateData, User } from "@/types/MyPageType";
 import { Signup, SignupSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 
 const INPUT_FIELDS: InputField[] = [
@@ -71,8 +72,12 @@ const UpdateProfile = () => {
         confirmPassword: "",
       }));
     },
-    onError: (error) => {
-      toast.error(error.message);
+    onError: (error: unknown) => {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "내 정보 수정을 실패했습니다.");
+      } else {
+        toast.error("내 정보 수정을 실패했습니다.");
+      }
     },
   });
 

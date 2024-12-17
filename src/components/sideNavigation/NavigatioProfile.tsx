@@ -5,6 +5,7 @@ import useAuthStore from "@/store/useAuthStore";
 import useUserImageStore from "@/store/useUserImageStore";
 import { Message } from "@/utils/toastMessage";
 import { useMutation } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { IoPersonCircleOutline } from "react-icons/io5";
@@ -25,8 +26,12 @@ export default function NavigationProfile() {
     onSuccess: (data) => {
       setUpdateUserImage(data.profileImageUrl);
     },
-    onError: () => {
-      toast.error(Message.error);
+    onError: (error: unknown) => {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || Message.error);
+      } else {
+        toast.error(Message.error);
+      }
     },
   });
 

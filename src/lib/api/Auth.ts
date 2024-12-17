@@ -1,6 +1,7 @@
 import { isAxiosError } from "axios";
 import { proxy } from "./axiosInstanceApi";
 
+// 로그인
 export const postLogin = async ({ email, password }: { email: string; password: string }) => {
   try {
     const res = await proxy.post("/api/auth/login", { email, password });
