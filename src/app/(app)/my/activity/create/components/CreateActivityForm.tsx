@@ -9,6 +9,7 @@ import { useToast } from "@/components/toast/ToastProvider";
 import { PostActivities } from "@/lib/api/Activities";
 import { PostActivityType } from "@/types/ActivityType";
 import { formatWithCommas, removeCommas } from "@/utils/numberFormat";
+import { Message } from "@/utils/toastMessage";
 import { PostActivitySchema } from "@/zodSchema/activitySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -40,13 +41,13 @@ const CreateActivityForm = () => {
     },
     onSuccess: () => {
       router.push("/my/activity");
-      Toast.success("체험 등록에 성공했습니다.");
+      Toast.success(Message.createActivitySuccess);
     },
     onError: (error) => {
       if (isAxiosError(error)) {
-        Toast.error(error.response?.data?.message || "체험 등록에 실패했습니다.");
+        Toast.error(error.response?.data?.message);
       } else {
-        Toast.error("체험 등록에 실패했습니다.");
+        Toast.error(Message.createActivityError);
       }
     },
   });

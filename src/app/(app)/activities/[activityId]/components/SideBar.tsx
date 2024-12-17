@@ -100,7 +100,7 @@ const SideBar = ({ id }: { id: number }) => {
       setSelectedTime("");
     } catch (error) {
       if (isAxiosError(error)) {
-        Toast.error(error.response?.data?.message || Message.error);
+        Toast.error(error.response?.data?.message);
       } else {
         Toast.error(Message.error);
       }

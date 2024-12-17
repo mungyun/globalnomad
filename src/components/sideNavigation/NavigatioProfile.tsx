@@ -28,7 +28,7 @@ export default function NavigationProfile() {
     },
     onError: (error: unknown) => {
       if (isAxiosError(error)) {
-        toast.error(error.response?.data?.message || Message.error);
+        toast.error(error.response?.data?.message);
       } else {
         toast.error(Message.error);
       }

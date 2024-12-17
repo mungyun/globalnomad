@@ -1,4 +1,5 @@
 import { deleteMyActivities } from "@/lib/api/MyActivities";
+import { Message } from "@/utils/toastMessage";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import Image from "next/image";
@@ -19,7 +20,7 @@ export default function ActivityModal({ setIsModalOpen, activityId }: ModalProps
     mutationFn: () => deleteMyActivities(activityId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["myActivities"] });
-      toast.success("체험을 삭제했습니다.");
+      toast.success(Message.deleteActivitySuccess);
       closeModal();
     },
     onError: (error: unknown) => {
@@ -27,7 +28,7 @@ export default function ActivityModal({ setIsModalOpen, activityId }: ModalProps
       if (isAxiosError(error)) {
         toast.error(error.response?.data?.message);
       } else {
-        toast.error("체험 삭제에 실패했습니다.");
+        toast.error(Message.deleteActivityError);
       }
       closeModal();
     },

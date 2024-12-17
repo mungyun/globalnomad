@@ -73,9 +73,9 @@ const ReservationItem = ({ item, status }: { item: Reservation; status: string }
     onSuccess: (variables) => {
       const { status } = variables;
       if (status === "confirmed") {
-        Toast.success(Message.successConfirm);
+        Toast.success(Message.confirmSuccess);
       } else if (status === "declined") {
-        Toast.success(Message.successDecline);
+        Toast.success(Message.declineSuccess);
       }
     },
   });

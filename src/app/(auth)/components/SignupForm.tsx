@@ -5,6 +5,7 @@ import AuthInput from "@/components/input/AuthInput";
 import { useToast } from "@/components/toast/ToastProvider";
 import { postSignUp } from "@/lib/api/Auth";
 import useAuthStore from "@/store/useAuthStore";
+import { Message } from "@/utils/toastMessage";
 import { Signup, SignupSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isAxiosError } from "axios";
@@ -37,13 +38,13 @@ const SignupForm = () => {
   const onSubmit: SubmitHandler<Signup> = async ({ confirmPassword, ...submitData }) => {
     try {
       await postSignUp(submitData);
-      Toast.success("회원가입에 성공했습니다.");
+      Toast.success(Message.signupSuccess);
       router.push("/login");
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        Toast.error(error.response?.data.message || "회원가입에 실패했습니다.");
+        Toast.error(error.response?.data.message);
       } else {
-        Toast.error("회원가입에 실패했습니다.");
+        Toast.error(Message.signupError);
       }
     } finally {
       reset(); // 폼 초기화
