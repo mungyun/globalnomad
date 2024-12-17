@@ -12,22 +12,13 @@ export const POST = async (req: NextRequest) => {
       password,
     });
 
-    // 회원가입 성공 후 로그인 페이지로 리다이렉트
-    if (response.status >= 200 && response.status < 300) {
-      return NextResponse.json({ message: "회원가입 성공" });
-    } else {
-      return NextResponse.json({ message: "회원가입 실패" }, { status: 400 });
-    }
+    return NextResponse.json({ message: "회원가입에 성공했습니다." }, { status: response.status });
   } catch (error: unknown) {
     if (isAxiosError(error)) {
-      // 충돌(중복된 이메일) 상태 처리
-      if (error.response?.status === 409) {
-        return NextResponse.json({ message: "중복된 이메일입니다." }, { status: 409 });
-      }
+      const errorMessage = error.response?.data?.message || "서버에서 알 수 없는 오류가 발생했습니다.";
+      return NextResponse.json({ message: errorMessage }, { status: error.response?.status || 500 });
     }
 
-    // 기타 서버 오류 처리
-    console.error(error);
-    return NextResponse.json({ message: "서버 오류" }, { status: 500 });
+    return NextResponse.json({ message: "서버에서 알 수 없는 오류가 발생했습니다." }, { status: 500 });
   }
 };

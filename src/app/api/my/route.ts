@@ -17,13 +17,13 @@ export const GET = async (req: NextRequest) => {
       },
     });
     return NextResponse.json(response.data, { status: 200 });
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || "서버 오류";
+      const errorMessage = error.response?.data?.message || "서버에서 알 수 없는 오류가 발생했습니다.";
       return NextResponse.json({ message: errorMessage }, { status: error.response?.status || 500 });
     }
-    console.error(error);
-    return NextResponse.json({ message: "서버 오류" }, { status: 500 });
+
+    return NextResponse.json({ message: "서버에서 알 수 없는 오류가 발생했습니다." }, { status: 500 });
   }
 };
 
@@ -50,16 +50,15 @@ export const PATCH = async (req: NextRequest) => {
         },
       }
     );
-    if (response.status === 200) {
-      return NextResponse.json(response.data, { status: 200 });
-    }
+
+    return NextResponse.json(response.data, { status: response.status });
   } catch (error: unknown) {
     if (isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || "서버 오류";
+      const errorMessage = error.response?.data?.message || "서버에서 알 수 없는 오류가 발생했습니다.";
       return NextResponse.json({ message: errorMessage }, { status: error.response?.status || 500 });
     }
-    console.error(error);
-    return NextResponse.json({ message: "서버 오류" }, { status: 500 });
+
+    return NextResponse.json({ message: "서버에서 알 수 없는 오류가 발생했습니다." }, { status: 500 });
   }
 };
 
@@ -79,13 +78,13 @@ export const POST = async (req: NextRequest) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    return NextResponse.json(response.data, { status: 200 });
-  } catch (error) {
+    return NextResponse.json(response.data, { status: response.status });
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || "서버 오류";
+      const errorMessage = error.response?.data?.message || "서버에서 알 수 없는 오류가 발생했습니다.";
       return NextResponse.json({ message: errorMessage }, { status: error.response?.status || 500 });
     }
-    console.error(error);
-    return NextResponse.json({ message: "서버 오류" }, { status: 500 });
+
+    return NextResponse.json({ message: "서버에서 알 수 없는 오류가 발생했습니다." }, { status: 500 });
   }
 };
