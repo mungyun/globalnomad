@@ -1,5 +1,6 @@
 import { cancelMyReservation } from "@/lib/api/MyReservation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
@@ -21,8 +22,12 @@ const ReservationModal = ({ setIsModalOpen, reservationId }: ModalProps): JSX.El
       toast.success("예약 취소 완료");
       handleCloseModal();
     },
-    onError: (error) => {
-      toast.error(error.message);
+    onError: (error: unknown) => {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "예약 취소를 실패했습니다.");
+      } else {
+        toast.error("예약 취소를 실패했습니다.");
+      }
     },
   });
 

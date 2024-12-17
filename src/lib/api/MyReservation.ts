@@ -9,14 +9,11 @@ export const getMyReservation = async () => {
       params: { size: 10 },
     });
     return data.reservations;
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
-      const message = error.response?.data?.message || "서버 오류가 발생했습니다.";
-      throw new Error(message);
+      throw error;
     }
-
-    // Axios 외의 예외 처리
-    throw new Error("알 수 없는 오류가 발생했습니다.");
+    throw error;
   }
 };
 
@@ -28,13 +25,10 @@ export const cancelMyReservation = async (reservationId: number) => {
       status: "canceled",
     });
     return response.data;
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
-      const message = error.response?.data?.message || "서버 오류가 발생했습니다.";
-      throw new Error(message);
+      throw error;
     }
-
-    // Axios 외의 예외 처리
-    throw new Error("알 수 없는 오류가 발생했습니다.");
+    throw error;
   }
 };
