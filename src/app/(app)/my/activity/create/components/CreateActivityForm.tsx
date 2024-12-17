@@ -12,6 +12,7 @@ import { formatWithCommas, removeCommas } from "@/utils/numberFormat";
 import { PostActivitySchema } from "@/zodSchema/activitySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import BannerImgForm from "./BannerImageForm";
@@ -42,7 +43,10 @@ const CreateActivityForm = () => {
       Toast.success("체험 등록에 성공했습니다.");
     },
     onError: (error) => {
-      Toast.error(error.message || "체험 등록에 실패했습니다.");
+      if (isAxiosError(error)) {
+        Toast.error(error.response?.data?.message || "체험 등록에 실패했습니다.");
+      }
+      Toast.error("체험 등록에 실패했습니다.");
     },
   });
 

@@ -1,6 +1,7 @@
 import { useToast } from "@/components/toast/ToastProvider";
 import { PostActivitiesImage } from "@/lib/api/Activities";
 import { useMutation } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 
 const useUploadImage = () => {
   const Toast = useToast();
@@ -14,7 +15,10 @@ const useUploadImage = () => {
       return data;
     },
     onError: (error) => {
-      Toast.error(error.message || "이미지 업로드 중 에러가 발생했습니다.");
+      if (isAxiosError(error)) {
+        Toast.error(error.message || "이미지 업로드 중 에러가 발생했습니다.");
+      }
+      Toast.error("이미지 업로드 중 에러가 발생했습니다.");
     },
   });
 
