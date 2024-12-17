@@ -60,8 +60,7 @@ export const postReview = async ({
     // Axios 에러 처리
     if (isAxiosError(error)) {
       // 서버에서 반환된 에러 메시지 사용
-      const errorMessage = error.response?.data?.message || "서버 오류가 발생했습니다.";
-      throw new Error(errorMessage);
+      throw error;
     }
 
     // Axios 외의 예외 처리

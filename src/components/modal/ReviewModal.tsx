@@ -5,9 +5,11 @@ import { Reservation } from "@/types/MyReservationType";
 import formatPrice from "@/utils/formatPrice";
 import { Review, ReviewSchema } from "@/zodSchema/reservationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isAxiosError } from "axios";
 import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineClose } from "react-icons/ai";
+import { useToast } from "../toast/ToastProvider";
 import RenderStars from "./RenderStars";
 
 interface ReviewModalProps {
@@ -16,6 +18,7 @@ interface ReviewModalProps {
 }
 
 const ReviewModal = ({ setIsModalOpen, reservation }: ReviewModalProps) => {
+  const Toast = useToast();
   const {
     handleSubmit,
     register,
@@ -35,7 +38,9 @@ const ReviewModal = ({ setIsModalOpen, reservation }: ReviewModalProps) => {
       await postReview({ reservationId: reservation.id, rating: data.rating, content: data.content });
       setIsModalOpen(false);
     } catch (error: unknown) {
-      console.error(error);
+      if (isAxiosError(error)) {
+        Toast.error(error.response?.data.message);
+      }
     }
   };
 
