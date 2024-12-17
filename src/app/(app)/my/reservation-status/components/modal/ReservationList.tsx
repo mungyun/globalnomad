@@ -2,6 +2,7 @@ import { useToast } from "@/components/toast/ToastProvider";
 import { getMyReservationByTime } from "@/lib/api/MyActivities";
 import useReservationStore from "@/store/useReservationStore";
 import { Reservation } from "@/types/MyActivitiesType";
+import { Message } from "@/utils/toastMessage";
 import { isAxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -30,9 +31,9 @@ const ReservationList = ({ status }: { status: string }) => {
         setReservationData(reservations);
       } catch (error) {
         if (isAxiosError(error)) {
-          Toast.error(error.response?.data.message || "내 체험 예약 시간대별 예약 내역 조회에 실패했습니다.");
+          Toast.error(error.response?.data.message);
         } else {
-          Toast.error("내 체험 예약 시간대별 예약 내역 조회에 실패했습니다.");
+          Toast.error(Message.reservationListByTimeError);
         }
       } finally {
         setIsLoading(false);

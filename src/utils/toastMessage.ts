@@ -22,4 +22,6 @@ export const Message = {
   updateProfileError: "프로필 수정을 실패했습니다. 다시 시도해주세요.",
   deleteReservationError: "에약 취소를 실패했습니다. 다시 시도해주세요.",
   updateImageError: "이미지 업로드 중 에러가 발생했습니다.",
+  reservationListByTimeError: "내 체험 시간대별 예약 내역 조회에 실패했습니다.",
+  reservationListByDayError: "내 체험 날짜별 예약 정보에 실패했습니다.",
 };

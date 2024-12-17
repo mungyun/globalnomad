@@ -5,6 +5,7 @@ import useDeviceType from "@/hooks/useDeviceType";
 import { getMyReservedSchedule } from "@/lib/api/MyActivities";
 import useReservationStore from "@/store/useReservationStore";
 import { Schedule, ScheduleCount } from "@/types/MyActivitiesType";
+import { Message } from "@/utils/toastMessage";
 import { isAxiosError } from "axios";
 import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
@@ -65,9 +66,9 @@ const StatusModal = ({ isOpen, onClose, date }: StatusModalProps) => {
         setScheduleData(response || []);
       } catch (error) {
         if (isAxiosError(error)) {
-          Toast.error(error.response?.data.message || "내 체험 날짜별 예약 정보에 실패했습니다.");
+          Toast.error(error.response?.data.message);
         } else {
-          Toast.error("내 체험 날짜별 예약 정보에 실패했습니다.");
+          Toast.error(Message.reservationListByDayError);
         }
       } finally {
         setIsLoading(false);
