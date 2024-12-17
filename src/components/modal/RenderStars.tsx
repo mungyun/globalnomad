@@ -1,10 +1,21 @@
 "use client";
 
+import { Review } from "@/zodSchema/reservationSchema";
 import Image from "next/image";
 import { useState } from "react";
+import { UseFormSetValue } from "react-hook-form";
 
-const RenderStars = () => {
+interface RenderStarsProps {
+  setValue: UseFormSetValue<Review>;
+}
+
+const RenderStars = ({ setValue }: RenderStarsProps) => {
   const [rating, setRating] = useState(0);
+
+  const handleStarClick = (value: number) => {
+    setRating(value);
+    setValue("rating", value);
+  };
 
   const renderStars = () => {
     const stars = [];
@@ -16,7 +27,7 @@ const RenderStars = () => {
             src={isSelected ? "/icons/reviewStar.svg" : "/icons/reviewEmptyStar.svg"}
             fill
             alt={`별점 ${i}`}
-            onClick={() => setRating(i)}
+            onClick={() => handleStarClick(i)}
           />
         </button>
       );

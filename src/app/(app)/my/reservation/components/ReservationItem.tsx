@@ -1,6 +1,7 @@
 "use client";
 
 import ReservationModal from "@/app/(app)/my/reservation/components/ReservationModal";
+import ReviewModal from "@/components/modal/ReviewModal";
 import { Reservation, ReservationStatus, ReservationStatusType } from "@/types/MyReservationType";
 import formatPrice from "@/utils/formatPrice";
 import Image from "next/image";
@@ -46,7 +47,7 @@ const ReservationItem = ({ reservation }: { reservation: Reservation }) => {
     RESERVATION_STATUS[reservation.status.toLowerCase() as ReservationStatus] || RESERVATION_STATUS.pending;
 
   return (
-    <section className="group relative flex rounded-3xl shadow-md">
+    <section className="relative flex rounded-3xl shadow-md">
       <div className="relative aspect-square w-1/3">
         <Image
           src={reservation.activity.bannerImageUrl}
@@ -76,7 +77,7 @@ const ReservationItem = ({ reservation }: { reservation: Reservation }) => {
             <button
               type="button"
               aria-label={status.buttonText}
-              className={`${status.buttonColor} absolute right-5 hidden rounded-md px-4 py-2 text-sm font-bold transition-all hover:opacity-90 group-hover:block md:px-6 md:py-3 md:text-base`}
+              className={`${status.buttonColor} rounded-md px-4 py-2 text-sm font-bold md:px-6 md:py-3 md:text-base ${reservation.reviewSubmitted === true ? "hidden" : ""}`}
               onClick={() => setIsModalOpen(true)}
             >
               {status.buttonText}
@@ -85,7 +86,12 @@ const ReservationItem = ({ reservation }: { reservation: Reservation }) => {
         </div>
       </div>
 
-      {isModalOpen && <ReservationModal setIsModalOpen={setIsModalOpen} reservationId={reservation.id} />}
+      {isModalOpen &&
+        (reservation.status === "pending" ? (
+          <ReservationModal setIsModalOpen={setIsModalOpen} reservationId={reservation.id} />
+        ) : (
+          <ReviewModal setIsModalOpen={setIsModalOpen} reservation={reservation} />
+        ))}
     </section>
   );
 };
