@@ -1,4 +1,4 @@
-import SideNavigation from "@/components/SideNavigation";
+import SideNavigation from "@/components/sideNavigation/SideNavigation";
 import { defaultMetadata } from "@/utils/metaTag";
 import { Metadata } from "next";
 import { ReactNode } from "react";

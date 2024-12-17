@@ -9,7 +9,7 @@ interface ModalProps {
   reservationId: number;
 }
 
-export default function ReservationModal({ setIsModalOpen, reservationId }: ModalProps): JSX.Element {
+const ReservationModal = ({ setIsModalOpen, reservationId }: ModalProps): JSX.Element => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const handleCloseModal = () => setIsModalOpen(false);
   const queryClient = useQueryClient();
@@ -64,4 +64,6 @@ export default function ReservationModal({ setIsModalOpen, reservationId }: Moda
       </div>
     </div>
   );
-}
+};
+
+export default ReservationModal;

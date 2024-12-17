@@ -9,7 +9,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const LABEL_STYLES = {
   small: "text-base font-normal",
-  large: "text-2xl font-bold gap-5 mt-5",
+  large: "text-lg font-bold gap-5 mt-5",
 } as const;
 
 const AuthInput = ({ label, labelStyle = "small", errors, ...props }: InputProps) => {

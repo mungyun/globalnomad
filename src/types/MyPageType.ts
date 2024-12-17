@@ -20,7 +20,7 @@ export type InputField = {
   name: keyof Signup;
   type: string;
   placeholder: string;
-  readOnly?: boolean;
+  disabled?: boolean;
 };
 
 export type ProfileUpdateData = {
@@ -28,3 +28,9 @@ export type ProfileUpdateData = {
   profileImageUrl: string;
   newPassword: string;
 };
+
+export interface ListProps {
+  iconName: string;
+  text: string;
+  link: string;
+}

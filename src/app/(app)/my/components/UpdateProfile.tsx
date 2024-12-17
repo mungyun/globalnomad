@@ -3,6 +3,8 @@
 import AuthInput from "@/components/input/AuthInput";
 import { useToast } from "@/components/toast/ToastProvider";
 import { getUsersProfile, updateUserProfile } from "@/lib/api/MyPage";
+import useAuthStore from "@/store/useAuthStore";
+import useUserImageStore from "@/store/useUserImageStore";
 import { InputField, ProfileUpdateData, User } from "@/types/MyPageType";
 import { Signup, SignupSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,7 +23,7 @@ const INPUT_FIELDS: InputField[] = [
     name: "email",
     type: "email",
     placeholder: "이메일을 입력해 주세요",
-    readOnly: true,
+    disabled: true,
   },
   {
     label: "비밀번호",
@@ -40,6 +42,9 @@ const INPUT_FIELDS: InputField[] = [
 const UpdateProfile = () => {
   const queryClient = useQueryClient();
   const toast = useToast();
+  const { user, setUser } = useAuthStore();
+  const serverUserImg = user?.profileImageUrl ?? "";
+  const { updateUserImage } = useUserImageStore();
 
   // 내 정보 조회 쿼리
   const {
@@ -75,10 +80,18 @@ const UpdateProfile = () => {
   const handleProfileUpdate = async (data: Signup) => {
     const updateData: ProfileUpdateData = {
       nickname: data.nickname,
-      profileImageUrl: "",
+      profileImageUrl: updateUserImage || serverUserImg,
       newPassword: data.password,
     };
     await mutation.mutateAsync(updateData);
+
+    if (user) {
+      setUser({
+        ...user,
+        nickname: updateData.nickname,
+        profileImageUrl: updateData.profileImageUrl,
+      });
+    }
   };
 
   // 리액트 hookForm
@@ -100,7 +113,7 @@ const UpdateProfile = () => {
 
   return (
     <section className="flex h-screen w-full max-w-[800px] flex-col">
-      <header className="mb-2 flex justify-between">
+      <header className="mb-3 flex justify-between">
         <h2 className="text-[32px] font-bold"> 내 정보</h2>
         <button
           className="flex h-[48px] w-[120px] items-center justify-center rounded bg-black02 font-semibold text-white"
@@ -112,7 +125,6 @@ const UpdateProfile = () => {
           {isSubmitting ? "저장 중..." : "저장하기"}
         </button>
       </header>
-
       <form className="flex flex-col gap-4">
         {INPUT_FIELDS.map((field) => (
           <AuthInput
@@ -123,7 +135,7 @@ const UpdateProfile = () => {
             errors={errors[field.name]?.message}
             placeholder={field.placeholder}
             labelStyle="large"
-            readOnly={field.readOnly}
+            disabled={field.disabled}
           />
         ))}
       </form>
