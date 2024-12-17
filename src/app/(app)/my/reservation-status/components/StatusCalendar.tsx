@@ -35,8 +35,10 @@ const StatusCalendar = () => {
     enabled: !!activityId && !!value,
     onError: (error: unknown) => {
       if (isAxiosError(error)) {
-        Toast.error(error?.message || Message.error);
+        Toast.error(error.response?.data?.message || Message.error);
         router.push("/404");
+      } else {
+        Toast.error(Message.error);
       }
     },
   } as UseQueryOptions<ReservationData[], Error>);

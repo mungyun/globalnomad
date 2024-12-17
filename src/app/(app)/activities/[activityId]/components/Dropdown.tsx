@@ -21,6 +21,8 @@ const Dropdown = ({ id }: { id: number }) => {
     } catch (error: unknown) {
       if (isAxiosError(error)) {
         Toast.error(error.response?.data?.message || Message.error);
+      } else {
+        Toast.error(Message.error);
       }
     }
   };

@@ -45,8 +45,9 @@ const CreateActivityForm = () => {
     onError: (error) => {
       if (isAxiosError(error)) {
         Toast.error(error.response?.data?.message || "체험 등록에 실패했습니다.");
+      } else {
+        Toast.error("체험 등록에 실패했습니다.");
       }
-      Toast.error("체험 등록에 실패했습니다.");
     },
   });
 

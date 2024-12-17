@@ -17,8 +17,9 @@ const useUploadImage = () => {
     onError: (error) => {
       if (isAxiosError(error)) {
         Toast.error(error.message || "이미지 업로드 중 에러가 발생했습니다.");
+      } else {
+        Toast.error("이미지 업로드 중 에러가 발생했습니다.");
       }
-      Toast.error("이미지 업로드 중 에러가 발생했습니다.");
     },
   });
 

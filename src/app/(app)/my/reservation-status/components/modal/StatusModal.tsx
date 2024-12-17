@@ -1,9 +1,11 @@
 "use client";
 
+import { useToast } from "@/components/toast/ToastProvider";
 import useDeviceType from "@/hooks/useDeviceType";
 import { getMyReservedSchedule } from "@/lib/api/MyActivities";
 import useReservationStore from "@/store/useReservationStore";
 import { Schedule, ScheduleCount } from "@/types/MyActivitiesType";
+import { isAxiosError } from "axios";
 import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -37,6 +39,7 @@ const StatusModal = ({ isOpen, onClose, date }: StatusModalProps) => {
 
   const { activityId } = useReservationStore();
   const setSchduleId = useReservationStore((state) => state.setScheduleId);
+  const Toast = useToast();
 
   // 모달 스크롤 방지
   useEffect(() => {
@@ -60,8 +63,12 @@ const StatusModal = ({ isOpen, onClose, date }: StatusModalProps) => {
         ).padStart(2, "0")}`;
         const response = await getMyReservedSchedule({ activityId, date: formattedDate });
         setScheduleData(response || []);
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        if (isAxiosError(error)) {
+          Toast.error(error.response?.data.message || "내 체험 날짜별 예약 정보에 실패했습니다.");
+        } else {
+          Toast.error("내 체험 날짜별 예약 정보에 실패했습니다.");
+        }
       } finally {
         setIsLoading(false);
       }

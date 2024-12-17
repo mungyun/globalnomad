@@ -8,7 +8,7 @@ export const getActivityDetail = async (id: number) => {
   try {
     const response = await axiosInstance.get(`/activities/${id}`);
     return response.data;
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
       throw error;
     }
@@ -30,7 +30,7 @@ export const postReservation = async ({
   try {
     const response = await proxy.post(`/api/activities/reservations`, { activityId, scheduleId, headCount });
     return response.data;
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
       throw error;
     }
@@ -52,7 +52,7 @@ export const getReviews = async ({
   try {
     const response = await axiosInstance.get(`/activities/${activityId}/reviews?page=${page}&size=${size}`);
     return response.data;
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
       throw error;
     }
@@ -66,7 +66,7 @@ export const PostActivities = async (data: PostActivityType) => {
   try {
     const res = await proxy.post("/api/activities", data);
     return res.data;
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
       throw error;
     }
@@ -86,7 +86,7 @@ export const PostActivitiesImage = async (file: File) => {
       },
     });
     return res.data;
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
       throw error;
     }
@@ -127,7 +127,7 @@ export const getActivities = async ({
     });
 
     return response.data;
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
       throw error;
     }

@@ -28,7 +28,7 @@ const CommentList = ({ activityId }: { activityId: number }) => {
 
   // 오류 처리
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>오류 발생: {error.message}</div>;
   }
 
   if (!reviewData) {

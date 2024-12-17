@@ -13,6 +13,7 @@ import { formatWithCommas, removeCommas } from "@/utils/numberFormat";
 import { PatchActivitySchema } from "@/zodSchema/activitySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -61,7 +62,10 @@ const UpdateActivityForm = ({ id }: formProps) => {
       Toast.success("체험 수정에 성공했습니다.");
     },
     onError: (error) => {
-      Toast.error(error.message || "체험 수정에 실패했습니다.");
+      if (isAxiosError(error)) {
+        Toast.error(error.message || "체험 수정에 실패했습니다.");
+      }
+      Toast.error("체험 수정에 실패했습니다.");
     },
   });
 
