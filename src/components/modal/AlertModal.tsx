@@ -49,7 +49,7 @@ const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
         queryClient.setQueryData(["myNotifications"], context.previousData);
       }
       if (isAxiosError(error)) {
-        Toast.error(error.response?.data?.message || Message.error);
+        Toast.error(error.response?.data?.message);
       } else {
         Toast.error(Message.error);
       }

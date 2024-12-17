@@ -35,7 +35,7 @@ const StatusCalendar = () => {
     enabled: !!activityId && !!value,
     onError: (error: unknown) => {
       if (isAxiosError(error)) {
-        Toast.error(error.response?.data?.message || Message.error);
+        Toast.error(error.response?.data?.message);
         router.push("/404");
       } else {
         Toast.error(Message.error);
