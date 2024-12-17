@@ -18,11 +18,13 @@ const Dropdown = ({ id }: { id: number }) => {
   const handleDelete = async (id: number) => {
     try {
       await deleteMyActivities(id);
+      Toast.success(Message.deleteActivitySuccess);
+      router.push("/");
     } catch (error: unknown) {
       if (isAxiosError(error)) {
         Toast.error(error.response?.data?.message);
       } else {
-        Toast.error(Message.error);
+        Toast.error(Message.deleteActivityError);
       }
     }
   };
