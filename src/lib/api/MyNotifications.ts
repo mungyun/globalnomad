@@ -16,9 +16,9 @@ export const getMyNotifications = async ({
     return response.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
-      throw new Error(error.response?.data?.message || "알림 데이터를 가져오는 중 오류 발생");
+      throw error;
     }
-    throw new Error("알림 데이터를 가져오는 중 알 수 없는 오류 발생");
+    throw error;
   }
 };
 

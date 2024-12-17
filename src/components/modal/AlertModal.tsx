@@ -4,6 +4,7 @@ import { AlertData } from "@/types/MyNotificationsType";
 import { Message } from "@/utils/toastMessage";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import Image from "next/image";
 import React, { useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -47,7 +48,11 @@ const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
       if (context?.previousData) {
         queryClient.setQueryData(["myNotifications"], context.previousData);
       }
-      Toast.error(error?.message || Message.error);
+      if (isAxiosError(error)) {
+        Toast.error(error.response?.data?.message || Message.error);
+      } else {
+        Toast.error(Message.error);
+      }
     },
     onSuccess: () => {
       Toast.success(Message.alertSuccess);
