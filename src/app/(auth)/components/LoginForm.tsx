@@ -44,10 +44,8 @@ const LoginForm = () => {
       router.push("/"); // 로그인 성공 시 로그인 페이지로 리다이렉트
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        // AxiosError인 경우
-        Toast.error(error.response?.data?.message || Message.loginError);
+        Toast.error(error.response?.data?.message);
       } else {
-        // 다른 오류가 발생한 경우
         Toast.error(Message.error);
       }
     } finally {

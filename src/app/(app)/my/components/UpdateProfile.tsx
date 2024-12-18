@@ -6,9 +6,11 @@ import { getUsersProfile, updateUserProfile } from "@/lib/api/MyPage";
 import useAuthStore from "@/store/useAuthStore";
 import useUserImageStore from "@/store/useUserImageStore";
 import { InputField, ProfileUpdateData, User } from "@/types/MyPageType";
+import { Message } from "@/utils/toastMessage";
 import { Signup, SignupSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 
 const INPUT_FIELDS: InputField[] = [
@@ -64,15 +66,19 @@ const UpdateProfile = () => {
     mutationFn: updateUserProfile,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["myPage"] });
-      toast.success("내 정보 수정 완료!");
+      toast.success(Message.updateProfileSuccess);
       reset((current) => ({
         ...current,
         password: "",
         confirmPassword: "",
       }));
     },
-    onError: (error) => {
-      toast.error(error.message);
+    onError: (error: unknown) => {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message);
+      } else {
+        toast.error(Message.updateProfileError);
+      }
     },
   });
 

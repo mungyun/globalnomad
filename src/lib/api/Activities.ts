@@ -8,8 +8,12 @@ export const getActivityDetail = async (id: number) => {
   try {
     const response = await axiosInstance.get(`/activities/${id}`);
     return response.data;
-  } catch (error) {
-    console.error("체험 상세 조회 오류: ", error);
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      throw error;
+    }
+
+    throw error;
   }
 };
 
@@ -26,10 +30,12 @@ export const postReservation = async ({
   try {
     const response = await proxy.post(`/api/activities/reservations`, { activityId, scheduleId, headCount });
     return response.data;
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
       throw error;
     }
+
+    throw error;
   }
 };
 
@@ -46,8 +52,12 @@ export const getReviews = async ({
   try {
     const response = await axiosInstance.get(`/activities/${activityId}/reviews?page=${page}&size=${size}`);
     return response.data;
-  } catch (error) {
-    console.error("체험 리뷰 조회 오류: ", error);
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      throw error;
+    }
+
+    throw error;
   }
 };
 
@@ -56,15 +66,12 @@ export const PostActivities = async (data: PostActivityType) => {
   try {
     const res = await proxy.post("/api/activities", data);
     return res.data;
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
-      const status = error.response?.status || 500;
-      const message = error.response?.data?.message || "서버 오류가 발생했습니다.";
-      throw new Error(`${message} (${status})`);
+      throw error;
     }
 
-    // Axios 외의 예외 처리
-    throw new Error("알 수 없는 오류가 발생했습니다.");
+    throw error;
   }
 };
 
@@ -79,15 +86,12 @@ export const PostActivitiesImage = async (file: File) => {
       },
     });
     return res.data;
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
-      const status = error.response?.status || 500;
-      const message = error.response?.data?.message || "서버 오류가 발생했습니다.";
-      throw new Error(`${message}(${status})`);
+      throw error;
     }
 
-    // Axios 외의 예외 처리
-    throw new Error("알 수 없는 오류가 발생했습니다.");
+    throw error;
   }
 };
 
@@ -123,7 +127,11 @@ export const getActivities = async ({
     });
 
     return response.data;
-  } catch (error) {
-    console.error("체험 리스트 조회 오류: ", error);
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      throw error;
+    }
+
+    throw error;
   }
 };

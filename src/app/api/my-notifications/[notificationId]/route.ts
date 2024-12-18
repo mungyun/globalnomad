@@ -2,6 +2,7 @@ import axiosInstance from "@/lib/api/axiosInstanceApi";
 import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
+// 내 알림 삭제
 export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ notificationId: string }> }) => {
   try {
     const { notificationId } = await params;
@@ -15,10 +16,10 @@ export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ n
     return NextResponse.json({ message: "알림이 삭제되었습니다." }, { status: 200 });
   } catch (error: unknown) {
     if (isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || "서버 오류";
+      const errorMessage = error.response?.data?.message || "서버에서 알 수 없는 오류가 발생했습니다.";
       return NextResponse.json({ message: errorMessage }, { status: error.response?.status || 500 });
     }
 
-    return NextResponse.json({ message: "서버 오류" }, { status: 500 });
+    return NextResponse.json({ message: "서버에서 알 수 없는 오류가 발생했습니다." }, { status: 500 });
   }
 };

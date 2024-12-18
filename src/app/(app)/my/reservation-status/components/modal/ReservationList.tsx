@@ -1,6 +1,9 @@
+import { useToast } from "@/components/toast/ToastProvider";
 import { getMyReservationByTime } from "@/lib/api/MyActivities";
 import useReservationStore from "@/store/useReservationStore";
 import { Reservation } from "@/types/MyActivitiesType";
+import { Message } from "@/utils/toastMessage";
+import { isAxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import ReservationItem from "./ReservationItem";
@@ -9,6 +12,7 @@ const ReservationList = ({ status }: { status: string }) => {
   const { activityId, scheduleId } = useReservationStore();
   const [reservationData, setReservationData] = useState<Reservation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const Toast = useToast();
 
   useEffect(() => {
     const fetchReservationData = async () => {
@@ -25,8 +29,12 @@ const ReservationList = ({ status }: { status: string }) => {
 
         const reservations = Array.isArray(response.reservations) ? response.reservations : [];
         setReservationData(reservations);
-      } catch (err) {
-        console.error("내 예약 시간대별 정보 조회 오류: ", err);
+      } catch (error) {
+        if (isAxiosError(error)) {
+          Toast.error(error.response?.data.message);
+        } else {
+          Toast.error(Message.reservationListByTimeError);
+        }
       } finally {
         setIsLoading(false);
       }

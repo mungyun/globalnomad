@@ -10,9 +10,11 @@ import { getActivityDetail } from "@/lib/api/Activities";
 import { PatchActivities } from "@/lib/api/MyActivities";
 import { ActivityDetail, PatchActivityType } from "@/types/ActivityType";
 import { formatWithCommas, removeCommas } from "@/utils/numberFormat";
+import { Message } from "@/utils/toastMessage";
 import { PatchActivitySchema } from "@/zodSchema/activitySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -58,10 +60,13 @@ const UpdateActivityForm = ({ id }: formProps) => {
     },
     onSuccess: () => {
       router.push("/my/activity");
-      Toast.success("체험 수정에 성공했습니다.");
+      Toast.success(Message.updateActivitySuccess);
     },
-    onError: (error) => {
-      Toast.error(error.message || "체험 수정에 실패했습니다.");
+    onError: (error: unknown) => {
+      if (isAxiosError(error)) {
+        Toast.error(error.response?.data?.message);
+      }
+      Toast.error(Message.updataActivityError);
     },
   });
 

@@ -1,5 +1,7 @@
 import { cancelMyReservation } from "@/lib/api/MyReservation";
+import { Message } from "@/utils/toastMessage";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
@@ -18,11 +20,15 @@ const ReservationModal = ({ setIsModalOpen, reservationId }: ModalProps): JSX.El
     mutationFn: () => cancelMyReservation(reservationId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reservations"] });
-      toast.success("예약 취소 완료");
+      toast.success(Message.deleteReservationSuccess);
       handleCloseModal();
     },
-    onError: (error) => {
-      toast.error(error.message);
+    onError: (error: unknown) => {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message);
+      } else {
+        toast.error(Message.deleteReservationSuccess);
+      }
     },
   });
 

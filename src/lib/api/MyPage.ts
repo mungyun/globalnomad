@@ -2,21 +2,20 @@ import { UpdateUser } from "@/types/MyPageType";
 import { isAxiosError } from "axios";
 import { proxy } from "./axiosInstanceApi";
 
+// 내 정보 조회
 export const getUsersProfile = async () => {
   try {
     const response = await proxy.get("/api/my");
     return response.data;
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
-      const message = error.response?.data?.message || "서버 오류가 발생했습니다.";
-      throw new Error(message);
+      throw error;
     }
-
-    // Axios 외의 예외 처리
-    throw new Error("알 수 없는 오류가 발생했습니다.");
+    throw error;
   }
 };
 
+// 내 정보 수정
 export const updateUserProfile = async (data: UpdateUser) => {
   try {
     const response = await proxy.patch("/api/my", {
@@ -26,17 +25,15 @@ export const updateUserProfile = async (data: UpdateUser) => {
     });
 
     return response.data;
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
-      const message = error.response?.data?.message || "서버 오류가 발생했습니다.";
-      throw new Error(message);
+      throw error;
     }
-
-    // Axios 외의 예외 처리
-    throw new Error("알 수 없는 오류가 발생했습니다.");
+    throw error;
   }
 };
 
+// 프로필 이미지 url 생성
 export const PostProfileImage = async (file: File) => {
   try {
     const formData = new FormData();
@@ -48,13 +45,10 @@ export const PostProfileImage = async (file: File) => {
       },
     });
     return response.data;
-  } catch (error) {
+  } catch (error: unknown) {
     if (isAxiosError(error)) {
-      const message = error.response?.data?.message || "서버 오류가 발생했습니다.";
-      throw new Error(message);
+      throw error;
     }
-
-    // Axios 외의 예외 처리
-    throw new Error("알 수 없는 오류가 발생했습니다.");
+    throw error;
   }
 };

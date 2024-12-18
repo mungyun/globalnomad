@@ -1,5 +1,6 @@
 "use client";
 
+import { useToast } from "@/components/toast/ToastProvider";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
@@ -10,6 +11,7 @@ interface KakaoMapProps {
 
 const KakaoMap = ({ address }: KakaoMapProps) => {
   const [coordinates, setCoordinates] = useState({ lat: 33.450701, lng: 126.570667 });
+  const Toast = useToast();
 
   useEffect(() => {
     const geocoder = new kakao.maps.services.Geocoder();
@@ -19,7 +21,7 @@ const KakaoMap = ({ address }: KakaoMapProps) => {
         const { x, y } = result[0];
         setCoordinates({ lat: parseFloat(y), lng: parseFloat(x) });
       } else {
-        console.error(address);
+        Toast.error("지도를 불러오던 중, 오류가 발생했습니다.");
       }
     });
   }, [address]);

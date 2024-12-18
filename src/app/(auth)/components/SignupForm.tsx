@@ -2,10 +2,13 @@
 
 import Button from "@/components/Button";
 import AuthInput from "@/components/input/AuthInput";
-import { postSignUp } from "@/lib/api/Users";
+import { useToast } from "@/components/toast/ToastProvider";
+import { postSignUp } from "@/lib/api/Auth";
 import useAuthStore from "@/store/useAuthStore";
+import { Message } from "@/utils/toastMessage";
 import { Signup, SignupSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -13,6 +16,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 const SignupForm = () => {
   const router = useRouter();
   const { user } = useAuthStore();
+  const Toast = useToast();
   const {
     register,
     handleSubmit,
@@ -33,10 +37,15 @@ const SignupForm = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit: SubmitHandler<Signup> = async ({ confirmPassword, ...submitData }) => {
     try {
-      await postSignUp(submitData); // 회원가입 요청
-      router.push("/login"); // 회원가입 성공 시 로그인 페이지로 리다이렉트
-    } catch (error) {
-      console.error("회원가입 중 오류 발생", error);
+      await postSignUp(submitData);
+      Toast.success(Message.signupSuccess);
+      router.push("/login");
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        Toast.error(error.response?.data.message);
+      } else {
+        Toast.error(Message.signupError);
+      }
     } finally {
       reset(); // 폼 초기화
     }
