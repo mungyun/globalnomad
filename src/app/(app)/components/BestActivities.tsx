@@ -67,7 +67,7 @@ const BestActivities = () => {
       </div>
       <div
         ref={carouselRef}
-        className="flex w-full gap-4 overflow-x-scroll md:gap-6 xl:transition-transform xl:duration-500 xl:ease-in-out"
+        className="flex w-full gap-4 overflow-hidden md:gap-6 xl:transition-transform xl:duration-500 xl:ease-in-out"
       >
         {deviceType === "desktop" ? "" : <div></div>}
         {activities.map((activity) => (
