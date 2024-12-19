@@ -2,7 +2,7 @@ import { User } from "@/types/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface AuthStore {
+export interface AuthStore {
   user: User | null;
   setUser: (userData: User) => void;
   clearUser: () => void;

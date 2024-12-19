@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   ...defaultMetadata,
 };
 
-const layout = ({ children }: { children: ReactNode }) => {
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <div>
       <Header />
@@ -18,4 +18,4 @@ const layout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default layout;
+export default Layout;
