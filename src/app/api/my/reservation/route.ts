@@ -11,12 +11,17 @@ export const GET = async (req: NextRequest) => {
   }
 
   try {
-    const response = await axiosInstance.get("/my-reservations", {
+    // const url = new URL(req.url);
+    const cursorId = req.nextUrl.searchParams.get("cursorId");
+    const status = req.nextUrl.searchParams.get("status");
+    console.log("status", status);
+
+    let url = `/my-reservations?size=10&status=${status}`;
+
+    if (cursorId) url += `&cursorId=${cursorId}`;
+    const response = await axiosInstance.get(url, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        size: 20,
       },
     });
     return NextResponse.json(response.data, { status: response.status });

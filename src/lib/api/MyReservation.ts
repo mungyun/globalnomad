@@ -3,12 +3,19 @@ import { isAxiosError } from "axios";
 import { proxy } from "./axiosInstanceApi";
 
 // 내 예약 정보 요청
-export const getMyReservation = async () => {
+export const getMyReservation = async ({
+  cursorId = null,
+  status = "pending",
+}: {
+  cursorId: number | null;
+  status: string;
+}) => {
   try {
-    const { data } = await proxy.get<ReservationResponse>("/api/my-reservations", {
-      params: { size: 10 },
-    });
-    return data.reservations;
+    let url = `/api/my-reservations?size=10&status=${status}`;
+
+    if (cursorId) url += `&cursorId=${cursorId}`;
+    const { data } = await proxy.get<ReservationResponse>(url);
+    return data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       throw error;
@@ -16,6 +23,21 @@ export const getMyReservation = async () => {
     throw error;
   }
 };
+// export const getMyReservation = async (cursorId: number, size: number) => {
+//   try {
+//     // const { data } = await proxy.get<ReservationResponse>("/api/my-reservations", {
+//     //   params: { size: 10 },
+//     // });
+
+//     const { data } = await proxy.get<ReservationResponse>(`/api/my-reservations?cusorId=${cursorId}&size=${size}`);
+//     return data;
+//   } catch (error: unknown) {
+//     if (isAxiosError(error)) {
+//       throw error;
+//     }
+//     throw error;
+//   }
+// };
 
 // 내 예약 취소 요청
 export const cancelMyReservation = async (reservationId: number) => {
