@@ -36,7 +36,7 @@ const Banner = () => {
   const currentMonth = new Date().getMonth() + 1;
 
   return (
-    <div ref={carouselRef} className="flex h-60 w-full overflow-auto md:h-[550px]">
+    <div ref={carouselRef} className="flex h-60 w-full overflow-hidden md:h-[550px]">
       {activities.map((activity) => (
         <section
           key={activity.id}

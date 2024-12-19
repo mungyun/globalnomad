@@ -40,7 +40,7 @@ const AllActivities = ({ keyword }: AllactivitiesProps) => {
   }, [keyword]);
 
   return (
-    <div className="px-4 md:px-6 xl:px-0">
+    <div className="overflow-hidden px-4 md:px-6 xl:px-0">
       {keyword ? "" : <Categories sort={sort} setSort={setSort} category={category} setCategory={setCategory} />}
 
       <div className="mb-[38px] flex flex-col gap-6 text-black03 md:mb-[72px] md:gap-8 xl:mb-16">
