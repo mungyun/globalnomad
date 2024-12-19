@@ -16,7 +16,7 @@ export const middleware = async (request: NextRequest): Promise<NextResponse> =>
   const { pathname } = request.nextUrl;
 
   // 특정 경로에 대해 토큰 갱신 로직을 실행
-  if (pathname.startsWith("/")) {
+  if (pathname.startsWith("/activities") || pathname.startsWith("/my")) {
     return refreshToken(request);
   }
 
@@ -29,19 +29,21 @@ const refreshToken = async (req: NextRequest): Promise<NextResponse> => {
   const accessToken = req.cookies.get("accessToken")?.value; // 액세스 토큰 가져오기
   const refreshToken = req.cookies.get("refreshToken")?.value; // 리프레시 토큰 가져오기
 
+  if (!accessToken && !refreshToken) {
+    //return NextResponse.redirect(new URL("/login", req.url));
+    console.log("헤더 수정이후, 리다이렉트 주석 해제 예정");
+  }
+
   const res = NextResponse.next(); // 기본 응답 생성
   const decodedToken = decodeToken(accessToken); // 액세스 토큰 디코드
 
   // 토큰이 없거나 만료된 경우
   if (!decodedToken || isTokenExpired(decodedToken)) {
     try {
-      // 리프레시 토큰이 없으면 로그인 페이지로 리다이렉트
-      if (!refreshToken) {
-        return NextResponse.redirect(new URL("/login", req.url));
-      }
-
       // 리프레시 토큰으로 새로운 토큰 요청
-      const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await refreshAccessToken(refreshToken);
+      const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await refreshAccessToken(
+        refreshToken || ""
+      );
 
       // 새로운 토큰을 쿠키에 저장
       res.cookies.set({
@@ -58,12 +60,8 @@ const refreshToken = async (req: NextRequest): Promise<NextResponse> => {
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7일 후 만료
       });
     } catch (error: unknown) {
-      // 리프레시 토큰이 유효하지 않은 경우 로그인 페이지로 리다이렉트
-      if (isAxiosError(error) && error.response?.status === 401) {
-        return NextResponse.redirect(new URL("/login", req.url));
-      }
-      // 기타 에러 발생 시 홈으로 리다이렉트
-      return NextResponse.redirect(new URL("/", req.url));
+      console.error(error);
+      return NextResponse.redirect(new URL("/login", req.url));
     }
   }
 
@@ -74,7 +72,7 @@ const refreshToken = async (req: NextRequest): Promise<NextResponse> => {
 const refreshAccessToken = async (refreshToken: string) => {
   try {
     const response = await axiosInstance.post(
-      "/auth/tokens", // 토큰 재발급 API
+      "/auth/tokens",
       {},
       {
         headers: {
@@ -89,7 +87,7 @@ const refreshAccessToken = async (refreshToken: string) => {
       throw new Error("토큰 재발급 중 오류가 발생했습니다.");
     }
 
-    return response.data; // 새 액세스 토큰과 리프레시 토큰 반환
+    return response.data;
   } catch (error) {
     // Axios 에러라면 다시 던져서 처리
     if (isAxiosError(error)) {
