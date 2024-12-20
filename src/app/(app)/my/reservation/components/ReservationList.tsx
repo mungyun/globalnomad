@@ -2,17 +2,12 @@
 
 import EmptyActivity from "@/components/EmptyActivity";
 import useInfinityItems from "@/hooks/useInfinityItems";
-import { getMyReservation } from "@/lib/api/MyReservation";
 import ReservationSkeleton from "@/skeleton/reservation/ReservationSkeleton";
-import { Reservation } from "@/types/MyReservationType";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { SyncLoader } from "react-spinners";
 import ReservationDropdown from "./ReservationDropdown";
 import ReservationItem from "./ReservationItem";
-
-// type ReservationStatus = null | "pending" | "canceled" | "confirmed" | "declined" | "completed";
 
 interface FilterOption {
   value: string;
@@ -30,34 +25,9 @@ const FILTER_OPTIONS: FilterOption[] = [
 
 export default function ReservationList() {
   const [filter, setFilter] = useState("");
-
   const { ref, inView } = useInView();
 
-  // const { data: reservations = [], isLoading } = useQuery<Reservation[]>({
-  //   queryKey: ["reservations"],
-  //   queryFn: getMyReservation,
-  //   select: (data) => (filter === "all" ? data : data.filter((item) => item.status === filter)),
-  //   retry: 1,
-  // });
-
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading } = useInfinityItems("reservation", filter);
-  // const { data, fetchNextPage, hasNextPage, isFetching, isLoading } = useInfinityItems();
-
-  // const { data, isLoading, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-  //   queryKey: ["reservation"],
-  //   queryFn: ({ pageParam }: { pageParam: number | undefined }) => getMyReservation(pageParam),
-  //   getNextPageParam: (lastPage, allPages) => {
-  //     const cursorId = lastPage.cursorId;
-  //     console.log("lastPage", lastPage);
-  //     console.log("allPages", allPages);
-  //     if (cursorId === null) {
-  //       return undefined;
-  //     }
-  //     return cursorId;
-  //   },
-  //   initialPageParam: undefined,
-  // });
-  console.log(data?.pages);
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetching) {
@@ -89,22 +59,15 @@ export default function ReservationList() {
       </header>
 
       <div className="flex flex-col gap-4">
-        {data?.pages.map((page) =>
-          page.totalCount === 0 ? (
-            <EmptyActivity />
-          ) : (
-            page.reservations.map((reservation) => <ReservationItem key={reservation.id} reservation={reservation} />)
-          )
-        )}
-        {/* {reservations.length > 0 ? (
-          reservations.map((reservation) => <ReservationItem key={reservation.id} reservation={reservation} />)
-        ) : (
-          <EmptyActivity />
-        )} */}
-
-        {/* {data.map((reservation) => (
-          <ReservationItem key={reservation.id} reservation={reservation} />
-        ))} */}
+        {data?.pages.map((page, pageIndex) => (
+          <div key={`page-${pageIndex}`}>
+            {page.totalCount === 0 ? (
+              <EmptyActivity />
+            ) : (
+              page.reservations.map((reservation) => <ReservationItem key={reservation.id} reservation={reservation} />)
+            )}
+          </div>
+        ))}
       </div>
       {hasNextPage ? (
         <div ref={ref} className="mt-10 flex justify-center">
