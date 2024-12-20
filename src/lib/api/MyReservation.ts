@@ -5,9 +5,10 @@ import { proxy } from "./axiosInstanceApi";
 // 내 예약 정보 요청
 export const getMyReservation = async ({ pageParam, filter }: { pageParam: number | unknown; filter: string }) => {
   try {
-    const { data } = await proxy.get<ReservationResponse>(`/api/my-reservations`, {
-      params: { cursorId: pageParam, size: 10, status: filter },
-    });
+    let url = "/api/my-reservations?size=10";
+    if (pageParam) url += `&cursorId=${pageParam}`;
+    if (filter) url += `&status=${filter}`;
+    const { data } = await proxy.get<ReservationResponse>(url);
     return data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
@@ -16,21 +17,6 @@ export const getMyReservation = async ({ pageParam, filter }: { pageParam: numbe
     throw error;
   }
 };
-// export const getMyReservation = async (cursorId: number, size: number) => {
-//   try {
-//     // const { data } = await proxy.get<ReservationResponse>("/api/my-reservations", {
-//     //   params: { size: 10 },
-//     // });
-
-//     const { data } = await proxy.get<ReservationResponse>(`/api/my-reservations?cusorId=${cursorId}&size=${size}`);
-//     return data;
-//   } catch (error: unknown) {
-//     if (isAxiosError(error)) {
-//       throw error;
-//     }
-//     throw error;
-//   }
-// };
 
 // 내 예약 취소 요청
 export const cancelMyReservation = async (reservationId: number) => {
