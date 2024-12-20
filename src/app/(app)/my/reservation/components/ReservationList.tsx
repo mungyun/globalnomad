@@ -2,7 +2,9 @@
 
 import EmptyActivity from "@/components/EmptyActivity";
 import useInfinityItems from "@/hooks/useInfinityItems";
+import { getMyReservation } from "@/lib/api/MyReservation";
 import ReservationSkeleton from "@/skeleton/reservation/ReservationSkeleton";
+import { Reservation } from "@/types/MyReservationType";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { SyncLoader } from "react-spinners";
@@ -27,7 +29,12 @@ export default function ReservationList() {
   const [filter, setFilter] = useState("");
   const { ref, inView } = useInView();
 
-  const { data, fetchNextPage, hasNextPage, isFetching, isLoading } = useInfinityItems("reservation", filter);
+  const { data, fetchNextPage, hasNextPage, isFetching, isLoading } = useInfinityItems(
+    "reservation",
+    getMyReservation,
+    filter
+  );
+  console.log(data);
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetching) {
@@ -59,15 +66,15 @@ export default function ReservationList() {
       </header>
 
       <div className="flex flex-col gap-4">
-        {data?.pages.map((page, pageIndex) => (
-          <div key={`page-${pageIndex}`}>
-            {page.totalCount === 0 ? (
-              <EmptyActivity />
-            ) : (
-              page.reservations.map((reservation) => <ReservationItem key={reservation.id} reservation={reservation} />)
-            )}
-          </div>
-        ))}
+        {data?.pages.map((page, i) =>
+          page.totalCount === 0 ? (
+            <EmptyActivity key={i} />
+          ) : (
+            page.reservations.map((reservation: Reservation) => (
+              <ReservationItem key={reservation.id} reservation={reservation} />
+            ))
+          )
+        )}
       </div>
       {hasNextPage ? (
         <div ref={ref} className="mt-10 flex justify-center">

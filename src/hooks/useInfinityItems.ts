@@ -1,11 +1,9 @@
-import { getMyReservation } from "@/lib/api/MyReservation";
-import { ReservationResponse } from "@/types/MyReservationType";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-const useInfinityItems = (key: string, filter?: string | undefined) => {
-  return useInfiniteQuery<ReservationResponse>({
+const useInfinityItems = (key: string, fetchFn, filter?: string | undefined) => {
+  return useInfiniteQuery({
     queryKey: [key, filter],
-    queryFn: ({ pageParam }: { pageParam: number | unknown }) => getMyReservation({ pageParam, filter: filter || "" }),
+    queryFn: ({ pageParam: cursorId }: { pageParam: number | unknown }) => fetchFn({ cursorId, filter: filter || "" }),
     getNextPageParam: (last) => {
       const cursorId = last.cursorId;
       if (cursorId === null) {
