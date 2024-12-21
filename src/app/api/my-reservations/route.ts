@@ -2,6 +2,7 @@ import axiosInstance from "@/lib/api/axiosInstanceApi";
 import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
+// 내 예약 요청
 export const GET = async (req: NextRequest) => {
   try {
     const size = req.nextUrl.searchParams.get("size");

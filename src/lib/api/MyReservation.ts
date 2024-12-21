@@ -21,7 +21,7 @@ export const getMyReservation = async ({ cursorId, filter }: { cursorId: number 
 // 내 예약 취소 요청
 export const cancelMyReservation = async (reservationId: number) => {
   try {
-    const response = await proxy.patch("/api/my/reservation", {
+    const response = await proxy.patch(`/api/my-reservations/${reservationId}`, {
       reservationId,
       status: "canceled",
     });
