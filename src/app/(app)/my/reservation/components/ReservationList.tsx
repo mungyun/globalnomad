@@ -1,10 +1,10 @@
 "use client";
 
 import EmptyActivity from "@/components/EmptyActivity";
-import useInfinityItems from "@/hooks/useInfinityItems";
 import { getMyReservation } from "@/lib/api/MyReservation";
 import ReservationSkeleton from "@/skeleton/reservation/ReservationSkeleton";
 import { Reservation } from "@/types/MyReservationType";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { SyncLoader } from "react-spinners";
@@ -25,26 +25,25 @@ const FILTER_OPTIONS: FilterOption[] = [
   { value: "completed", label: "체험 완료" },
 ];
 
-export default function ReservationList() {
+const ReservationList = () => {
   const [filter, setFilter] = useState("");
   const { ref, inView } = useInView();
 
-  const { data, fetchNextPage, hasNextPage, isFetching, isLoading } = useInfinityItems(
-    "reservation",
-    getMyReservation,
-    filter
-  );
-  console.log(data);
+  const { data, fetchNextPage, hasNextPage, isFetching, isLoading } = useInfiniteQuery({
+    queryKey: ["reservation", filter],
+    queryFn: ({ pageParam: cursorId }) => getMyReservation({ cursorId, filter }),
+    getNextPageParam: (last) => last.cursorId ?? undefined,
+    initialPageParam: null as number | null,
+  });
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetching) {
       fetchNextPage();
     }
-  }, [inView]);
+  }, [inView, hasNextPage, isFetching]);
 
   const handleFilterChange = (selectedLabel: string) => {
     const selectedOption = FILTER_OPTIONS.find((option) => option.label === selectedLabel);
-    console.log(selectedLabel);
     if (selectedOption) setFilter(selectedOption.value);
   };
 
@@ -76,11 +75,13 @@ export default function ReservationList() {
           )
         )}
       </div>
-      {hasNextPage ? (
+      {hasNextPage && (
         <div ref={ref} className="mt-10 flex justify-center">
           <SyncLoader size={10} color="#112211" />
         </div>
-      ) : null}
+      )}
     </section>
   );
-}
+};
+
+export default ReservationList;

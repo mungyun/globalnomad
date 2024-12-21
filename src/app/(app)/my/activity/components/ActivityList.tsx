@@ -1,10 +1,10 @@
 "use client";
 
 import EmptyActivity from "@/components/EmptyActivity";
-import useInfinityItems from "@/hooks/useInfinityItems";
-import { getMyActivities } from "@/lib/api/MyActivities";
+import { getManagedActivities } from "@/lib/api/MyActivities";
 import ActivitySkeleton from "@/skeleton/myactivity/ActivitySkeleton";
 import { Activity } from "@/types/MyActivitiesType";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
@@ -13,15 +13,20 @@ import ActivityItem from "./ActivityItem";
 
 const ActivityList = () => {
   const router = useRouter();
-
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetching } = useInfinityItems("activity", getMyActivities);
   const { ref, inView } = useInView();
 
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
+    queryKey: ["activity"],
+    queryFn: ({ pageParam: cursorId }) => getManagedActivities({ cursorId }),
+    getNextPageParam: (last) => last.cursorId ?? undefined,
+    initialPageParam: null,
+  });
+
   useEffect(() => {
-    if (hasNextPage && !isFetching) {
+    if (inView && hasNextPage && !isFetching) {
       fetchNextPage();
     }
-  }, [inView]);
+  }, [inView, hasNextPage, isFetching]);
 
   if (isLoading) return <ActivitySkeleton />;
 
@@ -50,11 +55,11 @@ const ActivityList = () => {
           )
         )}
       </div>
-      {hasNextPage ? (
+      {hasNextPage && (
         <div className="my-10 flex justify-center">
           <SyncLoader ref={ref} />
         </div>
-      ) : null}
+      )}
     </section>
   );
 };

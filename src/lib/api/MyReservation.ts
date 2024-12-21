@@ -3,7 +3,7 @@ import { isAxiosError } from "axios";
 import { proxy } from "./axiosInstanceApi";
 
 // 내 예약 정보 요청
-export const getMyReservation = async ({ cursorId, filter }: { cursorId: number | unknown; filter: string }) => {
+export const getMyReservation = async ({ cursorId, filter }: { cursorId: number | null; filter: string }) => {
   try {
     let url = "/api/my-reservations?size=10";
     if (cursorId) url += `&cursorId=${cursorId}`;

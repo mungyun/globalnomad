@@ -18,6 +18,22 @@ export const getMyActivities = async ({ cursorId = null, size = 10 }: { cursorId
   }
 };
 
+// 내 체험 목록 조회
+export const getManagedActivities = async ({ cursorId = null }: { cursorId: number | null }) => {
+  try {
+    let url = `/api/my-activities?size=10`;
+
+    if (cursorId) url += `&cursorId=${cursorId}`;
+    const response = await proxy.get(url);
+    return response.data;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
+
 // 내 체험 삭제
 export const deleteMyActivities = async (activityId: number) => {
   try {
