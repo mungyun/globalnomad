@@ -28,7 +28,7 @@ const KakaoMap = ({ address }: KakaoMapProps) => {
 
   return (
     <>
-      <div className="relative z-0 h-[482px] w-full md:h-[276px] xl:h-[450px]">
+      <div className="relative z-0 h-[343px] w-full md:h-[276px] xl:h-[450px]">
         <Map center={coordinates} style={{ width: "100%", height: "100%" }} level={3}>
           <MapMarker position={coordinates}></MapMarker>
         </Map>
