@@ -84,6 +84,17 @@ const AlertModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
             : "absolute top-[57px] h-[356px] rounded-[10px] md:right-0 md:w-[368px]"
         }`}
       >
+        <div className="mb-4 flex justify-between">
+          <h2 className="text-[20px] font-bold text-black03">알림 0개</h2>
+          <Image
+            className="cursor-pointer"
+            onClick={onClose}
+            src="/icons/X.svg"
+            alt="모달 닫기"
+            width={24}
+            height={24}
+          />
+        </div>
         <Skeleton height={126} width={328} />
         <Skeleton height={126} width={328} />
       </div>
