@@ -2,7 +2,7 @@
 
 import { useToast } from "@/components/toast/ToastProvider";
 import { postLogin } from "@/lib/api/Auth";
-import useAuthStore from "@/store/useAuthStore";
+import { getUsersProfile } from "@/lib/api/MyPage";
 import { Message } from "@/utils/toastMessage";
 import { Login, LoginSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +16,7 @@ import AuthInput from "../../../components/input/AuthInput";
 const LoginForm = () => {
   const router = useRouter();
   const Toast = useToast();
-  const { user, setUser } = useAuthStore();
+
   const {
     register,
     handleSubmit,
@@ -29,17 +29,23 @@ const LoginForm = () => {
 
   // 로그인 상태라면 메인 화면으로 리다이렉트
   useEffect(() => {
-    if (user) {
-      router.push("/");
-    }
-  }, [user, router]);
+    const checkLoginStatus = async () => {
+      try {
+        const res = await getUsersProfile();
+        if (res) {
+          router.push("/");
+        }
+      } catch {
+        // 아무 동작도 하지 않음
+      }
+    };
+
+    checkLoginStatus();
+  }, [router]);
 
   const onSubmit: SubmitHandler<Login> = async (data) => {
     try {
-      const res = await postLogin(data); // 로그인 요청
-      if (res.user) {
-        setUser(res.user);
-      }
+      await postLogin(data); // 로그인 요청
       Toast.success(Message.loginSuccess);
       router.push("/"); // 로그인 성공 시 로그인 페이지로 리다이렉트
     } catch (error: unknown) {

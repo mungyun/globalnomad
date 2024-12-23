@@ -1,14 +1,34 @@
-"use client";
-
-import useAuthStore from "@/store/useAuthStore";
+import axiosInstance from "@/lib/api/axiosInstanceApi";
+import { User } from "@/types/types";
+import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import HeaderDropdown from "../dropdown/HeaderDropdown";
 import Notification from "./Notification";
 
-const Header = () => {
-  const { user } = useAuthStore();
+const fetchUser = async (): Promise<User | null> => {
+  try {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get("accessToken")?.value;
+
+    if (!accessToken) return null;
+
+    const res = await axiosInstance.get(`/users/me`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.error("데이터를 불러오는데 문제가 생겼습니다.", error);
+    return null;
+  }
+};
+
+const Header = async () => {
+  const user = await fetchUser();
 
   return (
     <div className="h-[70px] w-full border-b border-gray03 p-5">
