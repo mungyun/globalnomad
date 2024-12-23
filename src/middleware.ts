@@ -2,57 +2,74 @@ import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import axiosInstance from "./lib/api/axiosInstanceApi";
 
+// 디코딩된 JWT 토큰의 구조 정의
 interface DecodedPayload {
-  id: number; // 사용자의 ID (숫자 타입)
-  teamId: string; // 팀 ID (문자열 타입)
-  iat: number; // 발급 시간 (초 단위로 표현된 숫자)
-  exp: number; // 만료 시간 (초 단위로 표현된 숫자)
-  iss: string; // 발급자 (문자열 타입)
+  id: number; // 사용자의 ID
+  teamId: string; // 팀 ID
+  iat: number; // 토큰 발급 시간 (초 단위)
+  exp: number; // 토큰 만료 시간 (초 단위)
+  iss: string; // 발급자
 }
 
+// 미들웨어 함수 - 모든 요청에 대해 실행
 export const middleware = async (request: NextRequest): Promise<NextResponse> => {
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith("/")) {
-    return await refreshToken(request);
+  // 특정 경로에 대해 토큰 갱신 로직을 실행
+  if (pathname.startsWith("/activities") || pathname.startsWith("/my")) {
+    return refreshToken(request);
   }
 
+  // 기본적으로 요청을 통과시킴
   return NextResponse.next();
 };
 
-const refreshToken = async (req: NextRequest) => {
-  const AccessToken = req.cookies.get("accessToken")?.value;
-  const RefreshToken = req.cookies.get("refreshToken")?.value;
+// 토큰 갱신 함수
+const refreshToken = async (req: NextRequest): Promise<NextResponse> => {
+  const accessToken = req.cookies.get("accessToken")?.value; // 액세스 토큰 가져오기
+  const refreshToken = req.cookies.get("refreshToken")?.value; // 리프레시 토큰 가져오기
 
-  const res = NextResponse.next();
-
-  const response = decodeToken(AccessToken);
-
-  if (!response || isTokenExpired(response)) {
-    // 리프레시 토큰을 이용해 새로운 액세스 토큰 발급
-    const { accessToken, refreshToken } = await refreshAccessToken(RefreshToken || "");
-    const access_token = {
-      name: "accessToken",
-      expires: Date.now() + 1 * 60 * 60 * 1000, // 1시간,
-      httpOnly: true,
-      value: accessToken,
-    };
-    const refresh_token = {
-      name: "refreshToken",
-      expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7일,
-      httpOnly: true,
-      value: refreshToken,
-    };
-    res.cookies.set(access_token);
-    res.cookies.set(refresh_token);
+  if (!accessToken && !refreshToken) {
+    //return NextResponse.redirect(new URL("/login", req.url));
+    console.log("헤더 수정이후, 리다이렉트 주석 해제 예정");
   }
 
-  return res;
+  const res = NextResponse.next(); // 기본 응답 생성
+  const decodedToken = decodeToken(accessToken); // 액세스 토큰 디코드
+
+  // 토큰이 없거나 만료된 경우
+  if (!decodedToken || isTokenExpired(decodedToken)) {
+    try {
+      // 리프레시 토큰으로 새로운 토큰 요청
+      const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await refreshAccessToken(
+        refreshToken || ""
+      );
+
+      // 새로운 토큰을 쿠키에 저장
+      res.cookies.set({
+        name: "accessToken",
+        value: newAccessToken,
+        httpOnly: true,
+        expires: new Date(Date.now() + 1 * 60 * 60 * 1000), // 1시간 후 만료
+      });
+
+      res.cookies.set({
+        name: "refreshToken",
+        value: newRefreshToken,
+        httpOnly: true,
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7일 후 만료
+      });
+    } catch (error: unknown) {
+      console.error(error);
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
+  }
+
+  return res; // 요청을 계속 진행
 };
 
-// 리프레시 토큰을 요청해서 새로운 액세스 토큰을 받는 함수
+// 리프레시 토큰을 이용해 새로운 액세스 토큰 요청
 const refreshAccessToken = async (refreshToken: string) => {
-  if (!refreshToken) return null;
   try {
     const response = await axiosInstance.post(
       "/auth/tokens",
@@ -60,49 +77,41 @@ const refreshAccessToken = async (refreshToken: string) => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${refreshToken}`,
+          Authorization: `Bearer ${refreshToken}`, // 리프레시 토큰을 인증 헤더에 추가
         },
       }
     );
 
+    // 응답에 토큰 데이터가 없으면 에러 발생
+    if (!response.data || !response.data.accessToken || !response.data.refreshToken) {
+      throw new Error("토큰 재발급 중 오류가 발생했습니다.");
+    }
+
     return response.data;
   } catch (error) {
+    // Axios 에러라면 다시 던져서 처리
     if (isAxiosError(error)) {
       throw error;
     }
-    throw error;
   }
 };
 
-// 디코딩된 토큰에서 유효 기간(exp) 확인
+// JWT 토큰 디코딩 함수
 const decodeToken = (accessToken: string | undefined) => {
-  if (!accessToken) {
-    return null; // 토큰이 비어있음
-  }
+  if (!accessToken) return null; // 토큰이 없으면 null 반환
 
-  // JWT를 '.'로 분리하여 페이로드를 가져옵니다.
-  const parts = accessToken.split(".");
-  if (parts.length !== 3) {
-    return null; // 잘못된 형식의 토큰
-  }
+  const parts = accessToken.split("."); // 토큰을 '.' 기준으로 분리
+  if (parts.length !== 3) return null; // 잘못된 형식의 토큰 처리
 
-  // Base64Url로 인코딩된 페이로드를 디코드합니다.
-  const payload = parts[1];
-  const decodedPayload = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
-
-  return decodedPayload;
+  const payload = parts[1]; // 페이로드 부분 가져오기
+  return JSON.parse(Buffer.from(payload, "base64url").toString("utf8")); // Base64Url 디코드 후 JSON 파싱
 };
 
-// 토큰이 만료되었는지 확인하는 함수
+// 토큰 만료 여부 확인 함수
 const isTokenExpired = (decodedPayload: DecodedPayload) => {
-  const exp = decodedPayload?.exp; // exp는 토큰 만료 시간을 나타내는 값 (초 단위)
-
-  if (!exp) {
-    return true; // exp가 없다면 만료된 것으로 처리
-  }
+  const exp = decodedPayload?.exp; // 만료 시간 가져오기
+  if (!exp) return true; // 만료 시간이 없으면 만료된 것으로 처리
 
   const currentTime = Math.floor(Date.now() / 1000); // 현재 시간 (초 단위)
-
-  // 만약 현재 시간이 exp보다 크면 만료된 것으로 간주
-  return currentTime > exp;
+  return currentTime > exp; // 현재 시간이 만료 시간보다 크면 만료된 것으로 간주
 };
