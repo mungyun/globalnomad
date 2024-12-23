@@ -1,25 +1,36 @@
 "use client";
 
-import useAuthStore from "@/store/useAuthStore";
+import { Logout } from "@/lib/api/Auth";
+import { Message } from "@/utils/toastMessage";
+import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect, useRef, useState } from "react";
+import { useToast } from "../toast/ToastProvider";
 
 const HeaderDropdown = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
-  const { clearUser } = useAuthStore();
+  const Toast = useToast();
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
   };
 
-  const handleSelect = (value: string) => {
+  const handleSelect = async (value: string) => {
     setIsOpen(false);
     if (value === "mypage") {
       router.push("/my");
-    } else {
-      clearUser();
+    } else if (value === "logout") {
+      try {
+        await Logout();
+        router.push("/");
+        window.location.reload();
+      } catch (error) {
+        if (isAxiosError(error)) {
+          Toast.error(Message.logoutError);
+        }
+      }
     }
   };
 

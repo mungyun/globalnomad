@@ -30,8 +30,7 @@ const refreshToken = async (req: NextRequest): Promise<NextResponse> => {
   const refreshToken = req.cookies.get("refreshToken")?.value; // 리프레시 토큰 가져오기
 
   if (!accessToken && !refreshToken) {
-    //return NextResponse.redirect(new URL("/login", req.url));
-    console.log("헤더 수정이후, 리다이렉트 주석 해제 예정");
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
   const res = NextResponse.next(); // 기본 응답 생성

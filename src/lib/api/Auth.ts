@@ -1,4 +1,4 @@
-import { isAxiosError } from "axios";
+import axios, { isAxiosError } from "axios";
 import { proxy } from "./axiosInstanceApi";
 
 // 로그인
@@ -30,6 +30,18 @@ export const postSignUp = async ({
     if (res.status >= 200 && res.status < 300) {
       return res.data;
     }
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      throw error;
+    }
+    throw error;
+  }
+};
+
+export const Logout = async () => {
+  try {
+    const res = await axios.get("/api/auth/logout");
+    return res.data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       throw error;
