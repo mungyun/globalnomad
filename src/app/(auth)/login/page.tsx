@@ -8,7 +8,7 @@ const LoginPage = () => {
       <LoginForm />
 
       <p className="text-base leading-[19.09px] text-gray09">
-        회원이 아니신가요?{" "}
+        회원이 아니신가요?
         <Link href="/signup" className="text-green02 underline">
           회원가입하기
         </Link>
