@@ -2,15 +2,18 @@ import axiosInstance from "@/lib/api/axiosInstanceApi";
 import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
+// 내 예약 요청
 export const GET = async (req: NextRequest) => {
   try {
     const size = req.nextUrl.searchParams.get("size");
     const cursorId = req.nextUrl.searchParams.get("cursorId");
+    const status = req.nextUrl.searchParams.get("status");
 
     const accessToken = req.cookies.get("accessToken")?.value;
 
     let url = `/my-reservations?size=${size}`;
     if (cursorId) url += `&cursorId=${cursorId}`;
+    if (status) url += `&status=${status}`;
 
     const response = await axiosInstance.get(url, {
       headers: {

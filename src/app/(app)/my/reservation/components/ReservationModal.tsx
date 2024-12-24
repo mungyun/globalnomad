@@ -19,7 +19,7 @@ const ReservationModal = ({ setIsModalOpen, reservationId }: ModalProps): JSX.El
   const mutation = useMutation({
     mutationFn: () => cancelMyReservation(reservationId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["reservations"] });
+      queryClient.invalidateQueries({ queryKey: ["reservation"] });
       toast.success(Message.deleteReservationSuccess);
       handleCloseModal();
     },

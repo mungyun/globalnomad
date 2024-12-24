@@ -3,12 +3,13 @@ import { isAxiosError } from "axios";
 import { proxy } from "./axiosInstanceApi";
 
 // 내 예약 정보 요청
-export const getMyReservation = async () => {
+export const getMyReservation = async ({ cursorId, filter }: { cursorId: number | null; filter: string }) => {
   try {
-    const { data } = await proxy.get<ReservationResponse>("/api/my-reservations", {
-      params: { size: 10 },
-    });
-    return data.reservations;
+    let url = "/api/my-reservations?size=10";
+    if (cursorId) url += `&cursorId=${cursorId}`;
+    if (filter) url += `&status=${filter}`;
+    const { data } = await proxy.get<ReservationResponse>(url);
+    return data;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       throw error;
@@ -20,7 +21,7 @@ export const getMyReservation = async () => {
 // 내 예약 취소 요청
 export const cancelMyReservation = async (reservationId: number) => {
   try {
-    const response = await proxy.patch("/api/my/reservation", {
+    const response = await proxy.patch(`/api/my-reservations/${reservationId}`, {
       reservationId,
       status: "canceled",
     });
