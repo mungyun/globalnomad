@@ -25,9 +25,11 @@ const TimeSlot = ({ time, isSelected, onClick }: { time: string; isSelected: boo
 
 const ActivityCalendar = ({ schedules, onChange }: ActivityCalendarProps) => {
   const [timeList, setTimeList] = useState<string[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null); // 선택한 날짜 상태 추가
   const { selectedTime, setSelectedTime } = useActivityStore();
 
   const handleDateClick = (date: Date): void => {
+    setSelectedDate(date); // 선택한 날짜 저장
     const localFormattedDate = formatToLocalDateString(date);
 
     const times = schedules
@@ -42,12 +44,22 @@ const ActivityCalendar = ({ schedules, onChange }: ActivityCalendarProps) => {
   };
 
   const handleTimeClick = (time: string): void => {
-    // 선택된 시간에 해당하는 id를 찾아서 selectedId에 저장
-    const selectedSchedule = schedules.find((schedule) => `${schedule.startTime} ~ ${schedule.endTime}` === time);
+    if (!selectedDate) return; // 선택된 날짜가 없으면 리턴
+
+    const localFormattedDate = formatToLocalDateString(selectedDate); // 선택된 날짜 포맷
+    const selectedSchedule = schedules.find(
+      (schedule) => `${schedule.startTime} ~ ${schedule.endTime}` === time && schedule.date === localFormattedDate
+    );
 
     if (selectedSchedule) {
-      setSelectedTime(time);
-      onChange(selectedSchedule.id);
+      // 선택된 시간이 이전 선택과 다를 경우에만 onChange 호출
+      if (selectedTime !== time) {
+        setSelectedTime(time);
+        onChange(selectedSchedule.id); // 새로운 id 저장
+      }
+    } else {
+      setSelectedTime("");
+      onChange(-1); // 잘못된 id 처리
     }
   };
 
