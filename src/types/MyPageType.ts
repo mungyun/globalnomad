@@ -11,7 +11,7 @@ export interface User {
 
 export interface UpdateUser {
   nickname: string;
-  profileImageUrl: string;
+  profileImageUrl: string | null;
   newPassword: string;
 }
 
@@ -25,7 +25,7 @@ export type InputField = {
 
 export type ProfileUpdateData = {
   nickname: string;
-  profileImageUrl: string;
+  profileImageUrl: string | null;
   newPassword: string;
 };
 

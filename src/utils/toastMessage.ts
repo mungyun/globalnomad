@@ -26,4 +26,5 @@ export const Message = {
   updateImageError: "이미지 업로드 중 에러가 발생했습니다.",
   reservationListByTimeError: "내 체험 시간대별 예약 내역 조회에 실패했습니다.",
   reservationListByDayError: "내 체험 날짜별 예약 정보에 실패했습니다.",
+  uploadImageError: "JPG, PNG, GIF 형식의 이미지만 업로드 가능합니다.",
 };
