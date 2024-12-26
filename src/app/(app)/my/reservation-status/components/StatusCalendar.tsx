@@ -26,13 +26,13 @@ const StatusCalendar = () => {
   const Toast = useToast();
   const router = useRouter();
 
-  const year = String(value.getFullYear());
-  const month = String(value.getMonth() + 1);
+  const year = String(activeStartDate.getFullYear());
+  const month = String(activeStartDate.getMonth() + 1).padStart(2, "0"); // 두 자리로 패딩 처리
 
   const { data: reservationData = [], isLoading } = useQuery<ReservationData[], Error>({
     queryKey: ["ReservationDataByMonth", year, month, activityId],
     queryFn: () => getMyActivitiesByMonth({ year, month, activityId }),
-    enabled: !!activityId && !!value,
+    enabled: !!activityId && !!activeStartDate,
     onError: (error: unknown) => {
       if (isAxiosError(error)) {
         Toast.error(error.response?.data?.message);
@@ -81,9 +81,13 @@ const StatusCalendar = () => {
       ) : (
         <Calendar
           value={value}
-          onChange={(newValue) => setValue(newValue as Date)} // Date[] 가능성에 대비한 타입 단언
+          onChange={(newValue) => setValue(newValue as Date)}
           activeStartDate={activeStartDate}
-          onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate!)} // null 방지
+          onActiveStartDateChange={({ activeStartDate }) => {
+            if (activeStartDate) {
+              setActiveStartDate(activeStartDate);
+            }
+          }}
           onClickDay={(date) => {
             setSelectedDate(date);
             setStatusModalOpen(true);

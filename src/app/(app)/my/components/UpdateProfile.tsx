@@ -3,7 +3,6 @@
 import AuthInput from "@/components/input/AuthInput";
 import { useToast } from "@/components/toast/ToastProvider";
 import { getUsersProfile, updateUserProfile } from "@/lib/api/MyPage";
-import useAuthStore from "@/store/useAuthStore";
 import useUserImageStore from "@/store/useUserImageStore";
 import { InputField, ProfileUpdateData, User } from "@/types/MyPageType";
 import { Message } from "@/utils/toastMessage";
@@ -11,6 +10,7 @@ import { Signup, SignupSchema } from "@/zodSchema/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 const INPUT_FIELDS: InputField[] = [
@@ -44,9 +44,8 @@ const INPUT_FIELDS: InputField[] = [
 const UpdateProfile = () => {
   const queryClient = useQueryClient();
   const toast = useToast();
-  const { user, setUser } = useAuthStore();
-  const serverUserImg = user?.profileImageUrl ?? "";
-  const { updateUserImage } = useUserImageStore();
+  const router = useRouter();
+  const { currentUserImage, updateUserImage } = useUserImageStore();
 
   // 내 정보 조회 쿼리
   const {
@@ -54,13 +53,13 @@ const UpdateProfile = () => {
     error,
     isError,
   } = useQuery<User, Error>({
-    queryKey: ["myPage"],
+    queryKey: ["userProfile"],
     queryFn: getUsersProfile,
-    retry: 1,
   });
   if (isError) {
     toast.error(error.message);
   }
+
   // 내 정보 수정 뮤테이션
   const mutation = useMutation({
     mutationFn: updateUserProfile,
@@ -72,6 +71,8 @@ const UpdateProfile = () => {
         password: "",
         confirmPassword: "",
       }));
+      router.push("/");
+      router.refresh();
     },
     onError: (error: unknown) => {
       if (isAxiosError(error)) {
@@ -86,18 +87,10 @@ const UpdateProfile = () => {
   const handleProfileUpdate = async (data: Signup) => {
     const updateData: ProfileUpdateData = {
       nickname: data.nickname,
-      profileImageUrl: updateUserImage || serverUserImg,
+      profileImageUrl: updateUserImage || currentUserImage,
       newPassword: data.password,
     };
     await mutation.mutateAsync(updateData);
-
-    if (user) {
-      setUser({
-        ...user,
-        nickname: updateData.nickname,
-        profileImageUrl: updateData.profileImageUrl,
-      });
-    }
   };
 
   // 리액트 hookForm

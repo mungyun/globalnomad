@@ -1,12 +1,16 @@
 import { create } from "zustand";
 
 interface IuseUserImageStore {
-  updateUserImage: string;
+  currentUserImage: string | null;
+  updateUserImage: string | null;
+  setCurrentUserImage: (userImage: string) => void;
   setUpdateUserImage: (userImage: string) => void;
 }
 
 const useUserImageStore = create<IuseUserImageStore>((set) => ({
-  updateUserImage: "",
+  currentUserImage: null,
+  updateUserImage: null,
+  setCurrentUserImage: (newCurrentImage: string) => set({ currentUserImage: newCurrentImage }),
   setUpdateUserImage: (newUserImage: string) => set({ updateUserImage: newUserImage }),
 }));
 
