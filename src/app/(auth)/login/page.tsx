@@ -1,6 +1,7 @@
 import LoginForm from "@/app/(auth)/components/LoginForm";
 import SocialLogin from "@/app/(auth)/components/SocialLogin";
 import Link from "next/link";
+import { Suspense } from "react";
 
 const LoginPage = () => {
   return (
@@ -13,8 +14,9 @@ const LoginPage = () => {
           회원가입하기
         </Link>
       </p>
-
-      <SocialLogin />
+      <Suspense>
+        <SocialLogin />
+      </Suspense>
     </>
   );
 };

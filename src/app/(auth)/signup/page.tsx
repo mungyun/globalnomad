@@ -1,5 +1,6 @@
 import SignupForm from "@/app/(auth)/components/SignupForm";
 import Link from "next/link";
+import { Suspense } from "react";
 import SocialLogin from "../components/SocialLogin";
 
 const SignupPage = () => {
@@ -12,7 +13,9 @@ const SignupPage = () => {
           로그인하기
         </Link>
       </p>
-      <SocialLogin />
+      <Suspense>
+        <SocialLogin />
+      </Suspense>
     </>
   );
 };
