@@ -8,7 +8,7 @@ const OPTIONS = [
   { label: "가격이 낮은 순", value: "price_asc" },
   { label: "가격이 높은 순", value: "price_desc" },
 ];
-const CATEGORY = ["문화 · 예술", "스포츠", "식음료", "투어", "관광", "웰빙"];
+const CATEGORY = ["", "문화 · 예술", "스포츠", "식음료", "투어", "웰빙"];
 
 interface CategoriesProps {
   sort: string;
@@ -32,7 +32,7 @@ const Categories = ({ sort, category, setSort, setCategory }: CategoriesProps) =
       <div className="scroll-container flex gap-2 md:gap-[14px] xl:gap-6">
         {CATEGORY.map((option) => (
           <CategoryButton key={option} active={option === category} onClick={() => setCategory(option)}>
-            {option}
+            {option === "" ? "전체" : option}
           </CategoryButton>
         ))}
       </div>
