@@ -12,7 +12,7 @@ const SocialLogin = () => {
   const Toast = useToast();
 
   const redirect_uri = `${process.env.NEXT_PUBLIC_REDIRECT_URL}`;
-  const googleAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${redirect_uri}/sign-in/google&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile`;
+  // const googleAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${redirect_uri}/sign-in/google&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile`;
   const kakaoAuthURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${redirect_uri}/sign-in/kakao&response_type=code`;
 
   useEffect(() => {
@@ -32,12 +32,17 @@ const SocialLogin = () => {
         SNS 계정으로 로그인하기
       </p>
       <div className="mx-auto flex w-fit gap-4 pt-9 md:pt-14">
-        {/* 구글 로그인 */}
-        <Link href={googleAuthURL} className="inline-flex">
+        {/* 구글 로그인 ( 구글 정책으로 인해 소셜 로그인 구현이 제한됨 ) */}
+        {/* <Link href={googleAuthURL} className="inline-flex">
           <div className="relative size-12 rounded-full md:size-[72px]">
             <Image src="/icons/google.svg" alt="구글 간편 로그인" fill />
           </div>
-        </Link>
+        </Link> */}
+        <button onClick={() => Toast.error("Google 로그인 기능이 일시적으로 제한되어 있습니다")}>
+          <div className="relative size-12 rounded-full md:size-[72px]">
+            <Image src="/icons/google.svg" alt="구글 간편 로그인" fill />
+          </div>
+        </button>
         {/* 카카오톡 로그인 */}
         <Link href={kakaoAuthURL} className="inline-flex">
           <div className="relative size-12 rounded-full md:size-[72px]">
