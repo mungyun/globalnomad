@@ -28,7 +28,6 @@ export const GET = async (req: NextRequest) => {
 
   const tokenData = await tokenResponse.json();
   const { id_token } = tokenData;
-  console.log(tokenData);
   try {
     const response = await axiosInstance.post(`/oauth/sign-up/google`, {
       token: id_token,
