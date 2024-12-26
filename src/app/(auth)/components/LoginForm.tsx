@@ -34,7 +34,7 @@ const LoginForm = () => {
         const res = await getUsersProfile();
         if (res) {
           router.push("/");
-          window.location.reload();
+          router.refresh();
         }
       } catch {
         // 아무 동작도 하지 않음
@@ -49,7 +49,7 @@ const LoginForm = () => {
       await postLogin(data); // 로그인 요청
       Toast.success(Message.loginSuccess);
       router.push("/"); // 로그인 성공 시 로그인 페이지로 리다이렉트
-      window.location.reload();
+      router.refresh();
     } catch (error: unknown) {
       if (isAxiosError(error)) {
         Toast.error(error.response?.data?.message);
