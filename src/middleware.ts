@@ -16,7 +16,7 @@ export const middleware = async (request: NextRequest): Promise<NextResponse> =>
   const { pathname } = request.nextUrl;
 
   // 특정 경로에 대해 토큰 갱신 로직을 실행
-  if (pathname.startsWith("/activities") || pathname.startsWith("/my")) {
+  if (pathname.startsWith("/my")) {
     return refreshToken(request);
   }
 
