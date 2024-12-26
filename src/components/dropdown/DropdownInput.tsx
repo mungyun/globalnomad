@@ -14,7 +14,6 @@ const CATEGORY = [
   { value: "스포츠" },
   { value: "식음료" },
   { value: "투어" },
-  { value: "관광" },
   { value: "웰빙" },
 ];
 
