@@ -6,11 +6,14 @@ import BannerSkeleton from "@/skeleton/activities/BannerSkeleton";
 import { ActivityDetail } from "@/types/ActivityType";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import { useState } from "react";
 import Carousel from "./Carousel";
 import Dropdown from "./Dropdown";
+import ImageModal from "./ImageModal";
 
 const Banner = ({ id }: { id: number }) => {
   const deviceType = useDeviceType();
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const {
     data: activityDetailData,
@@ -42,6 +45,9 @@ const Banner = ({ id }: { id: number }) => {
     ...subImages.map((item) => ({ src: item.imageUrl, alt: "보조 이미지" })),
   ];
 
+  const openModal = (src: string) => setSelectedImage(src);
+  const closeModal = () => setSelectedImage(null);
+
   return (
     <div className="my-4 md:mb-8 md:mt-6 xl:mb-[85px] xl:mt-[78px]">
       <div className="px-4 md:px-0">
@@ -72,7 +78,8 @@ const Banner = ({ id }: { id: number }) => {
             alt="배너 이미지"
             width={375}
             height={310}
-            className="w-full object-cover md:max-h-[534px] md:rounded-l-xl"
+            className="w-full cursor-pointer object-cover md:max-h-[534px] md:rounded-l-xl"
+            onClick={() => openModal(bannerImageUrl)}
           />
           <div className="h-full w-full overflow-hidden rounded-r-xl sm:max-h-[310px] md:grid md:max-h-[534px] md:grid-cols-2 md:grid-rows-2 md:gap-1 xl:gap-2">
             {subImages.map((item) => (
@@ -82,12 +89,15 @@ const Banner = ({ id }: { id: number }) => {
                 width={375}
                 height={310}
                 key={item.id}
-                className="h-full w-full object-cover md:max-h-[263px]"
+                className="h-full w-full cursor-pointer object-cover md:max-h-[263px]"
+                onClick={() => openModal(item.imageUrl)}
               />
             ))}
           </div>
         </div>
       )}
+
+      {selectedImage && <ImageModal selectedImage={selectedImage} onClose={closeModal} />}
     </div>
   );
 };
