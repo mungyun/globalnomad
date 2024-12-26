@@ -12,7 +12,7 @@ const SocialLogin = () => {
   const Toast = useToast();
 
   const redirect_uri = `${process.env.NEXT_PUBLIC_REDIRECT_URL}`;
-  const googleAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${redirect_uri}/sign-up/google&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile`;
+  const googleAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${redirect_uri}/sign-in/google&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile`;
   const kakaoAuthURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${redirect_uri}/sign-in/kakao&response_type=code`;
 
   useEffect(() => {

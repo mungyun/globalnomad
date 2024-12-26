@@ -7,7 +7,6 @@ export const GET = async (req: NextRequest) => {
   const url = req.nextUrl;
   const code = url.searchParams.get("code");
 
-  // return NextResponse.json({ code, redirectUri });
   if (!code || !redirectUri) {
     return NextResponse.json({ error: "필수 필드가 누락되었습니다." }, { status: 400 });
   }
@@ -30,7 +29,6 @@ export const GET = async (req: NextRequest) => {
   const tokenData = await tokenResponse.json();
   const { id_token } = tokenData;
   console.log(tokenData);
-  // return NextResponse.json(tokenData);
   try {
     const response = await axiosInstance.post(`/oauth/sign-up/google`, {
       token: id_token,
@@ -61,9 +59,7 @@ export const GET = async (req: NextRequest) => {
     });
 
     return res;
-  } catch (error) {
-    console.log(error);
-    // return NextResponse.json(error);
+  } catch {
     return NextResponse.redirect(`http://localhost:3000/login?loginSuccess=false`, 302);
   }
 };

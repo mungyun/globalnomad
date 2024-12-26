@@ -12,7 +12,6 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.redirect(`http://localhost:3000/login?loginSuccess=false`, 302);
   }
   try {
-    // throw new Error("에러");
     const response = await axiosInstance.post(`/oauth/sign-in/kakao`, {
       token: code,
       redirectUri,
@@ -43,7 +42,7 @@ export const GET = async (req: NextRequest) => {
   } catch (error) {
     if (isAxiosError(error) && error.response?.status === 403) {
       return NextResponse.redirect(
-        `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL + `/sign-up/kakao`}&response_type=code`
+        `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL}/sign-up/kakao&response_type=code`
       );
     }
     return NextResponse.redirect(`http://localhost:3000/login?loginSuccess=false`, 302);

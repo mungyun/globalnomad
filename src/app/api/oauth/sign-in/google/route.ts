@@ -8,7 +8,6 @@ export const GET = async (req: NextRequest) => {
   const url = req.nextUrl;
   const code = url.searchParams.get("code");
 
-  // return NextResponse.json({ code, redirectUri });
   if (!code || !redirectUri) {
     return NextResponse.json({ error: "필수 필드가 누락되었습니다." }, { status: 400 });
   }
@@ -32,7 +31,6 @@ export const GET = async (req: NextRequest) => {
   const tokenData = await tokenResponse.json();
   const { id_token } = tokenData;
 
-  // return NextResponse.json(tokenData);
   try {
     const response = await axiosInstance.post(`/oauth/sign-in/google`, {
       token: id_token,
@@ -62,7 +60,6 @@ export const GET = async (req: NextRequest) => {
     });
     return res;
   } catch (error) {
-    console.log(error);
     if (isAxiosError(error) && error.response?.status === 403) {
       return NextResponse.redirect(
         `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL}/sign-up/google&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile`
