@@ -29,7 +29,7 @@ const Categories = ({ sort, category, setSort, setCategory }: CategoriesProps) =
 
   return (
     <div className="mb-6 mt-10 flex justify-between gap-2 md:mb-[35px] md:mt-[60px]">
-      <div className="flex gap-2 overflow-x-auto md:gap-[14px] xl:gap-6">
+      <div className="scroll-container flex gap-2 md:gap-[14px] xl:gap-6">
         {CATEGORY.map((option) => (
           <CategoryButton key={option} active={option === category} onClick={() => setCategory(option)}>
             {option}
