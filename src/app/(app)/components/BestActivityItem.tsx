@@ -30,7 +30,7 @@ const BestActivityItem = ({ activity }: BestActivityItemProps) => {
             {activity.rating} ({activity.reviewCount})
           </p>
         </div>
-        <p className="whitespace-normal break-keep text-lg font-bold leading-[26px] md:text-[32px] md:leading-[42px]">
+        <p className="line-clamp-2 whitespace-normal text-lg font-bold leading-[26px] md:text-[32px] md:leading-[42px]">
           {activity.title}
         </p>
         <p className="text-base font-bold leading-[26px] md:text-xl md:leading-8">
