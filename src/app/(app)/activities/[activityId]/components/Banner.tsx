@@ -2,6 +2,8 @@
 
 import useDeviceType from "@/hooks/useDeviceType";
 import { getActivityDetail } from "@/lib/api/Activities";
+import { getUsersProfile } from "@/lib/api/MyPage";
+// 유저 정보 조회 함수
 import BannerSkeleton from "@/skeleton/activities/BannerSkeleton";
 import { ActivityDetail } from "@/types/ActivityType";
 import { useQuery } from "@tanstack/react-query";
@@ -17,8 +19,8 @@ const Banner = ({ id }: { id: number }) => {
 
   const {
     data: activityDetailData,
-    isPending,
-    isError,
+    isPending: isActivityPending,
+    isError: isActivityError,
   } = useQuery<ActivityDetail, Error>({
     queryKey: ["activityDetailData", id],
     queryFn: () => getActivityDetail(Number(id)),
@@ -26,19 +28,29 @@ const Banner = ({ id }: { id: number }) => {
     staleTime: 60 * 5 * 1000, // 5분에 한 번씩 데이터 교체
   });
 
-  if (isPending) {
+  const {
+    data: userProfileData,
+    isPending: isProfilePending,
+    isError: isProfileError,
+  } = useQuery({
+    queryKey: ["userProfile"],
+    queryFn: getUsersProfile,
+    staleTime: 60 * 5 * 1000, // 5분 동안 데이터 유지
+  });
+
+  if (isActivityPending || isProfilePending) {
     return <BannerSkeleton />;
   }
 
-  if (isError) {
-    return <div>활동을 가져오는 데 실패했습니다.</div>;
+  if (isActivityError || isProfileError) {
+    return <div>데이터를 불러오는 데 실패했습니다.</div>;
   }
 
-  if (!activityDetailData) {
-    return <div>활동을 찾을 수 없습니다.</div>;
+  if (!activityDetailData || !userProfileData) {
+    return <div>활동 또는 유저 정보를 찾을 수 없습니다.</div>;
   }
 
-  const { category, title, rating, reviewCount, address, bannerImageUrl, subImages } = activityDetailData;
+  const { category, title, rating, reviewCount, address, bannerImageUrl, subImages, userId } = activityDetailData;
 
   const images = [
     { src: bannerImageUrl, alt: "배너 이미지" },
@@ -54,7 +66,7 @@ const Banner = ({ id }: { id: number }) => {
         <span className="mb-[10px] text-[14px] text-black02">{category}</span>
         <div className="mb-4 flex justify-between">
           <h2 className="text-[24px] font-bold text-black02 md:text-[32px]">{title}</h2>
-          <Dropdown id={id} />
+          {userProfileData.id === userId && <Dropdown id={id} />}
         </div>
         <div className="mb-[25px] flex gap-3">
           <div className="flex gap-[6px]">
